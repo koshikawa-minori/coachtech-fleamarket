@@ -1,45 +1,43 @@
 <?php
 
-namespace App\Actions\Fortify;
+namespace App\Http\Requests;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Illuminate\Foundation\Http\FormRequest;
 
-class CreateNewUser implements CreatesNewUsers
+class RegisterRequest extends FormRequest
 {
-    //use PasswordValidationRules;
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
 
     /**
-     * Validate and create a newly registered user.
+     * Get the validation rules that apply to the request.
      *
-     * @param  array<string, string>  $input
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function create(array $input): User
+    public function rules(): array
     {
-        Validator::make($input, [
+        return [
             'name' => ['required', 'string', 'max:20'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8'],
             'password_confirmation' => ['required', 'string', 'min:8', 'same:password'],
-        ],
+        ];
+    }
 
-        [
+    public function messages()
+    {
+        return [
             'name.required' => 'お名前を入力してください',
             'email.required' => 'メールアドレスを入力してください',
             'email.email' => 'メールアドレスはメール形式で入力してください',
             'password.required' => 'パスワードを入力してください',
             'password.min' => 'パスワードは8文字以上で入力してください',
             'password_confirmation.same' => 'パスワードと一致しません',
-        ]
-        )->validate();
-
-        return User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-        ]);
+        ];
     }
 }
