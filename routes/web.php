@@ -10,6 +10,10 @@ Route::view('/', 'top')->name('home');
 Route::view('/home', 'top')->name('home');
 
 Route::middleware('auth')->group(function () {
-    Route::view('/mypage', 'mypage')->name('mypage'); // resources/views/mypage.blade.php
-    Route::view('/sell', 'sell')->name('sell');       // resources/views/sell.blade.php
+    // resources/views/mypage.blade.php
+    Route::view('/mypage', 'mypage')->name('mypage');
+    // resources/views/sell.blade.php
+    Route::view('/sell', 'sell')->name('sell');
+    // resources/views/mypage/profile.blade.php
+    Route::view('/mypage/profile', 'mypage.profile')->name('mypage.profile');
 });
