@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LogoutResponse;
 
@@ -38,7 +37,6 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-        Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
 
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
@@ -46,14 +44,12 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($throttleKey);
         });
 
-        RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(5)->by($request->session()->get('login.id'));
-        });
-
+        //ログイン画面
         Fortify::loginView(function () {
             return view('auth.login');
         });
 
+        //会員登録画面
         Fortify::registerView(function () {
             return view('auth.register');
         });
@@ -65,7 +61,7 @@ class FortifyServiceProvider extends ServiceProvider
                 return redirect()->route('login');
             }
         });
-        //ログイン認証の失敗を返す
+        //ログイン認証
         Fortify::authenticateUsing(function ($request){
             /** @var LoginRequest $formRequest バリデーション済みのリクエスト*/
             $formRequest = app(LoginRequest::class);

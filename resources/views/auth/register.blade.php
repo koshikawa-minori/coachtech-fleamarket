@@ -11,7 +11,7 @@
 
         <div>
             <label for="name">ユーザー名</label>
-            <input id="name" type="text" name="name" value="{{ old ('name') }}" required>
+            <input id="name" type="text" name="name" value="{{ old('name') }}" required>
             @error('name')
                 <p class="error">{{ $message }}</p>
             @enderror
@@ -19,7 +19,7 @@
 
         <div>
             <label for="email">メールアドレス</label>
-            <input id="email" type="email" name="email" value="{{ old ('email') }}" required>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required>
             @error('email')
                 <p class="error">{{ $message }}</p>
             @enderror

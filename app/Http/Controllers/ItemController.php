@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Item;
+
+class ItemController extends Controller
+{
+    public function index(Request $request)
+    {
+        $keyword = (string)$request->query('keyword', '');
+
+        $itemsQuery = Item::query();
+
+        //検索
+        if($keyword !== ''){
+            $itemsQuery->where('name', 'like', "%{$keyword}%");
+        }
+
+        //自分の出品商品は非表示
+        if (Auth::check()){
+            $itemsQuery->where('user_id', '!=', Auth::id());
+        }
+
+        //検索条件維持
+        $items = $itemsQuery->orderByDesc('id')
+        ->paginate(12)
+        ->withQueryString();
+
+        return view('items.index',[
+            'items' => $items,
+            'keyword' => $keyword,
+        ]);
+
+    }
+}

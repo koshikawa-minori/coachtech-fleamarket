@@ -11,7 +11,7 @@
 
         <div>
             <label for="email">メールアドレス</label>
-            <input id="email" type="email" name="email" value="{{ old ('email') }}" required>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required>
             @error('email')
                 <p class="error">{{ $message }}</p>
             @enderror

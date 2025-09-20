@@ -1,19 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
 
 
-// トップページ（商品一覧になる予定）
-Route::view('/', 'top')->name('home');
+// 商品一覧画面(トップページ)
+Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
-// Fortify用のリダイレクト先（暫定）
+// Fortify用のリダイレクト先（暫定で商品一覧ページ表示）
 Route::view('/home', 'top')->name('home');
 
+// ログイン必須ページ
 Route::middleware('auth')->group(function () {
-    // resources/views/mypage.blade.php
+    // プロフィール画面(mypage.blade.php)
     Route::view('/mypage', 'mypage')->name('mypage');
-    // resources/views/sell.blade.php
-    Route::view('/sell', 'sell')->name('sell');
-    // resources/views/mypage/profile.blade.php
+
+    // プロフィール編集画面(mypage/profile.blade.php)
     Route::view('/mypage/profile', 'mypage.profile')->name('mypage.profile');
+
+    // 出品画面(sell.blade.php)
+    Route::view('/sell', 'sell')->name('sell');
 });
