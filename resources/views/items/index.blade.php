@@ -1,8 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Coachtechフリマ')
+@section('title', '商品一覧')
 @section('content')
-    <div style="padding:24px; color:#333; background:#f6f6f6; border-radius:8px;">
-        商品一覧ページ（仮）
-    </div>
+
+    <nav class="tab-menu">
+        <a>おすすめ</a>
+        <a>マイリスト</a>
+    </nav>
+
+    <ul>
+        @foreach ($items as $item)
+        <li>
+            <img src="{{ $item->image_path }}" alt="{{ $item->name}}">
+            <p>{{ $item->name }}</p>
+        </li>
+        @endforeach
+    </ul>
 @endsection

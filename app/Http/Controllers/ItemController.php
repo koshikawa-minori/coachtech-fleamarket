@@ -21,13 +21,11 @@ class ItemController extends Controller
 
         //自分の出品商品は非表示
         if (Auth::check()){
-            $itemsQuery->where('user_id', '!=', Auth::id());
+            $itemsQuery->where('seller_user_id', '!=', Auth::id());
         }
 
-        //検索条件維持
-        $items = $itemsQuery->orderByDesc('id')
-        ->paginate(12)
-        ->withQueryString();
+        //検索結果取得
+        $items = $itemsQuery->orderByDesc('id')->get();
 
         return view('items.index',[
             'items' => $items,

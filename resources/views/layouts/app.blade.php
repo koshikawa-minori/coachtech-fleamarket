@@ -13,16 +13,14 @@
     <header class="header">
         <div class="header__inner">
             <div class="header__left">
-                <a href="{{ url('/') }}" class="header__logo" >
+                <a href="{{ route('items.index') }}" class="header__logo" >
                     <img src="{{ asset('images/logo.svg')}}" alt="COACHTECHロゴ">
                 </a>
             </div>
 
             <div class="header__center">
-                <form class="header__search" action="{{ url('/') }}" method="GET">
-                <input class="header__search-input" type="text" name="keyword" value="{{ request('keyword') }}" placeholder="なにをお探しですか？">
-                <!--一応つけてる検索ボタン コーチ返信待ち -->
-                <button type="submit" class="header__search-button">検索</button>
+                <form class="header__search" action="{{ route('items.index') }}" method="GET">
+                <input class="header__search-input" type="text" name="keyword" value="{{ $keyword }}" placeholder="なにをお探しですか？">
                 </form>
             </div>
 

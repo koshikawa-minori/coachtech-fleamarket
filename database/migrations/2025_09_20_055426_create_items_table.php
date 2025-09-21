@@ -13,6 +13,23 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+
+            //出品者
+            $table->foreignId('seller_user_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
+
+            //商品情報
+            $table->string('name');
+            $table->string('brand_name')->nullable();
+            $table->unsignedInteger('price');
+            $table->string('description');
+            $table->unsignedTinyInteger('condition');
+            $table->string('image_path');
+
+            //商品の販売状態
+            $table->boolean('is_sold')->default(false);
+
             $table->timestamps();
         });
     }
