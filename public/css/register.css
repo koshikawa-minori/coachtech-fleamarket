@@ -1,0 +1,51 @@
+.register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    padding: 40px 16px;
+}
+
+.register h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.register__group {
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    padding: 10px;
+}
+
+.register__label {
+    font-size: large;
+    font-weight: bold;
+}
+
+.register__error {
+    margin-top: 2px;
+    color: #ff5555;
+}
+
+.register__input,
+.register__button {
+    width: 100%;
+}
+
+.register__button {
+    width: 450px;
+    margin-top: 70px;
+    padding: 10px;
+    font-size: large;
+    font-weight: bold;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    background-color: #ff5555;
+}
+
+.register__link {
+    color: #0d99ff;
+    text-align: center;
+}

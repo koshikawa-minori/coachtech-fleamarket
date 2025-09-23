@@ -7,6 +7,7 @@
     <title>@yield('title', 'Coachtechフリマ')</title>
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
+    @stack('styles')
 </head>
 
 <body>
