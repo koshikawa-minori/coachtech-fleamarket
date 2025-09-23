@@ -52,4 +52,16 @@ class User extends Authenticatable
         ];
     }
 
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    public function purchasedItems()
+    {
+        // orders テーブルを使って購入履歴を管理する想定
+        // 中間テーブル名・カラム名に合わせて調整
+        return $this->belongsToMany(Item::class, 'orders');
+    }
+
 }

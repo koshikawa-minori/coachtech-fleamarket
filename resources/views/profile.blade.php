@@ -9,9 +9,9 @@
     <form class="profile__form" action="{{ route('profile.update') }}" method="post" enctype="multipart/form-data" novalidate>
         @csrf
 
-        <div class="profile__group">
+        <div class="profile__image-group">
             <div class="profile__image-wrapper">
-                @if($profile?->image_path)
+                @if($hasImage)
                     <img class="profile__image" src="{{ asset('storage/'.$profile->image_path) }}" alt="プロフィール画像">
                 @else
                     <div class="profile__image--default"></div>

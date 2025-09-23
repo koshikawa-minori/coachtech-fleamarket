@@ -1,0 +1,103 @@
+.mypage {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding: 40px 16px;
+}
+
+.mypage__header {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 1000px;
+    margin:  0 auto;
+}
+
+.mypage__image-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mypage__image,
+.mypage__image--default {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #ddd;
+}
+
+.mypage__username {
+    padding-left: 100px;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.mypage__edit-button {
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 30px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: 1px solid #ff5555;
+    background-color: #fff;
+    color: #ff5555;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.mypage__tabs {
+    display: flex;
+    justify-content: flex-start;
+    gap: 40px;
+    width: 100%;
+    max-width: 1000px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8px;
+}
+
+.mypage__tab {
+    font-size: 16px;
+    color: #000000;
+    text-decoration: none;
+    padding: 4px 8px;
+}
+
+.mypage__tab--active {
+    font-weight: bold;
+    color: #ff5555;
+}
+
+.mypage__items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 24px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.mypage__item-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background-color: #ddd;
+    border-radius: 8px;
+}
+
+.mypage__item-name {
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.mypage__empty {
+    font-size: 16px;
+    color: #ccc;
+    text-align: center;
+    margin-top: 20px;
+}

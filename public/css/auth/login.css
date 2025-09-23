@@ -6,7 +6,7 @@
     padding: 40px 16px;
 }
 
-.login h1 {
+.login__title {
     font-size: 24px;
     font-weight: bold;
 }
@@ -39,7 +39,7 @@
     padding: 10px;
     font-size: large;
     font-weight: bold;
-    color: #ffffff;
+    color: #fff;
     border: none;
     border-radius: 6px;
     background-color: #ff5555;

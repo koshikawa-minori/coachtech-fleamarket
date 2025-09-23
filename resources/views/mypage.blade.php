@@ -6,7 +6,7 @@
 <main class="mypage">
     <div class="mypage__header">
         <div class="mypage__image-wrapper">
-            @if($profile?->image_path)
+            @if($hasImage)
                 <img class="mypage__image" src="{{ asset('storage/'.$profile->image_path) }}" alt="プロフィール画像">
             @else
                 <div class="mypage__image--default"></div>
@@ -17,12 +17,12 @@
     </div>
 
     <div class="mypage__tabs">
-        <a href="{{ route('mypage', ['page' => 'sell']) }}" class="mypage__tab {{ request('page') !== 'buy' ? 'mypage__tab--active' : ''}}">出品した商品</a>
-        <a href="{{ route('mypage', ['page' => 'buy']) }}" class="mypage__tab {{ request('page') !== 'buy' ? 'mypage__tab--active' : ''}}">購入した商品</a>
+        <a href="{{ route('mypage', ['page' => 'sell']) }}" class="mypage__tab {{ request('page', 'sell') === 'sell' ? 'mypage__tab--active' : '' }}">出品した商品</a>
+        <a href="{{ route('mypage', ['page' => 'buy']) }}" class="mypage__tab {{ request('page') === 'buy' ? 'mypage__tab--active' : '' }}">購入した商品</a>
     </div>
 
     <div class="mypage__items">
-        <!-- コーチに確認中 -->
+        <!-- コーチに確認中 profile controllerもいじってる-->
         @if($items->isEmpty())
             <p class="mypage__empty">商品がありません</p>
         @else
