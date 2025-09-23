@@ -13,9 +13,9 @@ class ItemDemoSeeder extends Seeder
      */
     public function run(): void
     {
-        $sellerUserId = User::query()->value('id');
-        if (!$sellerUserId) {
-            $sellerUserId = User::factory()->create()->id;
+        $user_id = User::query()->value('id');
+        if (!$user_id) {
+            $user_id = User::factory()->create()->id;
         }
 
         $rows = [
@@ -103,7 +103,7 @@ class ItemDemoSeeder extends Seeder
 
         foreach ($rows as $row) {
             Item::create([
-                'seller_user_id' => $sellerUserId,
+                'user_id' => $user_id,
                 'name' => $row['name'],
                 'brand_name' => $row['brand_name'],
                 'price' => $row['price'],
