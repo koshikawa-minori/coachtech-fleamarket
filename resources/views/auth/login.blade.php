@@ -34,5 +34,5 @@
 </main>
 @endsection
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/login.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/auth/login.css')}}">
 @endpush

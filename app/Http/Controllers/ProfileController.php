@@ -13,16 +13,20 @@ class ProfileController extends Controller
         $user = Auth::user();
         $profile = $user->profile;
 
-        return view('mypage.index', compact('user', 'profile'));
+        $page = request('page', 'sell');
+        $items = $page === 'buy'
+        ? $user->purchasedItems
+        : $user->items;
+
+        return view('mypage', compact('user', 'profile'));
     }
 
     //プロフィール編集画面表示
     public function edit(){
         $user = Auth::user();
         $profile = $user->profile;
-        $mode = $profile ? 'edit' : 'first';
 
-        return view('mypage.profile.edit', compact('user', 'profile', 'mode'));
+        return view('profile', compact('user', 'profile'));
 
     }
 
@@ -53,6 +57,7 @@ class ProfileController extends Controller
                 'image_path' => $newImagePath ?? optional($authenticatedUser->profile)->image_path,
                 'postal_code' => $request->input('postal_code'),
                 'address' => $request->input('address'),
+                'building' => $request->input('building'),
             ]
         );
 

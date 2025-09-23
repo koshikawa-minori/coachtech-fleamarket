@@ -51,5 +51,5 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/register.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/auth/register.css')}}">
 @endpush
