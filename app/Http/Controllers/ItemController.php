@@ -21,7 +21,7 @@ class ItemController extends Controller
 
         //自分の出品商品は非表示
         if (Auth::check()){
-            $itemsQuery->where('seller_user_id', '!=', Auth::id());
+            $itemsQuery->where('user_id', '!=', Auth::id());
         }
 
         //検索結果取得

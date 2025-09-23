@@ -8,6 +8,6 @@ class CustomRegisterResponse implements RegisterResponse
 {
     public function toResponse($request)
     {
-        return redirect()->route('mypage.profile');
+        return redirect()->route('profile.edit');
     }
 }

@@ -28,4 +28,17 @@ class ProfileRequest extends FormRequest
             'address' => ['nullable', 'string', 'max:255'],
         ];
     }
+
+    //いるかいらないかコーチに確認中
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'お名前を入力してください',
+            'name.max' => 'お名前は20文字以内で入力してください',
+            'image_path.mimes' => 'プロフィール画像はjpegまたはpng形式でアップロードしてください',
+            'postal_code.regex' => '郵便番号は「123-4567」の形式で入力してください',
+            'address.max' => '住所は255文字以内で入力してください',
+        ];
+    }
+
 }

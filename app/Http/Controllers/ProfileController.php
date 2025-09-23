@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProfileRequest;
 
@@ -29,7 +30,10 @@ class ProfileController extends Controller
     public function update(ProfileRequest $request)
     {
         //認証ユーザー取得
+        /** @var User $authenticatedUser */
         $authenticatedUser = Auth::user();
+
+        $isFirst = !$authenticatedUser->profile()->exists();
 
         //users.nameを更新
         $authenticatedUser->update([
@@ -52,7 +56,9 @@ class ProfileController extends Controller
             ]
         );
 
-        return redirect()->route('mypage')->with('success', 'プロフィールを更新しました');
+        return $isFirst
+        ? redirect()->route('items.index')->with('success', '初回設定が完了しました。')
+        : redirect()->route('mypage')->with('success', 'プロフィールを更新しました');
     }
 }
 

@@ -5,7 +5,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 
 
-// 商品一覧画面(ログイン前トップページ)
+// 商品一覧画面(トップページ)
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
 // ログイン必須ページ
