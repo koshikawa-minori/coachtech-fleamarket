@@ -75,10 +75,11 @@
 
 .mypage__items {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(4,1fr);
     gap: 24px;
     width: 100%;
     max-width: 1000px;
+    margin: 0 auto;
 }
 
 .mypage__item-image {
@@ -87,6 +88,19 @@
     object-fit: cover;
     background-color: #ddd;
     border-radius: 8px;
+}
+
+.mypage__item-image--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 180px;
+    border-radius: 8px;
+    background-color: #ddd;
+    color: #555;
+    font-size: 30px;
+    font-weight: 500;
 }
 
 .mypage__item-name {

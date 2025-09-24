@@ -15,7 +15,11 @@ class ItemDemoSeeder extends Seeder
     {
         $user_id = User::query()->value('id');
         if (!$user_id) {
-            $user_id = User::factory()->create()->id;
+            $user_id = User::factory()->create([
+                'name' => 'デモユーザー',
+                'email' => 'demo@example.com',
+                'password' => bcrypt('password'),
+            ])->id;
         }
 
         $rows = [
