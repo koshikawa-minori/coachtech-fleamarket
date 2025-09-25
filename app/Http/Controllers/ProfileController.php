@@ -69,8 +69,8 @@ class ProfileController extends Controller
         );
 
         return $isFirst
-        ? redirect()->route('items.index')->with('success', '初回設定が完了しました。')
-        : redirect()->route('mypage')->with('success', 'プロフィールを更新しました');
+        ? redirect()->route('items.index')
+        : redirect()->route('mypage');
     }
 }
 

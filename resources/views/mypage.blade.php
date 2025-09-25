@@ -5,14 +5,16 @@
 @section('content')
 <main class="mypage">
     <div class="mypage__header">
-        <div class="mypage__image-wrapper">
-            @if($hasImage)
-                <img class="mypage__image" src="{{ asset('storage/'.$profile->image_path) }}" alt="プロフィール画像">
-            @else
-                <div class="mypage__image--default"></div>
-            @endif
+        <div class="mypage__profile">
+            <div class="mypage__image-wrapper">
+                @if($hasImage)
+                    <img class="mypage__image" src="{{ asset('storage/'.$profile->image_path) }}" alt="プロフィール画像">
+                @else
+                    <div class="mypage__image--default"></div>
+                @endif
+            </div>
+            <p class="mypage__username">{{ $user->name }}</p>
         </div>
-        <p class="mypage__username">{{ $user->name }}</p>
         <a class="mypage__edit-button" href="{{ route('profile.edit') }}">プロフィールを編集</a>
     </div>
 
