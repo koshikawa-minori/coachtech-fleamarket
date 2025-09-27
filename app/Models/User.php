@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Item;
 use App\Models\Profile;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -62,6 +62,12 @@ class User extends Authenticatable
         // orders テーブルを使って購入履歴を管理する想定
         // 中間テーブル名・カラム名に合わせて調整
         return $this->belongsToMany(Item::class, 'orders');
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany(Item::class, 'likes')
+        ->withTimestamps();
     }
 
 }

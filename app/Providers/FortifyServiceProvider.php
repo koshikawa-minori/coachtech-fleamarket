@@ -6,7 +6,6 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
-use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -61,25 +60,24 @@ class FortifyServiceProvider extends ServiceProvider
                 return redirect()->route('login');
             }
         });
+
+        $this->app->bind(
+            \Laravel\Fortify\Http\Requests\LoginRequest::class,
+            \App\Http\Requests\FortifyLoginRequest::class
+        );
+
         //ログイン認証
-        Fortify::authenticateUsing(function ($request){
-            /** @var LoginRequest $formRequest */
-            $formRequest = app(LoginRequest::class);
+        Fortify::authenticateUsing(function ($request) {
+            $user = \App\Models\User::where('email', $request->email)->first();
 
-            $validatedData = $request->validate(
-                $formRequest->rules(),
-                $formRequest->messages()
-            );
-
-            $user = User::where('email', $validatedData['email'] ?? null)->first();
-
-            if($user && Hash::check($validatedData['password'] ?? '', $user->password)){
+            if ($user && \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
                 return $user;
             }
 
-            throw ValidationException::withMessages([
+            throw \Illuminate\Validation\ValidationException::withMessages([
                 'email' => 'ログイン情報が登録されていません',
             ]);
         });
+
     }
 }

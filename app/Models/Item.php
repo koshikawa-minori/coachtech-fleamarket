@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models;
+
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,4 +37,11 @@ class Item extends Model
             4=> '状態が悪い',
         };
     }
+
+    public function likedBy()
+    {
+        return $this->belongsToMany(User::class, 'likes')
+        ->withTimestamps();
+    }
+
 }
