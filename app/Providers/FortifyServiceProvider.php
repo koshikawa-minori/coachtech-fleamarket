@@ -63,7 +63,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
         //ログイン認証
         Fortify::authenticateUsing(function ($request){
-            /** @var LoginRequest $formRequest バリデーション済みのリクエスト*/
+            /** @var LoginRequest $formRequest */
             $formRequest = app(LoginRequest::class);
 
             $validatedData = $request->validate(
