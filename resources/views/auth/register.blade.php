@@ -2,6 +2,10 @@
 
 @section('title','会員登録')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/auth/register.css')}}">
+@endpush
+
 @section ('content')
 <main class="register">
     <h1 class="register__title">会員登録</h1>
@@ -49,7 +53,3 @@
     </p>
 </main>
 @endsection
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/auth/register.css')}}">
-@endpush

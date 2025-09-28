@@ -2,6 +2,10 @@
 
 @section('title', 'ログイン')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/auth/login.css')}}">
+@endpush
+
 @section('content')
 <main class="login">
     <h1 class="login__title">ログイン</h1>
@@ -33,6 +37,4 @@
     </p>
 </main>
 @endsection
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/auth/login.css')}}">
-@endpush
+

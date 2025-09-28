@@ -2,6 +2,10 @@
 
 @section('title','プロフィール設定')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endpush
+
 @section('content')
 <main class="profile">
     <h1 class="profile__title">プロフィール設定</h1>
@@ -62,6 +66,3 @@
 </main>
 @endsection
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-@endpush

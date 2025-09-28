@@ -11,26 +11,67 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         $keyword = (string)$request->query('keyword', '');
+        $tab = $request->query('tab', 'recommend');
 
-        $itemsQuery = Item::query();
+        $isAuthenticated = Auth::check();
+        $authenticatedUserId = $isAuthenticated ? Auth::id() : null;
 
-        //検索
-        if($keyword !== ''){
-            $itemsQuery->where('name', 'like', "%{$keyword}%");
+        //タブ切り替え
+        if ($tab === 'mylist') {
+            if (!$isAuthenticated) {
+                $items = collect();
+            }else{
+                 /** @var \App\Models\User $authenticatedUser */
+                $authenticatedUser = Auth::user();
+
+                $items = $authenticatedUser->likes()
+                ->when($keyword !== '', function ($query) use ($keyword) {
+                    $query->where('items.name', 'like', "%{$keyword}%");
+                })
+                ->where('items.user_id', '!=', $authenticatedUserId)
+                ->latest('items.id')
+                ->get();
+            }
+        }else{
+            $items = Item::query()
+            ->when($isAuthenticated, function ($query) use ($authenticatedUserId) {
+                $query->where('user_id', '!=', $authenticatedUserId);
+            })
+            ->when($keyword !== '', function ($query) use ($keyword) {
+                $query->where('name', 'like', "%{$keyword}%");
+            })
+            ->latest('id')
+            ->get();
         }
 
-        //自分の出品商品は非表示
-        if (Auth::check()){
-            $itemsQuery->where('user_id', '!=', Auth::id());
-        }
-
-        //検索結果取得
-        $items = $itemsQuery->orderByDesc('id')->get();
-
-        return view('items.index',[
+        return view('items.index', [
             'items' => $items,
-            'keyword' => $keyword,
+            'tab' => $tab,
+            'currentTab' => $tab,
+            'keyword' => $keyword
         ]);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
+
 }

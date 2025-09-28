@@ -2,6 +2,10 @@
 
 @section('title', 'マイページ')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/mypage.css')}}">
+@endpush
+
 @section('content')
 <main class="mypage">
     <div class="mypage__header">
@@ -45,6 +49,3 @@
 </main>
 @endsection
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/mypage.css')}}">
-@endpush
