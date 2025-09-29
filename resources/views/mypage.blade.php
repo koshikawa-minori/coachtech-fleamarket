@@ -28,23 +28,18 @@
     </div>
 
     <div class="mypage__items">
-        <!-- コーチに確認中 profile controllerもいじってる-->
-        @if($items->isEmpty())
-            <p class="mypage__empty">商品がありません</p>
-        @else
-            @foreach ($items as $item)
-                <div class="mypage__item">
-                    @if (filled($item->image_path))
-                        <img class="mypage__item-image" src="{{ $item->image_path }}" alt="商品画像">
-                    @else
-                        <div class="mypage__item-image mypage__item-image--placeholder">
-                            商品画像
-                        </div>
-                    @endif
-                    <p class="mypage__item-name">{{ $item->name }}</p>
-                </div>
-            @endforeach
-        @endif
+        @foreach ($items as $item)
+            <div class="mypage__item">
+                @if (filled($item->image_path))
+                    <img class="mypage__item-image" src="{{ $item->image_path }}" alt="商品画像">
+                @else
+                    <div class="mypage__item-image mypage__item-image--placeholder">
+                        商品画像
+                    </div>
+                @endif
+                <p class="mypage__item-name">{{ $item->name }}</p>
+            </div>
+        @endforeach
     </div>
 </main>
 @endsection

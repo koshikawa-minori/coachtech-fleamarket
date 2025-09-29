@@ -10,24 +10,27 @@ use App\Http\Requests\ProfileRequest;
 class ProfileController extends Controller
 {
     //プロフィール画面表示
-    public function show(){
+    public function show()
+    {
         $user = Auth::user();
         $profile = $user->profile;
 
-        $hasImage = $profile?->image_path && Storage::disk('public')->exists($profile->image_path);
+        $hasImage = filled($profile?->image_path) && Storage::disk('public')->exists($profile->image_path);
 
         $page = request('page', 'sell');
-        $items = $page === 'buy'
-        ? $user->purchasedItems
-        : $user->items;
 
-        $items = collect($items);
+        $items = $page === 'buy'
+        ? $user->purchasedItems //購入一覧
+        : $user->items; //出品一覧
+
+        $items = collect($items ?? [])->values();
 
         return view('mypage', compact('user', 'profile', 'items', 'hasImage'));
     }
 
     //プロフィール編集画面表示
-    public function edit(){
+    public function edit()
+    {
         $user = Auth::user();
         $profile = $user->profile;
 

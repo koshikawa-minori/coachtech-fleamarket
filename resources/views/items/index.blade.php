@@ -8,10 +8,10 @@
 
 @section('content')
 <main>
-    <nav class="items-tabs">
-        <a href="{{ request()->fullUrlWithQuery(['tab' => 'recommend'])}}" class="items-tabs__link {{ $currentTab === 'recommend' ? 'is-active' : ''}}">おすすめ
+    <nav class="items__tabs">
+        <a href="{{ request()->fullUrlWithQuery(['tab' => 'recommend'])}}" class="items-tabs__link {{ $currentTab === 'recommend' ? 'items__tabs--active' : ''}}">おすすめ
         </a>
-        <a href="{{ request()->fullUrlWithQuery(['tab' => 'mylist'])}}" class="items-tabs__link {{ $currentTab === 'mylist' ? 'is-active' : ''}}">マイリスト</a>
+        <a href="{{ request()->fullUrlWithQuery(['tab' => 'mylist'])}}" class="items-tabs__link {{ $currentTab === 'mylist' ? 'items__tabs--active' : ''}}">マイリスト</a>
     </nav>
 
     <ul class="item-list">
