@@ -4,15 +4,14 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/layouts/item-list.css') }}">
-<link rel="stylesheet" href="{{ asset('css/items/index.css') }}">
 @endpush
 
 @section('content')
 <main class="items">
-    <div class="items__tabs">
-        <a href="{{ request()->fullUrlWithQuery(['tab' => 'recommend'])}}" class="items__tab {{ $currentTab === 'recommend' ? 'items__tab--active' : ''}}">おすすめ
+    <div class="tabs">
+        <a href="{{ request()->fullUrlWithQuery(['tab' => 'recommend'])}}" class="tab {{ $currentTab === 'recommend' ? 'tab--active' : ''}}">おすすめ
         </a>
-        <a href="{{ request()->fullUrlWithQuery(['tab' => 'mylist'])}}" class="items__tab {{ $currentTab === 'mylist' ? 'items__tab--active' : ''}}">マイリスト</a>
+        <a href="{{ request()->fullUrlWithQuery(['tab' => 'mylist'])}}" class="tab {{ $currentTab === 'mylist' ? 'tab--active' : ''}}">マイリスト</a>
     </div>
 
     <ul class="items__list">

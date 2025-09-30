@@ -23,14 +23,17 @@
         <a class="mypage__edit-button" href="{{ route('profile.edit') }}">プロフィールを編集</a>
     </div>
 
-    <div class="mypage__tabs">
-        <a href="{{ route('mypage', ['page' => 'sell']) }}" class="mypage__tab {{ request('page', 'sell') === 'sell' ? 'mypage__tab--active' : '' }}">出品した商品</a>
-        <a href="{{ route('mypage', ['page' => 'buy']) }}" class="mypage__tab {{ request('page') === 'buy' ? 'mypage__tab--active' : '' }}">購入した商品</a>
+    <div class="tabs">
+        <a href="{{ route('mypage', ['page' => 'sell']) }}" class="tab {{ request('page', 'sell') === 'sell' ? 'tab--active' : '' }}">出品した商品</a>
+        <a href="{{ route('mypage', ['page' => 'buy']) }}" class="tab {{ request('page') === 'buy' ? 'tab--active' : '' }}">購入した商品</a>
     </div>
 
     <ul class="mypage__items items__list">
         @foreach ($items as $item)
             <li class="mypage__item item-card">
+                @if($item->is_sold)
+                <span class="item-card__sold">Sold</span>
+            @endif
                 @if (filled($item->image_path))
                     <img class="item-card__image" src="{{ $item->image_path }}" alt="{{ $item->name }}">
                 @else

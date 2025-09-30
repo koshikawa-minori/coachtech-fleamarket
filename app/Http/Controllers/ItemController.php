@@ -10,11 +10,12 @@ class ItemController extends Controller
 {
     public function index(Request $request)
     {
-        $keyword = (string)$request->query('keyword', '');
-        $tab = $request->query('tab', 'recommend');
 
         $isAuthenticated = Auth::check();
         $authenticatedUserId = $isAuthenticated ? Auth::id() : null;
+
+        $keyword = (string)$request->query('keyword', '');
+        $tab = $request->query('tab', $isAuthenticated ? 'mylist' : 'recommend');
 
         //タブ切り替え
         if ($tab === 'mylist') {

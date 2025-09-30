@@ -6,7 +6,6 @@
 }
 
 .mypage__header,
-.mypage__tabs,
 .mypage__items {
     width: 100%;
     margin: 0 auto;
@@ -67,38 +66,6 @@
     text-decoration: none;
     color: #ff5555;
     cursor: pointer;
-}
-
-.mypage__tabs {
-    position: relative;
-    display: flex;
-    gap: 40px;
-    padding-bottom: 6px;
-}
-
-.mypage__tabs::after {
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 100vw;
-    height: 1px;
-    background-color: #ccc;
-    content: "";
-    transform: translateX(-50%);
-    pointer-events: none;
-}
-
-.mypage__tab {
-    padding: 4px 8px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #818181;
-    text-decoration: none;
-}
-
-.mypage__tab--active {
-    font-weight: bold;
-    color: #ff5555;
 }
 
 .mypage__empty {
