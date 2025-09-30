@@ -30,18 +30,18 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    object-fit: cover;
     background-color: #ddd;
+    object-fit: cover;
 }
 
 .profile__upload {
     display: inline-flex;
     align-items: center;
     padding: 4px 8px;
-    font-size: 14px;
     border-radius: 6px;
     border: 2px solid #ff5555;
     background-color: #fff;
+    font-size: 14px;
     color: #ff5555;
     font-weight: bold;
     cursor: pointer;
@@ -80,10 +80,10 @@
     width: 450px;
     margin-top: 30px;
     padding: 10px;
-    font-size: large;
-    font-weight: bold;
-    color: #fff;
     border: none;
     border-radius: 6px;
     background-color: #ff5555;
+    font-size: large;
+    font-weight: bold;
+    color: #fff;
 }

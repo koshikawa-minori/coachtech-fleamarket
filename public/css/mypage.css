@@ -9,17 +9,20 @@
 .mypage__tabs,
 .mypage__items {
     width: 100%;
-    max-width: 1200px;
     margin: 0 auto;
     padding: 0 40px;
+}
+
+.mypage__items {
+    padding: 0 20px;
 }
 
 .mypage__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-left: 200px;
     gap: 16px;
+    padding-left: 200px;
 }
 
 .mypage__profile {
@@ -40,14 +43,14 @@
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    object-fit: cover;
     background-color: #ddd;
+    object-fit: cover;
 }
 
 .mypage__username {
     margin: 0;
-    font-weight: bold;
     font-size: 25px;
+    font-weight: bold;
 }
 
 .mypage__edit-button {
@@ -56,12 +59,13 @@
     justify-content: center;
     margin-left:auto;
     padding: 6px 30px;
-    font-size: 15px;
-    font-weight: bold;
-    color: #ff5555;
     background-color: #fff;
     border: 1px solid #ff5555;
     border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #ff5555;
     cursor: pointer;
 }
 
@@ -73,69 +77,28 @@
 }
 
 .mypage__tabs::after {
-    content: "";
     position: absolute;
     left: 50%;
     bottom: 0;
-    transform: translateX(-50%);
     width: 100vw;
     height: 1px;
     background-color: #ccc;
+    content: "";
+    transform: translateX(-50%);
     pointer-events: none;
 }
 
 .mypage__tab {
+    padding: 4px 8px;
     font-size: 16px;
     font-weight: bold;
     color: #818181;
     text-decoration: none;
-    padding: 4px 8px;
 }
 
 .mypage__tab--active {
     font-weight: bold;
     color: #ff5555;
-}
-
-.mypage__items {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 50px;
-    margin-top: 20px;
-}
-
-.mypage__item {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.mypage__item-image {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    height: auto;
-    object-fit: cover;
-    background-color: #ddd;
-    border-radius: 8px;
-}
-
-.mypage__item-image--placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    height: auto;
-    border-radius: 8px;
-    background-color: #ddd;
-    color: #000;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.mypage__item-name {
-    font-size: 15px;
-    font-weight: bold;
 }
 
 .mypage__empty {

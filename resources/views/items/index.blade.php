@@ -3,25 +3,26 @@
 @section('title', '商品一覧')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/items.css')}}">
+<link rel="stylesheet" href="{{ asset('css/layouts/item-list.css') }}">
+<link rel="stylesheet" href="{{ asset('css/items/index.css') }}">
 @endpush
 
 @section('content')
-<main>
-    <nav class="items__tabs">
-        <a href="{{ request()->fullUrlWithQuery(['tab' => 'recommend'])}}" class="items-tabs__link {{ $currentTab === 'recommend' ? 'items__tabs--active' : ''}}">おすすめ
+<main class="items">
+    <div class="items__tabs">
+        <a href="{{ request()->fullUrlWithQuery(['tab' => 'recommend'])}}" class="items__tab {{ $currentTab === 'recommend' ? 'items__tab--active' : ''}}">おすすめ
         </a>
-        <a href="{{ request()->fullUrlWithQuery(['tab' => 'mylist'])}}" class="items-tabs__link {{ $currentTab === 'mylist' ? 'items__tabs--active' : ''}}">マイリスト</a>
-    </nav>
+        <a href="{{ request()->fullUrlWithQuery(['tab' => 'mylist'])}}" class="items__tab {{ $currentTab === 'mylist' ? 'items__tab--active' : ''}}">マイリスト</a>
+    </div>
 
-    <ul class="item-list">
+    <ul class="items__list">
         @foreach ($items as $item)
         <li class="item-card">
-            @if(!empty($item->is_sold) && $item->is_sold)
-                <span class="item-card__badge">Sold</span>
+            @if($item->is_sold)
+                <span class="item-card__sold">Sold</span>
             @endif
             <!-- あとで詳細へリンク-->
-            <a class="item-card__thumb">
+            <a class="item-card__link" href="#">
                 @if (filled($item->image_path))
                     <img class="item-card__image" src="{{ $item->image_path }}" alt="{{ $item->name }}">
                 @else

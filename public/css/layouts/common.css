@@ -10,10 +10,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;
-    gap: 16px;
 }
 
 .header__left{
@@ -46,8 +46,13 @@
     padding: 8px 10px;
     border: 1px solid #444;
     border-radius: 4px;
-    color: #333;
     background-color: #fff;
+    color: #333;
+}
+
+.header__search-input::placeholder {
+    color: #333;
+    opacity: 1;    /* Safari対策（薄すぎ防止） */
 }
 
 .header__search-button,
@@ -56,17 +61,12 @@
     background: none;
 }
 
-.header__search-input::placeholder {
-    color: #333;
-    opacity: 1;    /* Safari対策（薄すぎ防止） */
-}
-
 .header__right {
     display: flex;
-    flex: 0 0 auto;
     align-items: center;
-    margin: 0 20px 0 0;
+    flex: 0 0 auto;
     gap: 12px;
+    margin: 0 20px 0 0;
 }
 
 .header__button {

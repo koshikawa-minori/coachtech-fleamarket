@@ -3,7 +3,8 @@
 @section('title', 'マイページ')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/mypage.css')}}">
+<link rel="stylesheet" href="{{ asset('css/layouts/item-list.css') }}">
+<link rel="stylesheet" href="{{ asset('css/mypage.css') }}">
 @endpush
 
 @section('content')
@@ -27,20 +28,20 @@
         <a href="{{ route('mypage', ['page' => 'buy']) }}" class="mypage__tab {{ request('page') === 'buy' ? 'mypage__tab--active' : '' }}">購入した商品</a>
     </div>
 
-    <div class="mypage__items">
+    <ul class="mypage__items items__list">
         @foreach ($items as $item)
-            <div class="mypage__item">
+            <li class="mypage__item item-card">
                 @if (filled($item->image_path))
-                    <img class="mypage__item-image" src="{{ $item->image_path }}" alt="商品画像">
+                    <img class="item-card__image" src="{{ $item->image_path }}" alt="{{ $item->name }}">
                 @else
-                    <div class="mypage__item-image mypage__item-image--placeholder">
+                    <div class="item-card__image item-card__image--placeholder">
                         商品画像
                     </div>
                 @endif
-                <p class="mypage__item-name">{{ $item->name }}</p>
-            </div>
+                <p class="item-card__name">{{ $item->name }}</p>
+            </li>
         @endforeach
-    </div>
+    </ul>
 </main>
 @endsection
 
