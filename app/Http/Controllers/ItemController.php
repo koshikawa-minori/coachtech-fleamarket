@@ -51,28 +51,15 @@ class ItemController extends Controller
             'currentTab' => $tab,
             'keyword' => $keyword
         ]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
+
+    public function show(string $itemId)
+    {
+        $item = Item::findOrFail($itemId);
+        return view('items.item', ['item' => $item]);
+    }
+
+
+
 
 }

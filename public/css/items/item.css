@@ -1,0 +1,40 @@
+.item-card__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    background: #ddd;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.item-card__image--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    background: #ddd;
+    border-radius: 8px;
+    color: #000;
+    font-size: 30px;
+}
+
+.item-card__name {
+    margin-top: 8px;
+    font-size: 20px;
+}
+
+.item-card__sold {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 1;
+    padding: 4px 8px;
+    background: #ff5555;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+}
