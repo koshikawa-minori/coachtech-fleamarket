@@ -20,12 +20,12 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             //商品情報
-            $table->string('name');
-            $table->string('brand_name')->nullable();
+            $table->string('name', 255);
+            $table->string('brand_name', 255)->nullable();
             $table->unsignedInteger('price');
-            $table->string('description');
+            $table->string('description', 255);
             $table->unsignedTinyInteger('condition');
-            $table->string('image_path');
+            $table->string('image_path', 255);
 
             //商品の販売状態
             $table->boolean('is_sold')->default(false);

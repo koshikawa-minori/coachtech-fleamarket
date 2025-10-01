@@ -21,28 +21,31 @@
         <div class="item-detail">
             <h1 class="item-show__title">{{ $item->name }}</h1>
             <h3>ブランド名</h3>
-            <!-- 金額 -->
+            <!-- 金額 表示-->
 
             <!-- いいね -->
             <!-- コメント -->
             <button>購入手続きへ</button>
 
             <h2>商品説明</h2>
-            <!-- カラー  状態  コメント -->
+            <!-- カラー  状態  コメント 表示-->
 
             <h2>商品の情報</h2>
             <!-- カテゴリ -->
             <!-- 商品の状態 -->
 
             <h2>コメント</h2>
-            <!-- 画像　＋ ユーザー名　-->
+            <!-- 画像 ＋ ユーザー名  -->
             <!-- コメント -->
 
             <h2>商品へのコメント</h2>
             <!-- 入力欄 -->
+            <form action="">
+                @csrf
+                <textarea class="textarea" name="comment" readonly></textarea>
 
-            <button>コメントを送信する</button>
-
+                <button>コメントを送信する</button>
+            </form>
         </div>
     </div>
 </main>
