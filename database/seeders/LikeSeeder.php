@@ -20,7 +20,7 @@ class LikeSeeder extends Seeder
             $numberOfLikes = rand(0,5);
 
             //自分以外の出品から候補を作る
-            $candidateItems = $items->where('user_id', '!=', $user->id);
+            $candidateItems = $items->where('seller_user_id', '!=', $user->id);
 
             if($numberOfLikes === 0 || $candidateItems->isEmpty()){
                 continue;
@@ -33,7 +33,7 @@ class LikeSeeder extends Seeder
 
             $likedItemIds = $likedItems->pluck('id');
 
-            // 既存のいいねを壊さずに追加
+            // 既存のいいねをそのままに追加
             $user->likes()->syncWithoutDetaching($likedItemIds);
         }
     }

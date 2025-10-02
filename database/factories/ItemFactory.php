@@ -23,13 +23,13 @@ class ItemFactory extends Factory
     {
         return [
         //
-            'user_id' => User::factory(),
+            'seller_user_id' => User::factory(),
             'name' => $this->faker->words(3, true),
             'brand_name' => $this->faker->optional()->company(),
             'price' => $this->faker->numberBetween(300, 50000),
             'description' => $this->faker->text(120),
             'condition' => $this->faker->randomElement([1,2,3,4]),
-            'image_path' => null,
+            'image_path' => 'https://via.placeholder.com/300x300.png?text=DemoImage',
             'is_sold' => false,
         ];
     }

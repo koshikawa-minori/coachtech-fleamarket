@@ -3,8 +3,7 @@
 @section('title', '商品詳細')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/layouts/item-list.css') }}">
-<link rel="stylesheet" href="{{ asset('css/layouts/items/item.css') }}">
+<link rel="stylesheet" href="{{ asset('css/items/item.css') }}">
 @endpush
 
 @section('content')
@@ -24,7 +23,9 @@
             <!-- 金額 表示-->
 
             <!-- いいね -->
+            <p>☆</p>
             <!-- コメント -->
+            <p>💬</p>
             <button>購入手続きへ</button>
 
             <h2>商品説明</h2>

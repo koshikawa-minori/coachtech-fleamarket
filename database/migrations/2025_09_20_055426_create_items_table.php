@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             //出品者
-            $table->foreignId('user_id')
+            $table->foreignId('seller_user_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
 

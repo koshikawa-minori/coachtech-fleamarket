@@ -13,9 +13,9 @@ class ItemDemoSeeder extends Seeder
      */
     public function run(): void
     {
-        $user_id = User::query()->value('id');
-        if (!$user_id) {
-            $user_id = User::factory()->create([
+        $seller_user_id = User::query()->value('id');
+        if (!$seller_user_id) {
+            $seller_user_id = User::factory()->create([
                 'name' => 'デモユーザー',
                 'email' => 'demo@example.com',
                 'password' => bcrypt('password'),
@@ -107,7 +107,7 @@ class ItemDemoSeeder extends Seeder
 
         foreach ($rows as $row) {
             Item::create([
-                'user_id' => $user_id,
+                'seller_user_id' => $seller_user_id,
                 'name' => $row['name'],
                 'brand_name' => $row['brand_name'],
                 'price' => $row['price'],

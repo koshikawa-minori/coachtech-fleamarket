@@ -13,7 +13,7 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'seller_user_id',
         'name',
         'brand_name',
         'price',
@@ -40,14 +40,20 @@ class Item extends Model
         };
     }
 
-
-    public function likedBy()
+    //出品者
+    public function seller()
     {
-        return $this->belongsToMany(User::class, 'likes')
-        ->withTimestamps();
+        return $this->belongsTo(User::class, 'seller_user_id');
     }
 
-    //1つの商品は複数のコメントを持つ
+    //いいね機能
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
+    }
+
+
+    //コメント
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);

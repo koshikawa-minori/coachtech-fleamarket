@@ -29,14 +29,14 @@ class ItemController extends Controller
                 ->when($keyword !== '', function ($query) use ($keyword) {
                     $query->where('items.name', 'like', "%{$keyword}%");
                 })
-                ->where('items.user_id', '!=', $authenticatedUserId)
+                ->where('items.seller_user_id', '!=', $authenticatedUserId)
                 ->latest('items.id')
                 ->get();
             }
         }else{
             $items = Item::query()
             ->when($isAuthenticated, function ($query) use ($authenticatedUserId) {
-                $query->where('user_id', '!=', $authenticatedUserId);
+                $query->where('seller_user_id', '!=', $authenticatedUserId);
             })
             ->when($keyword !== '', function ($query) use ($keyword) {
                 $query->where('name', 'like', "%{$keyword}%");
@@ -55,8 +55,17 @@ class ItemController extends Controller
 
     public function show(string $itemId)
     {
-        $item = Item::findOrFail($itemId);
-        return view('items.item', ['item' => $item]);
+        $item = Item::with(['seller:id,name'])
+            ->withCount(['likes','comments'])
+            ->findOrFail($itemId);
+
+        $comments = $item->comments()->with('user:id,name')->latest('id')->get();
+
+        return view('items.item', [
+            'item' => $item,
+            'comments' => $comments,
+        ]);
+
     }
 
 
