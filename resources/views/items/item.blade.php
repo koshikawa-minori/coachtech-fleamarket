@@ -20,33 +20,62 @@
         <div class="item-detail">
             <h1 class="item-show__title">{{ $item->name }}</h1>
             <h3>ブランド名</h3>
-            <!-- 金額 表示-->
+            <p>￥</p>
+            <p>{{ number_format($item->price) }}(税込)</p>
 
-            <!-- いいね -->
-            <p>☆</p>
-            <!-- コメント -->
-            <p>💬</p>
+            <p>☆:{{ $item->likes_count }}  💬:{{ $item->comments_count }}</p>
             <button>購入手続きへ</button>
 
             <h2>商品説明</h2>
             <!-- カラー  状態  コメント 表示-->
 
             <h2>商品の情報</h2>
-            <!-- カテゴリ -->
-            <!-- 商品の状態 -->
+            @if ($item->categories->isNotEmpty())
+                <p>カテゴリ:
+                    @foreach ($item->categories as $category)
+                        <span>{{ $category->name }}</span>
+                    @endforeach
+                </p>
+            @endif
+            <p>商品の状態:{{ $item->condition_label }}</p>
 
-            <h2>コメント</h2>
-            <!-- 画像 ＋ ユーザー名  -->
-            <!-- コメント -->
 
-            <h2>商品へのコメント</h2>
-            <!-- 入力欄 -->
-            <form action="">
+            <h2 class="comment-title">コメント:{{ $item->comments_count }}</h2>
+            <section class="comments">
+                @foreach ($comments as $comment)
+                    <div class="comment">
+                        <div class="comment__profile">
+                            <div class="comment__image-wrapper">
+                                @if ($comment->user->profile && filled($comment->user->profile->image_path))
+                                    <img class="comment__image"
+                                    src="{{ asset('storage/'.$comment->user->profile->image_path) }}"
+                                    alt="プロフィール画像">
+                                @else
+                                <div class="comment__image--default"></div>
+                                @endif
+                            </div>
+                            <p class="comment__username">{{ $comment->user->name }}</p>
+                        </div>
+                        <!-- コーチに確認中-->
+                        <p class="comment__body">{{ $comment->comment }}</p>
+                    </div>
+                @endforeach
+            </section>
+
+            <h2 class="item-detail__title">商品へのコメント</h2>
+            <!-- コーチに確認中
+                                    入力欄 -->
+            @auth
+            <form class="comment-form" method="post" action="{{ route('comments.store', ['item_id' => $item->id]) }}">
                 @csrf
-                <textarea class="textarea" name="comment" readonly></textarea>
+                <textarea class="comment-form__textarea" name="comment">{{ old('comment') }}</textarea>
+                @error('comment')
+                <p class="comment--error">{{ $message }}</p>
+                @enderror
 
                 <button>コメントを送信する</button>
             </form>
+            @endauth
         </div>
     </div>
 </main>

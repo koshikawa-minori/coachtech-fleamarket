@@ -20,16 +20,14 @@
             @if($item->is_sold)
                 <span class="item-card__sold">Sold</span>
             @endif
-            <!-- あとで詳細へリンク-->
-            <a class="item-card__link" href="#">
+            <a class="item-card__link" href="{{ route('items.show', ['item_id' => $item->id]) }}">
                 @if (filled($item->image_path))
                     <img class="item-card__image" src="{{ $item->image_path }}" alt="{{ $item->name }}">
                 @else
                     <div class="item-card__image item-card__image--placeholder">商品画像</div>
                 @endif
+                <p class="item-card__name">{{ $item->name }}</p>
             </a>
-
-            <p class="item-card__name">{{ $item->name }}</p>
         </li>
         @endforeach
     </ul>

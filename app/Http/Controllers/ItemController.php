@@ -55,7 +55,7 @@ class ItemController extends Controller
 
     public function show(string $itemId)
     {
-        $item = Item::with(['seller:id,name'])
+        $item = Item::with(['seller:id,name', 'categories:id,name'])
             ->withCount(['likes','comments'])
             ->findOrFail($itemId);
 

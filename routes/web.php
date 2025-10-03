@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 
 
 // 商品一覧画面(トップページ)
@@ -25,6 +26,10 @@ Route::middleware('auth')->group(function () {
 
     //コメント投稿
     Route::post('/item/{item_id}/comments', [CommentController::class, 'store'])->name('comments.store');
+
+    //いいね機能
+    Route::post('/item/{item_id}/like', [LikeController::class, 'store'])->name('likes.store');
+    Route::delete('/item/{item_id}/like', [LikeController::class, 'destroy'])->name('likes.destroy');
 
     // 出品画面(sell.blade.php)
     Route::view('/sell', 'sell')->name('sell');

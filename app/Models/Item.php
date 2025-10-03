@@ -52,12 +52,16 @@ class Item extends Model
         return $this->belongsToMany(User::class, 'likes')->withTimestamps();
     }
 
-
     //コメント
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
+    //カテゴリ
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_items');
+    }
 
 }
