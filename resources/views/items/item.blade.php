@@ -30,7 +30,21 @@
             <span class="item-show__currency">￥</span> {{ number_format($item->price) }} <span class="item-show__tax">(税込)</span>
             </p>
 
-            <p>☆:{{ $item->likes_count }}  💬:{{ $item->comments_count }}</p>
+            <div class="item-show__meta">
+                <span class="item-show__likes">
+                    <svg class="icon icon--star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="none" stroke="#333" stroke-width="2"/>
+                    </svg>
+                    {{ $item->likes_count }}
+                </span>
+                <span class="item-show__comments">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12c0 5-4 9-9 9a9 9 0 0 1-3-.5L5 21l1-3a9 9 0 1 1 15-6z"/>
+                    </svg>
+                    {{ $item->comments_count }}
+                </span>
+            </div>
+
             @auth
                 <form class="purchase-form" method="post" action="{{ route('purchase.store', $item) }}">
                     @csrf
