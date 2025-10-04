@@ -1,5 +1,6 @@
 
 .item-show .item-card {
+    position: relative;
     display: block;
     max-width: 300px;
     margin: 0 auto;
@@ -28,11 +29,6 @@
     font-size: 30px;
 }
 
-.item-show .item-card__name {
-    margin-top: 8px;
-    font-size: 20px;
-}
-
 .item-show .item-card__sold {
     position: absolute;
     top: 8px;
@@ -44,4 +40,36 @@
     font-weight: 700;
     font-size: 12px;
     color: #fff;
+}
+
+.item-show__price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+}
+
+.item-show__currency {
+    font-size: 12px;
+}
+
+.item-show__tax {
+    font-size: 14px;
+}
+
+.item-show__categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.item-show__category-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    background:  #f2f2f2;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
 }

@@ -59,7 +59,7 @@ class ItemController extends Controller
             ->withCount(['likes','comments'])
             ->findOrFail($itemId);
 
-        $comments = $item->comments()->with('user:id,name')->latest('id')->get();
+        $comments = $item->comments()->with('user.profile')->latest('id')->get();
 
         return view('items.item', [
             'item' => $item,
