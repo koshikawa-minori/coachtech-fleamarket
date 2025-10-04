@@ -47,13 +47,13 @@
 
             <h2>商品の情報</h2>
             @if ($item->categories->isNotEmpty())
-                <p>カテゴリ:
+                <p>カテゴリー
                     @foreach ($item->categories as $category)
                         <span class="item-show__category-badge">{{ $category->name }}</span>
                     @endforeach
                 </p>
             @endif
-            <p>商品の状態:{{ $item->condition_label }}</p>
+            <p>商品の状態 {{ $item->condition_label }}</p>
 
             <h2 class="comment-title">コメント ({{ $item->comments_count }})</h2>
             @if($comments->isNotEmpty())
