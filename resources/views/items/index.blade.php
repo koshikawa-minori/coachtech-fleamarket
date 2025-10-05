@@ -17,15 +17,18 @@
     <ul class="items__list">
         @foreach ($items as $item)
         <li class="item-card">
-            @if($item->is_sold)
-                <span class="item-card__sold">Sold</span>
-            @endif
             <a class="item-card__link" href="{{ route('items.show', ['item_id' => $item->id]) }}">
-                @if (filled($item->image_path))
-                    <img class="item-card__image" src="{{ $item->image_path }}" alt="{{ $item->name }}">
-                @else
-                    <div class="item-card__image item-card__image--placeholder">商品画像</div>
-                @endif
+                <div class="item-card__thumb">
+                    @if (filled($item->image_path))
+                        <img class="item-card__image" src="{{ $item->image_path }}" alt="{{ $item->name }}">
+                    @else
+                        <div class="item-card__image item-card__image--placeholder">商品画像</div>
+                    @endif
+
+                    @if($item->is_sold)
+                        <span class="item-card__sold">Sold</span>
+                    @endif
+                </div>
                 <p class="item-card__name">{{ $item->name }}</p>
             </a>
         </li>

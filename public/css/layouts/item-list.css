@@ -1,24 +1,13 @@
 .tabs {
-    position: relative;
     display: flex;
     justify-content: flex-start;
     gap: 10px;
     flex-wrap: wrap;
     width: 100%;
     padding: 40px 20px 6px;
+    border-bottom: 1px solid #818181;
 }
 
-.tabs::after {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 1px;
-    background-color: #ccc;
-    content: "";
-    transform: none;
-    pointer-events: none;
-}
 
 .tab {
     flex: 0 1 auto;
@@ -41,36 +30,50 @@
     gap: 40px;
     margin: 40px 0;
     padding: 0;
+    list-style: none;
     grid-template-columns: repeat(4, 1fr);
 }
 
 .item-card {
-    position: relative;
     text-align: left;
-    list-style: none;
+}
+
+@media (max-width: 850px) and (min-width: 768px) {
+    .items__list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.item-card__thumb {
+    display: grid;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.item-card__image,
+.item-card__sold{
+    grid-area: 1 / 1;
 }
 
 .item-card__image {
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 1 / 1;
-    background: #ddd;
-    border-radius: 8px;
     object-fit: cover;
 }
 
 .item-card__image--placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     background: #ddd;
     border-radius: 8px;
     color: #000;
     font-size: 30px;
+    text-align: center;
 }
 
 .item-card__name {
@@ -79,14 +82,15 @@
 }
 
 .item-card__sold {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    z-index: 1;
-    padding: 4px 8px;
-    background: #ff5555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    height: 20%;
+    padding: 8px 16px;
     border-radius: 4px;
-    font-weight: 700;
-    font-size: 12px;
+    background: #ff5555;
+    font-weight: bolder;
+    font-size: 30px;
     color: #fff;
 }

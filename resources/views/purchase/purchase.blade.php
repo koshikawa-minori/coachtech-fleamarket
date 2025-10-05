@@ -19,11 +19,18 @@
 
   <section class="purchase__item">
     <div class="purchase__thumb">
-      @if (filled($item->image_path))
-        <img src="{{ asset('storage/'.$item->image_path) }}" alt="{{ $item->name }}">
-      @else
-        <div class="purchase__thumb--placeholder">商品画像</div>
-      @endif
+      @php
+  use Illuminate\Support\Str;
+  $src = Str::startsWith($item->image_path, ['http://','https://'])
+      ? $item->image_path
+      : asset($item->image_path);
+@endphp
+
+@if (filled($item->image_path))
+  <img src="{{ $src }}" alt="{{ $item->name }}">
+@else
+  <div class="purchase__thumb--placeholder">商品画像</div>
+@endif
     </div>
     <div class="purchase__summary">
       <h2 class="purchase__name">{{ $item->name }}</h2>
