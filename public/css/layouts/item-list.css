@@ -28,7 +28,7 @@
 .items__list {
     display: grid;
     gap: 40px;
-    margin: 40px 0;
+    margin: 40px 40px;
     padding: 0;
     list-style: none;
     grid-template-columns: repeat(4, 1fr);
