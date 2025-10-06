@@ -1,13 +1,16 @@
 .item {
     display: flex;
+    gap: 20px;
 
 }
 
 .item-show .item-card__thumb {
-    display: grid;
+    position: relative;
+    display: block;
     width: 60%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
+    border: 1px, solid #eee;
     border-radius: 8px;
 }
 
@@ -36,12 +39,15 @@
 }
 
 .item-show .item-card__sold {
-    display: flex;
+    position: absolute;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    top: 0;
+    left: 0;
     width: 60%;
     height: 20%;
-    padding: 8px 16px;
+    padding: 16px;
     border-radius: 4px;
     background: #ff5555;
     font-weight: bolder;
@@ -64,7 +70,7 @@
     font-size: 14px;
 }
 
-.item-show__categories {
+.item-show__category {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;

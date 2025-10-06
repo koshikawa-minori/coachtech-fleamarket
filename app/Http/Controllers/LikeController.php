@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 
@@ -15,7 +14,7 @@ class LikeController extends Controller
 
         $user->likes()->syncWithoutDetaching([$item->id]);
 
-        return back()->route('items.show');
+        return back();
 
     }
 
@@ -26,7 +25,7 @@ class LikeController extends Controller
 
         $user->likes()->detach($item->id);
 
-        return back()->route('items.show');
+        return back();
 
     }
 
