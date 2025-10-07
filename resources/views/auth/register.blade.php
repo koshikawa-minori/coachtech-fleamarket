@@ -6,11 +6,11 @@
     <link rel="stylesheet" href="{{ asset('css/auth/register.css')}}">
 @endpush
 
-@section ('content')
+@section('content')
 <main class="register">
     <h1 class="register__title">会員登録</h1>
 
-    <form method="POST" action="{{ route('register') }}" novalidate>
+    <form  class="register__form" method="POST" action="{{ route('register') }}" novalidate>
         @csrf
         <div class="register__group">
             <label class="register__label" for="name">ユーザー名</label>

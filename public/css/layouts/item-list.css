@@ -1,20 +1,19 @@
 .tabs {
     display: flex;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 5px;
     flex-wrap: wrap;
     width: 100%;
-    padding: 40px 20px 6px;
+    padding: 20px 0 6px;
     border-bottom: 1px solid #818181;
 }
-
 
 .tab {
     flex: 0 1 auto;
     min-width: 0;
     padding: 4px 8px;
-    margin: 0 0 0 80px;
-    font-size: 20px;
+    margin-left: 40px;
+    font-size: 18px;
     font-weight: bold;
     color: #818181;
     text-decoration: none;
@@ -27,21 +26,15 @@
 
 .items__list {
     display: grid;
-    gap: 40px;
-    margin: 40px 40px;
+    gap: 16px;
+    margin: 20px 10px;
     padding: 0;
     list-style: none;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(160px, 1fr));
 }
 
 .item-card {
     text-align: left;
-}
-
-@media (max-width: 850px) and (min-width: 768px) {
-    .items__list {
-        grid-template-columns: repeat(3, 1fr);
-    }
 }
 
 .item-card__thumb {
@@ -59,10 +52,15 @@
     grid-area: 1 / 1;
 }
 
-.item-card__image {
-    display: block;
+.item-card__image,
+.item-card__image--placeholder {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+}
+
+.item-card__image {
     object-fit: cover;
 }
 
@@ -88,6 +86,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
     top: 0;
     left: 0;
     width: 60%;
@@ -95,7 +94,22 @@
     padding: 16px;
     border-radius: 4px;
     background: #ff5555;
+    letter-spacing: 3px;
     font-weight: bolder;
     font-size: 30px;
     color: #fff;
+}
+
+
+
+@media (min-width: 1400px) {
+    .tab {
+        font-size: 20px;
+    }
+
+    .items__list {
+        gap: 40px;
+        margin: 40px 40px;
+        grid-template-columns: repeat(4, 1fr);
+    }
 }

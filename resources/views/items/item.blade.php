@@ -20,21 +20,22 @@
     </div>
 
     <div class="item-detail">
-        <!-- ブランド名ない時コーチに確認中-->
-        <h1 class="item-show__title">{{ $item->name }}</h1>
+        <div class="item-detail__header">
+            <!-- ブランド名ない時コーチに確認中-->
+            <h1 class="item-show__name">{{ $item->name }}</h1>
             @if(filled($item->brand_name))
                 <p class="item-show__brand"> {{ ($item->brand_name) }}</p>
             @endif
-            <p class="item-show__price">
-                <span class="item-show__currency">￥</span>
-                {{ number_format($item->price) }}
-                <span class="item-show__tax">(税込)</span>
-            </p>
+        </div>
+        <p class="item-show__price">
+            <span class="item-show__currency">￥</span>
+            <span class="item-show__price-value">{{ number_format($item->price) }}</span>
+            <span class="item-show__tax">(税込)</span>
+        </p>
 
-            <!-- いいねの遷移先  コーチに確認中-->
+            <!-- いいねの遷移先 現在ログイン遷移 コーチに確認中-->
         <div class="item-show__meta">
-            <span class="item-show__likes">
-                {{ $item->likes_count }}
+            <div class="item-show__likes">
                 @auth
                     @if(!$item->likes->contains(auth()->user()))
                         <form method="POST" action="{{ route('likes.store', $item->id) }}">
@@ -57,36 +58,41 @@
                         </form>
                     @endif
                 @else
-                    <a class="like-note" href="{{ route('login') }}"></a>
+                    <a class="like-note" href="{{ route('login') }}">
+                        <svg class="icon icon--star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"fill="none" stroke="#333" stroke-width="2"/>
+                        </svg>
+                    </a>
                 @endauth
-            </span>
+                <span class="item-show__count">{{ $item->likes_count }}</span>
+            </div>
 
-            <span class="item-show__comments">
+            <div class="item-show__comments">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 12c0 5-4 9-9 9a9 9 0 0 1-3-.5L5 21l1-3a9 9 0 1 1 15-6z"/>
                 </svg>
-                {{ $item->comments_count }}
-            </span>
+                <span class="item-show__count">{{ $item->comments_count }}</span>
+            </div>
         </div>
 
         @auth
             <form class="purchase-form" method="post" action="{{ route('purchase.store', $item) }}">
                 @csrf
-                <button {{ $item->is_sold ? 'disabled' : '' }}>購入手続きへ</button>
+                <button class="button" {{ $item->is_sold ? 'disabled' : '' }}>購入手続きへ</button>
             </form>
         @else
-            <a class="button button--purchase" href="{{ route('login') }}">購入手続きへ</a>
+            <a class="button" href="{{ route('login') }}">購入手続きへ</a>
         @endauth
 
-        <h2>商品説明</h2>
+        <h2 class="item-show__title">商品説明</h2>
         <div class="item-show__description">
             {!! nl2br(e($item->description)) !!}
         </div>
 
-        <h2>商品の情報</h2>
+        <h2 class="item-show__title">商品の情報</h2>
         @if ($item->categories->isNotEmpty())
             <div class="item-show__category">
-                <span class="item-show__category-label">カテゴリー</span>
+                <span class="item-show__label">カテゴリー</span>
                 <div class="item-show__category-list">
                     @foreach ($item->categories as $category)
                         <span class="item-show__category-badge">{{ $category->name }}</span>
@@ -96,7 +102,7 @@
         @endif
 
         <p class="item-show__condition">
-            <span class="item-show__condition-label">商品の状態：</span>
+            <span class="item-show__label">商品の状態</span>
             {{ $item->condition_label }}
         </p>
 
@@ -135,12 +141,12 @@
                 <p class="comment--error">{{ $message }}</p>
                 @enderror
 
-                <button>コメントを送信する</button>
+                <button class="button">コメントを送信する</button>
             </form>
         @else
             <form class="comment-form">
                 <textarea class="comment-form__textarea" rows="5" disabled></textarea>
-                <a class="button button--primary" href="{{ route('login') }}">コメントを送信する</a>
+                <a class="button" href="{{ route('login') }}">コメントを送信する</a>
             </form>
         @endauth
     </div>
