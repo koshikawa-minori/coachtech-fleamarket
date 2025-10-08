@@ -32,7 +32,6 @@
             <span class="item-show__tax">(税込)</span>
         </p>
 
-            <!-- いいねの遷移先 現在ログイン遷移 コーチに確認中-->
         <div class="item-show__meta">
             <div class="item-show__likes">
                 @auth
