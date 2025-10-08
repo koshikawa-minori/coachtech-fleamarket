@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProfileRequest extends FormRequest
+class PurchaseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,22 +22,22 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:20'],
-            'image_path' => ['nullable', 'image', 'mimes:jpeg,png'],
-            'postal_code' => ['nullable', 'regex:/^\d{3}-\d{4}$/'],
-            'address' => ['nullable', 'string', 'max:255'],
+            'payment_method' => ['required', 'integer', 'in:1,2'],
+            'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
+            'address' => ['required', 'string', 'max:255'],
             'building' => ['nullable', 'string', 'max:255'],
         ];
     }
 
-    //いるかいらないかコーチに確認中
+        //いるかいらないかコーチに確認中
     public function messages(): array
     {
         return [
-            'name.required' => 'お名前を入力してください',
-            'name.max' => 'お名前は20文字以内で入力してください',
-            'image_path.mimes' => 'プロフィール画像はjpegまたはpng形式でアップロードしてください',
+            'payment_method.required' => '支払い方法を選択してください',
+            'payment_method.in' => '支払い方法の選択が不正です',
+            'postal_code.required' => '郵便番号を入力してください',
             'postal_code.regex' => '郵便番号は「123-4567」の形式で入力してください',
+            'address.required' => '住所を入力してください',
             'address.max' => '住所は255文字以内で入力してください',
             'building.max' => '建物名は255文字以内で入力してください',
         ];
