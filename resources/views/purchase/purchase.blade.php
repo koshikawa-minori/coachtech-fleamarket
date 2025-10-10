@@ -3,13 +3,11 @@
 @section('title', '購入確認')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/orders/create.css') }}">
+<link rel="stylesheet" href="{{ asset('css/purchase/purchase.css') }}">
 @endpush
 
 @section('content')
 <main class="purchase">
-  <h1 class="purchase__title">購入確認</h1>
-
   @if(session('error'))
     <p class="alert alert--error">{{ session('error') }}</p>
   @endif
@@ -20,25 +18,27 @@
   <section class="purchase__item">
     <div class="purchase__thumb">
       @php
-  use Illuminate\Support\Str;
-  $src = Str::startsWith($item->image_path, ['http://','https://'])
-      ? $item->image_path
-      : asset($item->image_path);
-@endphp
+        use Illuminate\Support\Str;
+        $src = Str::startsWith($item->image_path, ['http://','https://'])
+            ? $item->image_path
+            : asset($item->image_path);
+      @endphp
 
-@if (filled($item->image_path))
-  <img src="{{ $src }}" alt="{{ $item->name }}">
-@else
-  <div class="purchase__thumb--placeholder">商品画像</div>
-@endif
+      @if (filled($item->image_path))
+        <img src="{{ $src }}" alt="{{ $item->name }}">
+      @else
+        <div class="purchase__thumb--placeholder">商品画像</div>
+      @endif
     </div>
+
     <div class="purchase__summary">
       <h2 class="purchase__name">{{ $item->name }}</h2>
       @if(filled($item->brand_name))
         <p class="purchase__brand">{{ $item->brand_name }}</p>
       @endif
       <p class="purchase__price">
-        <span class="purchase__currency">¥</span>{{ number_format($item->price) }} <span class="purchase__tax">（税込）</span>
+        <span class="purchase__currency">¥</span>{{ number_format($item->price) }}
+        <span class="purchase__tax">（税込）</span>
       </p>
       <p class="purchase__seller">出品者：{{ $item->seller?->name ?? '―' }}</p>
     </div>
@@ -50,20 +50,38 @@
       <dt>氏名</dt><dd>{{ $authenticatedUser->name }}</dd>
       <dt>郵便番号</dt><dd>{{ $profile->postal_code ?? '未設定' }}</dd>
       <dt>住所</dt><dd>{{ $profile->address ?? '未設定' }}</dd>
-      <dt>建物名</dt><dd>{{ $profile->building_name ?? '―' }}</dd>
+      <dt>建物名</dt><dd>{{ $profile->building ?? '―' }}</dd>
     </dl>
-    {{-- 後で「住所変更画面」へのリンクをここに追加予定 --}}
+
+    {{-- いつでも住所変更できる導線（要件①の遷移を保証） --}}
+    <div class="purchase__address-actions">
+      <a class="button button--secondary" href="{{ route('purchase.edit', $item->id) }}">配送先を変更する</a>
+    </div>
   </section>
 
-  <section class="purchase__actions">
-    <a class="button button--secondary" href="{{ url()->previous() }}">戻る</a>
+  @php
+    $isAddressReady = filled($profile->postal_code) && filled($profile->address);
+  @endphp
 
-    @if($item->is_sold)
+  <section class="purchase__actions">
+    <a class="button button--ghost" href="{{ url()->previous() }}">戻る</a>
+
+    @if(!$isAddressReady)
+      {{-- 未設定時は住所変更画面へ誘導 --}}
+      <a class="button button--primary" href="{{ route('purchase.edit', $item->id) }}">住所を設定してから購入へ</a>
+    @elseif($item->is_sold)
       <button class="button button--disabled" disabled>購入できません（Sold）</button>
     @else
-      <form class="purchase-form" method="post" action="{{ route('purchase.store', ['item_id' => $item->id]) }}">
+      <form class="purchase-form" method="post" action="{{ route('purchase.store', $item->id) }}">
         @csrf
-        <button class="button button--primary" type="submit">購入を確定する（※処理は後で実装）</button>
+        {{-- PurchaseRequest 通過用（プロフィールの値をそのまま送る） --}}
+        <input type="hidden" name="postal_code" value="{{ $profile->postal_code }}">
+        <input type="hidden" name="address" value="{{ $profile->address }}">
+        <input type="hidden" name="building" value="{{ $profile->building ?? '' }}">
+        {{-- ★ 重複を解消：どちらか一方に。今は数値 1 を採用 --}}
+        <input type="hidden" name="payment_method" value="1">
+
+        <button class="button button--primary" type="submit">購入を確定する</button>
       </form>
     @endif
   </section>

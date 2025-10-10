@@ -5,8 +5,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
-use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\PurchaseController;
 
 // 商品一覧画面(トップページ)
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
@@ -33,8 +32,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/item/{item_id}/like', [LikeController::class, 'destroy'])->name('likes.destroy');
 
     //購入画面
-    Route::get('/purchase/{item_id}', [OrderController::class, ('create')])->name('purchase.create');
-    Route::post('/purchase/{item_id}',  [OrderController::class, ('store')])->name('purchase.store');
+    Route::get('/purchase/{item_id}', [PurchaseController::class, 'create'])->name('purchase.create');
+    Route::post('/purchase/{item_id}',  [PurchaseController::class, 'store'])->name('purchase.store');
+
+    //住所変更
+    Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
+    Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'update'])->name('purchase.update');
 
     // 出品画面(sell.blade.php)
     Route::view('/sell', 'sell')->name('sell');

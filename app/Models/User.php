@@ -57,11 +57,13 @@ class User extends Authenticatable
         return $this->hasMany(Item::class, 'seller_user_id');
     }
 
-    public function purchasedItems()
+    public function orders()
     {
-        // orders テーブルを使って購入履歴を管理する想定
-        // 中間テーブル名・カラム名に合わせて調整
-        return $this->belongsToMany(Item::class, 'orders');
+        return $this->hasMany(Order::class, 'buyer_user_id');
+    }
+
+    public function purchasedItems(){
+        return $this->belongsToMany(Item::class, 'orders', 'buyer_user_id', 'item_id')->withTimestamps();
     }
 
     public function likes()

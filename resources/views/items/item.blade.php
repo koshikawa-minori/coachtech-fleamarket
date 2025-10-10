@@ -74,13 +74,15 @@
         </div>
 
         @auth
-            <form class="purchase-form" method="post" action="{{ route('purchase.store', $item) }}">
-                @csrf
-                <button class="button" {{ $item->is_sold ? 'disabled' : '' }}>購入手続きへ</button>
-            </form>
+            @if($item->is_sold)
+                <button class="button" disabled>購入手続きへ</button>
+            @else
+                <a class="button" href="{{ route('purchase.create', $item->id) }}">購入手続きへ</a>
+            @endif
         @else
             <a class="button" href="{{ route('login') }}">購入手続きへ</a>
         @endauth
+
 
         <h2 class="item-show__title">商品説明</h2>
         <div class="item-show__description">

@@ -19,11 +19,11 @@ class ProfileController extends Controller
 
         $page = request('page', 'sell');
 
-        $items = $page === 'buy'
-        ? $user->purchasedItems //購入一覧
-        : $user->items; //出品一覧
-
-        $items = collect($items ?? [])->values();
+        if ($page === 'buy') {
+            $items = $user->purchasedItems()->get();
+        } else {
+            $items = $user->items()->get();
+        }
 
         return view('mypage', compact('user', 'profile', 'items', 'hasImage'));
     }
