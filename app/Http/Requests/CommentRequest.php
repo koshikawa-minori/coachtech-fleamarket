@@ -25,7 +25,7 @@ class CommentRequest extends FormRequest
             'comment' => ['required', 'string', 'max:255'],
         ];
     }
-    //いるかいらないかコーチに確認中
+
     public function messages(): array
     {
         return[

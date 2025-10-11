@@ -15,8 +15,6 @@ class ProfileController extends Controller
         $user = Auth::user();
         $profile = $user->profile;
 
-        $hasImage = filled($profile?->image_path) && Storage::disk('public')->exists($profile->image_path);
-
         $page = request('page', 'sell');
 
         if ($page === 'buy') {
@@ -25,7 +23,8 @@ class ProfileController extends Controller
             $items = $user->items()->get();
         }
 
-        return view('mypage', compact('user', 'profile', 'items', 'hasImage'));
+        return view('mypage', compact('user', 'profile', 'items'));
+
     }
 
     //プロフィール編集画面表示
@@ -34,9 +33,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $profile = $user->profile;
 
-        $hasImage = $profile?->image_path && Storage::disk('public')->exists($profile->image_path);
-
-        return view('profile', compact('user', 'profile', 'hasImage'));
+        return view('profile', compact('user', 'profile'));
 
     }
 
@@ -54,26 +51,47 @@ class ProfileController extends Controller
             'name' => $request->input('name'),
         ]);
 
-        //画像
+
+        //画像アップロード
         $newImagePath = null;
         if ($request->hasFile('image_path')) {
-            $newImagePath = $request->file('image_path')->store('profiles', 'public');
+            $oldPath = optional($authenticatedUser->profile)->image_path;
+            if (filled($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+
+            $newImagePath = $request->file('image_path')->store('profile_images', 'public');
         }
 
         //プロフィール更新と作成
+        $currentProfile = $authenticatedUser->profile;
+        $imagePathToSave = null;
+
+        if (!empty($newImagePath)) {
+            $imagePathToSave = $newImagePath;
+        } elseif (!empty($currentProfile) && !empty($currentProfile->image_path)) {
+            $imagePathToSave = $currentProfile->image_path;
+        } else {
+            $imagePathToSave = null;
+        }
+
+        $profileData = [
+            'image_path'  => $imagePathToSave,
+            'postal_code' => $request->input('postal_code'),
+            'address' => $request->input('address'),
+            'building' => $request->input('building'),
+        ];
+
         $authenticatedUser->profile()->updateOrCreate(
             ['user_id' => $authenticatedUser->id],
-            [
-                'image_path' => $newImagePath ?? optional($authenticatedUser->profile)->image_path,
-                'postal_code' => $request->input('postal_code'),
-                'address' => $request->input('address'),
-                'building' => $request->input('building'),
-            ]
+            $profileData
         );
 
-        return $isFirst
-        ? redirect()->route('items.index')
-        : redirect()->route('mypage');
+        if ($isFirst) {
+            return redirect()->route('items.index');
+        } else {
+            return redirect()->route('mypage');
+        }
     }
 }
 

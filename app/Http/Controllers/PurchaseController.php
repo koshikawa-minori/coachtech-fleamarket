@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
 {
-    public function create(int $item)
+    public function create(int $itemId)
     {
 
-        $item = Item::with('seller:id,name')->findOrFail($item);
+        $item = Item::with('seller:id,name')->findOrFail($itemId);
 
         //購入済なら戻す
         if ($item->is_sold) {
@@ -29,37 +29,44 @@ class PurchaseController extends Controller
         return view('purchase.purchase', compact('item', 'authenticatedUser', 'profile'));
     }
 
-    public function store(PurchaseRequest $request, int $item)
+    public function store(PurchaseRequest $request, int $itemId)
     {
 
         $validated = $request->validated();
-
-        $item = Item::with('seller:id,name')->findOrFail($item);
+        $item = Item::with('seller:id,name')->findOrFail($itemId);
 
         if ($item->is_sold) {
             return back();
         }
 
         try {
-            DB::transaction(function () use ($validated, $item) {
 
-            Order::create([
-                'buyer_user_id' => Auth::id(),
-                'item_id' => $item->id,
-                'shipping_postal_code' => $validated['postal_code'],
-                'shipping_address' => $validated['address'],
-                'shipping_building' => $validated['building'] ?? null,
-                'payment_method' => $validated['payment_method'],
-            ]);
+        $purchased = DB::transaction(function () use ($validated, $item) {
 
             $affectedRows = Item::where('id', $item->id)
                 ->where('is_sold', false)
                 ->update(['is_sold' => true]);
 
-                if($affectedRows === 0) {
-                    throw new \RuntimeException('Already sold');
-                }
+            if ($affectedRows === 0) {
+                return false;
+            }
+
+            Order::create([
+                'buyer_user_id' => Auth::id(),
+                'item_id' => $item->id,
+                'postal_code' => $validated['postal_code'],
+                'address' => $validated['address'],
+                'building' => $validated['building'] ?? null,
+                'payment_method' => (int)$validated['payment_method'],
+            ]);
+
+            return true;
+
             });
+
+            if ($purchased === false) {
+                return back();
+            }
 
         } catch (QueryException $exception) {
             return back();
@@ -70,16 +77,16 @@ class PurchaseController extends Controller
         return redirect()->route('items.index');
     }
 
-    public function edit(int $item_id)
+    public function edit(int $itemId)
     {
         $authenticatedUser = Auth::user();
         $profile = $authenticatedUser->profile;
-        $item = Item::findOrFail($item_id);
+        $item = Item::findOrFail($itemId);
 
         return view('purchase.address', compact('item', 'profile'));
     }
 
-    public function update(AddressRequest $request, int $item_id)
+    public function update(AddressRequest $request, int $itemId)
     {
         $authenticatedUser = Auth::user();
         $profile = $authenticatedUser->profile;
@@ -92,7 +99,7 @@ class PurchaseController extends Controller
             'building' => $validated['building'] ?? null,
         ])->save();
 
-        return redirect()->route('purchase.create', $item_id);
+        return redirect()->route('purchase.create', $itemId);
     }
 
 }

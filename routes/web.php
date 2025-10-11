@@ -11,7 +11,7 @@ use App\Http\Controllers\PurchaseController;
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
 //商品詳細画面
-Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show');
+Route::get('/item/{itemId}', [ItemController::class, 'show'])->name('items.show');
 
 // 認証必須ページ
 Route::middleware('auth')->group(function () {
@@ -25,19 +25,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     //コメント投稿
-    Route::post('/item/{item_id}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/item/{itemId}/comments', [CommentController::class, 'store'])->name('comments.store');
 
     //いいね機能
-    Route::post('/item/{item_id}/like', [LikeController::class, 'store'])->name('likes.store');
-    Route::delete('/item/{item_id}/like', [LikeController::class, 'destroy'])->name('likes.destroy');
+    Route::post('/item/{itemId}/like', [LikeController::class, 'store'])->name('likes.store');
+    Route::delete('/item/{itemId}/like', [LikeController::class, 'destroy'])->name('likes.destroy');
 
     //購入画面
-    Route::get('/purchase/{item_id}', [PurchaseController::class, 'create'])->name('purchase.create');
-    Route::post('/purchase/{item_id}',  [PurchaseController::class, 'store'])->name('purchase.store');
+    Route::get('/purchase/{itemId}', [PurchaseController::class, 'create'])->name('purchase.create');
+    Route::post('/purchase/{itemId}',  [PurchaseController::class, 'store'])->name('purchase.store');
 
     //住所変更
-    Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
-    Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'update'])->name('purchase.update');
+    Route::get('/purchase/address/{itemId}', [PurchaseController::class, 'edit'])->name('purchase.edit');
+    Route::post('/purchase/address/{itemId}', [PurchaseController::class, 'update'])->name('purchase.update');
 
     // 出品画面(sell.blade.php)
     Route::view('/sell', 'sell')->name('sell');

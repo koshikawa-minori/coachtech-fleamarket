@@ -12,8 +12,8 @@
     <div class="mypage__header">
         <div class="mypage__profile">
             <div class="mypage__image-wrapper">
-                @if($hasImage)
-                    <img class="mypage__image" src="{{ asset('storage/'.$profile->image_path) }}" alt="プロフィール画像">
+                @if($profile?->image_url)
+                    <img class="mypage__image" src="{{ $profile->image_url }}" alt="プロフィール画像">
                 @else
                     <div class="mypage__image--default"></div>
                 @endif
@@ -35,8 +35,8 @@
                     @if($item->is_sold)
                         <span class="item-card__sold">Sold</span>
                     @endif
-                    @if (filled($item->image_path))
-                        <img class="item-card__image" src="{{ $item->image_path }}" alt="{{ $item->name }}">
+                    @if ($item->image_url)
+                        <img class="item-card__image" src="{{ $item->image_url }}" alt="{{ $item->name }}">
                     @else
                         <div class="item-card__image--placeholder">
                             商品画像

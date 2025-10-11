@@ -9,8 +9,8 @@
 @section('content')
 <main class="item-show">
     <div class="item-card__thumb">
-        @if (filled($item->image_path))
-            <img class="item-card__image" src="{{ $item->image_path }}" alt="{{ $item->name }}">
+        @if ($item->image_url)
+            <img class="item-card__image" src="{{ $item->image_url}}" alt="{{ $item->name }}">
         @else
             <div class="item-card__image item-card__image--placeholder">商品画像</div>
         @endif
@@ -114,9 +114,9 @@
                         <div class="comment">
                             <div class="comment__profile">
                                 <div class="comment__image-wrapper">
-                                    @if ($comment->user->profile && filled($comment->user->profile->image_path))
+                                    @if ($comment->user->profile?->image_url)
                                         <img class="comment__image"
-                                        src="{{ asset('storage/'.$comment->user->profile->image_path) }}"
+                                        src="{{ $comment->user->profile->image_url }}"
                                         alt="プロフィール画像">
                                     @else
                                     <div class="comment__image--default"></div>

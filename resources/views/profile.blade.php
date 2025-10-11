@@ -15,8 +15,8 @@
 
         <div class="profile__image-group">
             <div class="profile__image-wrapper">
-                @if($hasImage)
-                    <img class="profile__image" src="{{ asset('storage/'.$profile->image_path) }}" alt="プロフィール画像">
+                @if($profile?->image_url)
+                    <img class="profile__image" src="{{ $profile->image_url }}" alt="プロフィール画像">
                 @else
                     <div class="profile__image--default"></div>
                 @endif

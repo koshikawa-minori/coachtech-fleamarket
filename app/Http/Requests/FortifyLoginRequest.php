@@ -9,7 +9,7 @@ class FortifyLoginRequest extends Base
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email'],
+            'email' => ['required'],
             'password' => ['required'],
         ];
     }
@@ -18,7 +18,6 @@ class FortifyLoginRequest extends Base
     {
         return [
             'email.required' => 'メールアドレスを入力してください',
-            'email.email' => 'メールアドレスはメール形式で入力してください',
             'password.required' => 'パスワードを入力してください',
         ];
     }

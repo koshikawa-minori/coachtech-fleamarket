@@ -17,10 +17,10 @@
     <ul class="items__list">
         @foreach ($items as $item)
         <li class="item-card">
-            <a class="item-card__link" href="{{ route('items.show', ['item_id' => $item->id]) }}">
+            <a class="item-card__link" href="{{ route('items.show', ['itemId' => $item->id]) }}">
                 <div class="item-card__thumb">
-                    @if (filled($item->image_path))
-                        <img class="item-card__image" src="{{ $item->image_path }}" alt="{{ $item->name }}">
+                    @if ($item->image_url)
+                        <img class="item-card__image" src="{{ $item->image_url }}" alt="{{ $item->name }}">
                     @else
                         <div class="item-card__image item-card__image--placeholder">商品画像</div>
                     @endif

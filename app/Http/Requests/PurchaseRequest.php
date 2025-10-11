@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PurchaseRequest extends FormRequest
@@ -21,19 +22,25 @@ class PurchaseRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        $validValues = implode(',', [
+            Order::PAYMENT_CONVENIENCE_STORE_PAYMENT,
+            Order::PAYMENT_CREDIT_CARD,
+        ]);
+
         return [
-            'payment_method' => ['required', 'integer', 'in:1'],
+            'payment_method' => ['required', 'integer', 'in:'. $validValues],
             'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
             'address' => ['required', 'string', 'max:255'],
             'building' => ['nullable', 'string', 'max:255'],
         ];
     }
 
-        //いるかいらないかコーチに確認中
     public function messages(): array
     {
         return [
             'payment_method.required' => '支払い方法を選択してください',
+            'payment_method.integer' => '支払い方法の形式が不正です',
             'payment_method.in' => '支払い方法の選択が不正です',
             'postal_code.required' => '郵便番号を入力してください',
             'postal_code.regex' => '郵便番号は「123-4567」の形式で入力してください',
