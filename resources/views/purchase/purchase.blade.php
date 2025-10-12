@@ -76,7 +76,6 @@
     <select
     id="payment_method"
     name="payment_method"
-    required
     class="form-select">
     {{-- 選べない先頭ダミー --}}
     <option value="" disabled {{ old('payment_method') ? '' : 'selected' }}>選択してください</option>
