@@ -35,6 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/purchase/{itemId}', [PurchaseController::class, 'create'])->name('purchase.create');
     Route::post('/purchase/{itemId}',  [PurchaseController::class, 'store'])->name('purchase.store');
 
+    //Stripe決済処理
+    Route::post('/purchase/{itemId}/pay', [PurchaseController::class, 'pay'])->name('purchase.pay');
+    Route::get('/purchase/{itemId}/paid', [PurchaseController::class, 'paid'])->name('purchase.paid');
+
     //住所変更
     Route::get('/purchase/address/{itemId}', [PurchaseController::class, 'edit'])->name('purchase.edit');
     Route::post('/purchase/address/{itemId}', [PurchaseController::class, 'update'])->name('purchase.update');

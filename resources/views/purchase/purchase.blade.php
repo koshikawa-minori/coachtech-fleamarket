@@ -70,11 +70,6 @@
         <input type="hidden" name="postal_code" value="{{ $profile->postal_code }}">
         <input type="hidden" name="address" value="{{ $profile->address }}">
         <input type="hidden" name="building" value="{{ $profile->building ?? '' }}">
-@php
-    use App\Models\Order;
-    // バリデーションで戻ったときの保持用
-    $selectedPayment = old('payment_method');
-@endphp
 
 <div class="form-row">
     <label for="payment_method" class="form-label">支払い方法</label>
@@ -84,17 +79,19 @@
     required
     class="form-select">
     {{-- 選べない先頭ダミー --}}
-    <option value="" disabled {{ $selectedPayment ? '' : 'selected' }}>選択してください</option>
+    <option value="" disabled {{ old('payment_method') ? '' : 'selected' }}>選択してください</option>
 
-    <option value="{{ Order::PAYMENT_CONVENIENCE_STORE_PAYMENT }}"
-        {{ (string)$selectedPayment === (string)Order::PAYMENT_CONVENIENCE_STORE_PAYMENT ? 'selected' : '' }}>
+
+    <option value="{{ \App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT }}"
+        {{ (string)old('payment_method') === (string)\App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT ? 'selected' : '' }}>
         コンビニ支払い
     </option>
 
-    <option value="{{ Order::PAYMENT_CREDIT_CARD }}"
-        {{ (string)$selectedPayment === (string)Order::PAYMENT_CREDIT_CARD ? 'selected' : '' }}>
+    <option value="{{ \App\Models\Order::PAYMENT_CREDIT_CARD }}"
+        {{ (string)old('payment_method') === (string)\App\Models\Order::PAYMENT_CREDIT_CARD ? 'selected' : '' }}>
         カード支払い
     </option>
+
     </select>
 
     @error('payment_method')
