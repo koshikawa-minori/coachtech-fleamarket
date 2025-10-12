@@ -56,51 +56,64 @@
     @endphp
 
     <section class="purchase__actions">
-    <a class="button button--ghost" href="{{ url()->previous() }}">戻る</a>
+  <a class="button button--ghost" href="{{ url()->previous() }}">戻る</a>
 
-    @if(!$isAddressReady)
-        {{-- 未設定時は住所変更画面へ誘導 --}}
-        <a class="button button--primary" href="{{ route('purchase.edit', $item->id) }}">住所を設定してから購入へ</a>
-    @elseif($item->is_sold)
-        <button class="button button--disabled" disabled>購入できません（Sold）</button>
-    @else
-        <form class="purchase-form" method="post" action="{{ route('purchase.store', $item->id) }}">
+  @if(!$isAddressReady)
+      {{-- 未設定時は住所変更画面へ誘導 --}}
+      <a class="button button--primary" href="{{ route('purchase.edit', $item->id) }}">住所を設定してから購入へ</a>
+  @elseif($item->is_sold)
+      <button class="button button--disabled" disabled>購入できません（Sold）</button>
+  @else
+      <form class="purchase-form" method="post" action="{{ route('purchase.store', $item->id) }}">
         @csrf
         {{-- PurchaseRequest 通過用（プロフィールの値をそのまま送る） --}}
         <input type="hidden" name="postal_code" value="{{ $profile->postal_code }}">
         <input type="hidden" name="address" value="{{ $profile->address }}">
         <input type="hidden" name="building" value="{{ $profile->building ?? '' }}">
 
-<div class="form-row">
-    <label for="payment_method" class="form-label">支払い方法</label>
-    <select
-    id="payment_method"
-    name="payment_method"
-    class="form-select">
-    {{-- 選べない先頭ダミー --}}
-    <option value="" disabled {{ old('payment_method') ? '' : 'selected' }}>選択してください</option>
+        <div class="form-row">
+          <label for="payment_method" class="form-label">支払い方法</label>
+          <select id="payment_method" name="payment_method" class="form-select">
+            <option value="" disabled {{ old('payment_method') ? '' : 'selected' }}>選択してください</option>
+            <option value="{{ \App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT }}"
+              {{ (string)old('payment_method') === (string)\App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT ? 'selected' : '' }}>
+              コンビニ支払い
+            </option>
+            <option value="{{ \App\Models\Order::PAYMENT_CREDIT_CARD }}"
+              {{ (string)old('payment_method') === (string)\App\Models\Order::PAYMENT_CREDIT_CARD ? 'selected' : '' }}>
+              カード支払い
+            </option>
+          </select>
 
+          {{-- 即時反映用の表示 --}}
+          <p id="payment_method_preview" class="purchase__note" aria-live="polite">選択中：未選択</p>
 
-    <option value="{{ \App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT }}"
-        {{ (string)old('payment_method') === (string)\App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT ? 'selected' : '' }}>
-        コンビニ支払い
-    </option>
-
-    <option value="{{ \App\Models\Order::PAYMENT_CREDIT_CARD }}"
-        {{ (string)old('payment_method') === (string)\App\Models\Order::PAYMENT_CREDIT_CARD ? 'selected' : '' }}>
-        カード支払い
-    </option>
-
-    </select>
-
-    @error('payment_method')
-    <p class="alert alert--error">{{ $message }}</p>
-    @enderror
-</div>
+          @error('payment_method')
+            <p class="alert alert--error">{{ $message }}</p>
+          @enderror
+        </div>
 
         <button class="button button--primary" type="submit">購入する</button>
-        </form>
-    @endif
-    </section>
+      </form>
+  @endif
+</section>
+
+{{-- 末尾あたりにJS（バンドル不要の素のJS） --}}
+<script>
+  (function () {
+    const select = document.getElementById('payment_method');
+    const preview = document.getElementById('payment_method_preview');
+    function update() {
+      const opt = select.options[select.selectedIndex];
+      preview.textContent = (opt && opt.value)
+        ? '選択中：' + opt.text.trim()
+        : '選択中：未選択';
+    }
+    select.addEventListener('change', update);
+    update(); // 初期表示（old() の選択反映）
+  })();
+</script>
+
+
 </main>
 @endsection
