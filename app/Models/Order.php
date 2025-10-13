@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Order extends Model
 {
     use HasFactory;
@@ -25,12 +26,16 @@ class Order extends Model
         'payment_method' => 'integer',
     ];
 
-    public static function paymentMethodLabel(int $paymentMethod): string
+    public const PAYMENT_LABELS = [
+        self::PAYMENT_CONVENIENCE_STORE_PAYMENT => 'コンビニ支払い',
+        self::PAYMENT_CREDIT_CARD => 'カード支払い',
+    ];
+
+    public static function paymentLabel(?string $value, string $default = '選択してください'): string
     {
-        return match ($paymentMethod) {
-            self::PAYMENT_CONVENIENCE_STORE_PAYMENT => 'コンビニ支払い',
-            self::PAYMENT_CREDIT_CARD => 'カード支払い',
-        };
+        if ($value === null || $value === '') return $default;
+
+        return self::PAYMENT_LABELS[(int)$value] ?? $default;
     }
 
     public function buyer()

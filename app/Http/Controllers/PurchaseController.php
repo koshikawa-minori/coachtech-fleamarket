@@ -24,11 +24,17 @@ class PurchaseController extends Controller
             return back();
         }
 
-        //購入者
-        $authenticatedUser = Auth::user();
-        $profile = $authenticatedUser->profile;
+        // プロフィール
+        $profile = Auth::user()->profile;
 
-        return view('purchase.purchase', compact('item', 'authenticatedUser', 'profile'));
+        //住所
+        $isAddressReady = filled($profile?->postal_code) && filled($profile?->address);
+
+        //支払い
+        $selectedPayment = request()->old('payment_method');
+        $paymentLabel = Order::paymentLabel($selectedPayment, '選択してください');
+
+        return view('purchase.purchase', compact('item', 'profile', 'isAddressReady', 'selectedPayment','paymentLabel'));
     }
 
     public function store(PurchaseRequest $request, int $itemId)
@@ -40,46 +46,83 @@ class PurchaseController extends Controller
     {
         $validated = $request->validated();
         $item = Item::with('seller:id,name')->findOrFail($itemId);
+        $user = Auth::user();
+        $profile = $user->profile;
+
+        if (blank($profile?->postal_code) || blank($profile?->address)) {
+            return redirect()->route('purchase.edit', $itemId);
+        }
 
         if ($item->is_sold) {
             return back();
         }
 
-    Stripe::setApiKey(config('services.stripe.secret'));
+        $isCard = ((int)$validated['payment_method'] === Order::PAYMENT_CREDIT_CARD);
+        //コンビニ支払い
+        if (!$isCard) {
+            try {
+                DB::transaction(function () use ($item, $validated) {
+                    $affectedRows = Item::where('id', $item->id)
+                        ->where('is_sold', false)
+                        ->update(['is_sold' => true]);
 
-    $paymentMethodTypes = ((int)$validated['payment_method'] === Order::PAYMENT_CREDIT_CARD)
-    ? ['card']
-    : ['konbini'];
+                    if ($affectedRows === 0) {
+                        throw new \RuntimeException();
+                    }
 
-    $successUrl = route('purchase.paid', ['itemId' => $item->id]) . '?session_id={CHECKOUT_SESSION_ID}';
-    $cancelUrl  = route('purchase.create', ['itemId' => $item->id]);
+                    Order::firstOrCreate(
+                        [
+                            'buyer_user_id' => Auth::id(),
+                            'item_id' => $item->id,
+                        ],
+                        [
+                            'postal_code' => $validated['postal_code'],
+                            'address' => $validated['address'],
+                            'building' => $validated['building'] ?? null,
+                            'payment_method' => (int)$validated['payment_method'],
+                        ]
+                    );
+                });
+            } catch (\Throwable) {
+                return back();
+            }
 
-    $session = StripeCheckout::create([
-        'mode' => 'payment',
-        'payment_method_types' => $paymentMethodTypes,
-        'line_items' => [[
-            'price_data' => [
-                'currency' => env('STRIPE_CURRENCY', 'jpy'),
-                'unit_amount' => (int)$item->price,
-                'product_data' => ['name' => $item->name],
+            return redirect()->route('items.index');
+        }
+        //カード支払い
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $successUrl = route('purchase.paid', ['itemId' => $item->id]) . '?session_id={CHECKOUT_SESSION_ID}';
+        $cancelUrl  = route('purchase.create', ['itemId' => $item->id]);
+
+        $session = StripeCheckout::create([
+            'mode' => 'payment',
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => env('STRIPE_CURRENCY', 'jpy'),
+                    'unit_amount' => (int)$item->price,
+                    'product_data' => ['name' => $item->name],
+                ],
+                'quantity' => 1,
+            ]],
+            'customer_email' => $user->email,
+            'metadata' => [
+                'user_id' => (string)Auth::id(),
+                'item_id' => (string)$item->id,
+                'payment_method' =>(string)$validated['payment_method'],
+                'postal_code' => (string)$validated['postal_code'],
+                'address' => (string)$validated['address'],
+                'building' => (string)($validated['building'] ?? ''),
             ],
-            'quantity' => 1,
-        ]],
-        'customer_email' => Auth::user()->email,
-        'metadata' => [
-            'user_id' => (string)Auth::id(),
-            'item_id' => (string)$item->id,
-            'payment_method' =>(string)$validated['payment_method'],
-            'postal_code' => (string)$validated['postal_code'],
-            'address' => (string)$validated['address'],
-            'building' => (string)($validated['building'] ?? ''),
-        ],
-        'success_url' => $successUrl,
-        'cancel_url' => $cancelUrl,
+            'success_url' => $successUrl,
+            'cancel_url' => $cancelUrl,
 
         ]);
-        return redirect()->away($session->url);
+
+            return redirect()->away($session->url);
     }
+
 
     public function paid(int $itemId)
     {
@@ -94,7 +137,7 @@ class PurchaseController extends Controller
         return redirect()->route('items.index');
         }
 
-        Stripe::setApiKey(config(('services.stripe.secret')));
+        Stripe::setApiKey(config('services.stripe.secret'));
         $session = \Stripe\Checkout\Session::retrieve($sessionId);
 
         $meta = $session->metadata ?? null;
@@ -111,14 +154,18 @@ class PurchaseController extends Controller
                     if ($affectedRows === 0) {
                         throw new \RuntimeException();
                     }
-                    Order::create([
-                        'buyer_user_id' => (int)$meta->user_id,
-                        'item_id' =>  (int)$meta->item_id,
-                        'payment_method' =>  (int)$meta->payment_method,
-                        'postal_code' => (string)$meta->postal_code,
-                        'address' => (string)$meta->address,
-                        'building' => (string)($meta->building ?? ''),
-                    ]);
+                    Order::firstOrCreate(
+                        [
+                            'buyer_user_id' => (int)$meta->user_id,
+                            'item_id' => (int)$meta->item_id,
+                        ],
+                        [
+                            'payment_method'=> (int)$meta->payment_method,
+                            'postal_code' => (string)$meta->postal_code,
+                            'address' => (string)$meta->address,
+                            'building' => (string)($meta->building ?? ''),
+                        ]
+                    );
                 });
             } catch (\Throwable $exception) {
                 return redirect()->route('items.index');

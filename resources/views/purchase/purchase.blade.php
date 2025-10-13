@@ -8,112 +8,107 @@
 
 @section('content')
 <main class="purchase">
-    @if(session('error'))
-    <p class="alert alert--error">{{ session('error') }}</p>
-    @endif
-    @if(session('info'))
-    <p class="alert alert--info">{{ session('info') }}</p>
-    @endif
-
     <section class="purchase__item">
-    <div class="purchase__thumb">
-        @if ($item->image_url)
-            <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
-        @else
-            <div class="purchase__thumb--placeholder">商品画像</div>
-        @endif
-    </div>
-
-    <div class="purchase__summary">
-        <h2 class="purchase__name">{{ $item->name }}</h2>
-        @if(filled($item->brand_name))
-        <p class="purchase__brand">{{ $item->brand_name }}</p>
-        @endif
-        <p class="purchase__price">
-        <span class="purchase__currency">¥</span>{{ number_format($item->price) }}
-        <span class="purchase__tax">（税込）</span>
-        </p>
-        <p class="purchase__seller">出品者：{{ $item->seller?->name ?? '―' }}</p>
-    </div>
-    </section>
-
-    <section class="purchase__address">
-    <h3>お届け先（初期値：プロフィール）</h3>
-    <dl class="purchase__address-list">
-        <dt>氏名</dt><dd>{{ $authenticatedUser->name }}</dd>
-        <dt>郵便番号</dt><dd>{{ $profile->postal_code ?? '未設定' }}</dd>
-        <dt>住所</dt><dd>{{ $profile->address ?? '未設定' }}</dd>
-        <dt>建物名</dt><dd>{{ $profile->building ?? '―' }}</dd>
-    </dl>
-
-    <div class="purchase__address-actions">
-        <a class="button button--secondary" href="{{ route('purchase.edit', $item->id) }}">配送先を変更する</a>
-    </div>
-    </section>
-
-    @php
-    $isAddressReady = filled($profile->postal_code) && filled($profile->address);
-    @endphp
-
-    <section class="purchase__actions">
-  <a class="button button--ghost" href="{{ url()->previous() }}">戻る</a>
-
-  @if(!$isAddressReady)
-      {{-- 未設定時は住所変更画面へ誘導 --}}
-      <a class="button button--primary" href="{{ route('purchase.edit', $item->id) }}">住所を設定してから購入へ</a>
-  @elseif($item->is_sold)
-      <button class="button button--disabled" disabled>購入できません（Sold）</button>
-  @else
-      <form class="purchase-form" method="post" action="{{ route('purchase.store', $item->id) }}">
-        @csrf
-        {{-- PurchaseRequest 通過用（プロフィールの値をそのまま送る） --}}
-        <input type="hidden" name="postal_code" value="{{ $profile->postal_code }}">
-        <input type="hidden" name="address" value="{{ $profile->address }}">
-        <input type="hidden" name="building" value="{{ $profile->building ?? '' }}">
-
-        <div class="form-row">
-          <label for="payment_method" class="form-label">支払い方法</label>
-          <select id="payment_method" name="payment_method" class="form-select">
-            <option value="" disabled {{ old('payment_method') ? '' : 'selected' }}>選択してください</option>
-            <option value="{{ \App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT }}"
-              {{ (string)old('payment_method') === (string)\App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT ? 'selected' : '' }}>
-              コンビニ支払い
-            </option>
-            <option value="{{ \App\Models\Order::PAYMENT_CREDIT_CARD }}"
-              {{ (string)old('payment_method') === (string)\App\Models\Order::PAYMENT_CREDIT_CARD ? 'selected' : '' }}>
-              カード支払い
-            </option>
-          </select>
-
-          {{-- 即時反映用の表示 --}}
-          <p id="payment_method_preview" class="purchase__note" aria-live="polite">選択中：未選択</p>
-
-          @error('payment_method')
-            <p class="alert alert--error">{{ $message }}</p>
-          @enderror
+        <div class="purchase__thumb">
+            @if ($item->image_url)
+                <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+            @else
+                <div class="purchase__thumb--placeholder">商品画像</div>
+            @endif
         </div>
 
-        <button class="button button--primary" type="submit">購入する</button>
-      </form>
-  @endif
-</section>
+        <div class="purchase-detail">
+            <h2 class="purchase__name">{{ $item->name }}</h2>
+            <p class="purchase__price">
+                <span class="purchase__currency">￥</span>
+                <span class="purchase__price-value">{{ number_format($item->price) }}</span>
+            </p>
+        </div>
+    </section>
 
-{{-- 末尾あたりにJS（バンドル不要の素のJS） --}}
-<script>
-  (function () {
-    const select = document.getElementById('payment_method');
-    const preview = document.getElementById('payment_method_preview');
-    function update() {
-      const opt = select.options[select.selectedIndex];
-      preview.textContent = (opt && opt.value)
-        ? '選択中：' + opt.text.trim()
-        : '選択中：未選択';
-    }
-    select.addEventListener('change', update);
-    update(); // 初期表示（old() の選択反映）
-  })();
-</script>
+    <h2 class="purchase-title">支払い方法</h2>
 
+    @if ($item->is_sold)
+        <button class="button button--disabled" disabled>売り切れ</button>
 
+    @elseif (!$isAddressReady)
+    <a class="button button--primary" href="{{ route('purchase.edit', $item->id) }}">住所を設定してから購入へ</a>
+
+    @else
+        <form class="purchase-form" method="post" action="{{ route('purchase.store', $item->id) }}">
+            @csrf
+            {{-- 支払い方法（プルダウン） --}}
+            <label for="payment_method" class="form-label">支払い方法</label>
+            <select id="payment_method" name="payment_method" class="form-select">
+                <option value="" disabled {{ $selectedPayment ? '' : 'selected' }}>選択してください</option>
+                <option value="{{ \App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT }}"
+                    {{ (string)$selectedPayment === (string)\App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT ? 'selected' : '' }}>
+                    コンビニ支払い
+                </option>
+                <option value="{{ \App\Models\Order::PAYMENT_CREDIT_CARD }}"
+                    {{ (string)$selectedPayment === (string)\App\Models\Order::PAYMENT_CREDIT_CARD ? 'selected' : '' }}>
+                    カード支払い
+                </option>
+            </select>
+            @error('payment_method')
+                <p class="alert alert--error">{{ $message }}</p>
+            @enderror
+
+            {{-- PurchaseRequest 通過用（プロフィール値を送る） --}}
+            <input type="hidden" name="postal_code" value="{{ $profile->postal_code }}">
+            <input type="hidden" name="address" value="{{ $profile->address }}">
+            <input type="hidden" name="building" value="{{ $profile->building ?? '' }}">
+
+            <section class="purchase__address">
+                <h2 class="purchase-title">配送先</h2>
+                <div class="purchase__address-list">
+                    <p>〒{{ $profile->postal_code ?? '' }}</p>
+                    <p>{{ $profile->address ?? '' }}</p>
+                    <p>{{ $profile->building ?? '' }}</p>
+                </div>
+                <div class="purchase__address-actions">
+                    <a class="button button--secondary" href="{{ route('purchase.edit', $item->id) }}">変更する</a>
+                </div>
+            </section>
+
+            {{-- 右カラムのサマリー --}}
+            <table class="purchase__summary-table">
+                <tr>
+                    <th>商品代金</th>
+                    <td class="purchase__price">
+                        <span class="purchase__currency">￥</span>{{ number_format($item->price) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>支払い方法</th>
+                    {{-- JSが無効でもサーバ側の$paymentLabelが表示されるフォールバック --}}
+                    <td id="payment_method_preview" class="purchase__note">{{ $paymentLabel }}</td>
+                </tr>
+            </table>
+
+            <button class="button button--primary" type="submit">購入する</button>
+        </form>
+    @endif
 </main>
+
+{{-- JS：選択変更で右サマリー即時更新（表示のみ変更） --}}
+<script>
+(function () {
+    var select = document.getElementById('payment_method');
+    if (!select) return;
+    var preview = document.getElementById('payment_method_preview');
+    var LABELS = {
+    '{{ \App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT }}': 'コンビニ支払い',
+    '{{ \App\Models\Order::PAYMENT_CREDIT_CARD }}': 'カード支払い'
+    };
+
+    function update() {
+    var v = select.value;
+    preview.textContent = v ? (LABELS[v] || '選択してください') : '選択してください';
+    }
+
+    select.addEventListener('change', update);
+  update(); // 初期表示（old()の反映 or プレースホルダ）
+})();
+</script>
 @endsection
