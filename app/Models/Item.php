@@ -75,7 +75,7 @@ class Item extends Model
     //カテゴリ
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'category_items');
+        return $this->belongsToMany(Category::class, 'category_items')->withTimestamps();
     }
 
 }

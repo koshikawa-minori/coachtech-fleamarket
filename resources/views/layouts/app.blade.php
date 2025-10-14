@@ -32,11 +32,11 @@
                         <button type="submit" class="header__button">ログアウト</button>
                     </form>
                     <a class="header__button" href="{{ route('mypage', [], false) }}">マイページ</a>
-                    <a class="header__button header__button--primary" href="{{ route('sell', [], false) }}">出品</a>
+                    <a class="header__button header__button--primary" href="{{ route('sell.create') }}">出品</a>
                         @else
                     <a class="header__button" href="{{ route('login') }}">ログイン</a>
                     <a class="header__button" href="{{ route('mypage', [], false) }}">マイページ</a>
-                    <a class="header__button header__button--primary" href="{{ route('sell', [], false) }}">出品</a>
+                    <a class="header__button header__button--primary" href="{{ route('sell.create') }}">出品</a>
                     @endauth
                 </div>
             @endunless

@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SellController;
 
 // 商品一覧画面(トップページ)
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
@@ -43,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/purchase/address/{itemId}', [PurchaseController::class, 'edit'])->name('purchase.edit');
     Route::post('/purchase/address/{itemId}', [PurchaseController::class, 'update'])->name('purchase.update');
 
-    // 出品画面(sell.blade.php)
-    Route::view('/sell', 'sell')->name('sell');
+    // 出品画面
+    Route::get('/sell', [SellController::class,'create'])->name('sell.create');
+    Route::post('/sell', [SellController::class, 'store'])->name('sell.store');
 });

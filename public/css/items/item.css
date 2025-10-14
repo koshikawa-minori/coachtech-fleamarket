@@ -40,7 +40,7 @@
 .item-show .item-card__image--placeholder {
     display: grid;
     place-items: center;
-    background: #ddd;
+    background-color: #ddd;
     color: #000;
     font-size: 30px;
     text-align: center;
@@ -58,7 +58,7 @@
     height: 20%;
     padding: 16px;
     border-radius: 4px;
-    background: #ff5555;
+    background-color: #ff5555;
     letter-spacing: 3px;
     font-weight: bolder;
     font-size: 40px;
@@ -132,7 +132,7 @@
     height: 44px;
     padding: 0 16px;
     text-align: center;
-    background: #ff5555;
+    background-color: #ff5555;
     border: 1px solid #ff5555;
     border-radius: 6px;
     font-weight: bold;
@@ -166,7 +166,7 @@
 .item-show__category-badge {
     display: inline-block;
     padding: 4px 20px;
-    background:  #ddd;
+    background-color:  #ddd;
     border-radius: 20px;
     font-size: 14px;
     font-weight: bolder;
