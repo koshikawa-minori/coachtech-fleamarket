@@ -60,7 +60,7 @@
     border-radius: 4px;
     background-color: #ff5555;
     letter-spacing: 3px;
-    font-weight: bolder;
+    font-weight: 900;
     font-size: 40px;
     color: #fff;
 }
@@ -73,7 +73,7 @@
 
 .item-show__price {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 700;
     color: #333;
 }
 
@@ -135,7 +135,7 @@
     background-color: #ff5555;
     border: 1px solid #ff5555;
     border-radius: 6px;
-    font-weight: bold;
+    font-weight: 700;
     color: #fff;
     text-decoration: none;
     cursor: pointer;
@@ -146,7 +146,7 @@
 }
 
 .item-show__label {
-    font-weight: bold;
+    font-weight: 700;
     white-space: nowrap;
 }
 
@@ -169,7 +169,7 @@
     background-color:  #ddd;
     border-radius: 20px;
     font-size: 14px;
-    font-weight: bolder;
+    font-weight: 900;
     color: #333;
     text-align: center;
     white-space: nowrap;
@@ -203,7 +203,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: bold;
+    font-weight: 700;
     font-size: 20px;
 }
 
@@ -218,7 +218,7 @@
 
 .item-detail__title {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .comment-form {

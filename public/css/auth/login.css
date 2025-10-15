@@ -8,7 +8,7 @@
 
 .login__title {
     font-size: 22px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .login__form {
@@ -28,7 +28,7 @@
 
 .login__label {
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .login__error {
@@ -57,7 +57,7 @@
     height: 44px;
     padding: 10px;
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 700;
     color: #fff;
     border: none;
     border-radius: 6px;

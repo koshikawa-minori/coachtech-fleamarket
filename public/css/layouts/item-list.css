@@ -14,13 +14,13 @@
     padding: 4px 8px;
     margin-left: 40px;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 700;
     color: #818181;
     text-decoration: none;
 }
 
 .tab--active {
-    font-weight: bold;
+    font-weight: 700;
     color: #ff5555;
 }
 
@@ -95,7 +95,7 @@
     border-radius: 4px;
     background-color: #ff5555;
     letter-spacing: 3px;
-    font-weight: bolder;
+    font-weight: 900;
     font-size: 30px;
     color: #fff;
 }

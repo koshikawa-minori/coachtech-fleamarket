@@ -8,7 +8,7 @@
 
 .profile__title {
     font-size: 22px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .profile__form {
@@ -53,7 +53,7 @@
     background-color: #fff;
     font-size: 14px;
     color: #ff5555;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
 }
 
@@ -80,7 +80,7 @@
 
 .profile__label {
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .profile__error {
@@ -112,7 +112,7 @@
     border-radius: 6px;
     background-color: #ff5555;
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 700;
     color: #fff;
     cursor: pointer;
     margin-top: 10px;
