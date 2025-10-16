@@ -31,3 +31,8 @@
 - ユーザー登録: http://localhost/register
 - ログイン: http://localhost/login
 
+## テストユーザー情報
+
+| ユーザー種別 | メールアドレス | パスワード |
+|---------------|----------------|-------------|
+| 一般ユーザー | test@example.com | password |
