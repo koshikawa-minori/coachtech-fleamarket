@@ -12,11 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // LikeSeeder: 機能確認済みだが、今回のダミーデータ作成対象外のため未呼び出し
         $this->call([
             UserSeeder::class,
-            ItemDemoSeeder::class,
-            LikeSeeder::class,
             CategorySeeder::class,
+            ItemDemoSeeder::class,
+            //LikeSeeder::class,
         ]);
     }
 }

@@ -13,6 +13,8 @@ class LikeSeeder extends Seeder
      */
     public function run(): void
     {
+        // 本Seederは「機能確認済みだが、今回のダミーデータ作成対象外」のため
+        // DatabaseSeeder では未呼び出し
         $users = User::all();
         $items = Item::all();
 
