@@ -23,7 +23,7 @@
 - nginx 1.21
 
 ## ER図
-![ER図](docs/er.png)
+![ER図](docs/coachtech-fleamarket-ER.png)
 
 ## 開発環境URL
 - 開発環境: http://localhost/
