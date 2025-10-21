@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
@@ -14,8 +16,37 @@ Route::get('/', [ItemController::class, 'index'])->name('items.index');
 //商品詳細画面
 Route::get('/item/{itemId}', [ItemController::class, 'show'])->name('items.show');
 
+//メール認証画面
+Route::get('/email/verify', function () {
+
+    return view('auth.verify');
+
+})->middleware('auth')->name('verification.notice');
+
+//メール認証画面からプロフィール編集画面へ
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+
+    $request->fulfill();
+
+    return redirect()->route('profile.edit');
+
+})->middleware(['auth', 'signed', 'throttle:3,1'])->name('verification.verify');
+
+//メール認証再送
+Route::post('/email/verification-notification', function (Request $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        return back();
+    }
+
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('status', 'verification-link-sent');
+
+})->middleware(['auth', 'throttle:3,1'])->name('verification.send');
+
+
 // 認証必須ページ
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     // プロフィール画面(mypage.blade.php)
     Route::get('/mypage', [ProfileController::class, 'show'])->name('mypage');
 
