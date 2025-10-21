@@ -15,17 +15,14 @@
             </p>
         </div>
 
-        <div class="verify-guide__actions">
-            <a class="button" href="{{ route('verification.notice') }}">認証はこちらから</a>
+        <div class="verify__fake-button">認証はこちらから</div>
 
+        <div class="verify__actions">
             <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-                <button type="submit" class="button verify--secondary">認証メールを再送する</button>
+                <button type="submit" class="button">認証メールを再送する</button>
             </form>
         </div>
-        @if (session('status') === 'verification-link-sent')
-            <p class="verify-guide__notice">認証メールを再送しました。数分お待ちください。</p>
-        @endif
     </div>
 </main>
 @endsection

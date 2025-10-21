@@ -2,3 +2,50 @@
 .header__right {
     display: none;
 }
+
+.verify {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.verify__group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.verify__title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.verify__fake-button {
+    width: 200px;
+    padding: 10px 20px;
+    text-align: center;
+    border: 1px solid #000;
+    border-radius: 6px;
+    background-color: #ddd;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.button {
+    color: #0d99ff;
+    text-align: center;
+}
+
+
+@media (min-width: 1400px) {
+    .verify__group {
+        width: 540px;
+    }
+
+    .button {
+        height: 48px;
+    }
+}
