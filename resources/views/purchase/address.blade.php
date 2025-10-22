@@ -10,7 +10,7 @@
 <main class="address">
     <h1 class="address__title">住所の変更</h1>
 
-    <form class="address__form" action="{{ route('purchase.update', $item->id) }}" method="post"  novalidate>
+    <form class="address__form" action="{{ route('purchase.update', ['itemId' => $item->id]) }}" method="POST" novalidate>
         @csrf
         <div class="address__group">
             <label class="address__label" for="postal_code">郵便番号</label>

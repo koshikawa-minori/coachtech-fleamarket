@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class Profile extends Model
 {
@@ -25,7 +26,7 @@ class Profile extends Model
             return $this->image_path;
         }
 
-        return asset('storage/'.$this->image_path);
+        return Storage::url($this->image_path);
     }
 
     public function user()

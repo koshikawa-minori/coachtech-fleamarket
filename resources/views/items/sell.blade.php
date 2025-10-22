@@ -86,7 +86,7 @@
         <section class="sell__section sell-price">
             <h2 class="sell__subheading">販売価格</h2>
             <div class="sell-price__row">
-                <input type="number" name="price" value="{{ old('price') }}" class="sell-input sell-price__input" min="0" step="1" inputmode="numeric">
+                <input type="text" name="price" value="{{ old('price') }}" class="sell-input sell-price__input" inputmode="numeric">
             </div>
             @error('price')
                 <p class="sell__error">{{ $message }}</p>

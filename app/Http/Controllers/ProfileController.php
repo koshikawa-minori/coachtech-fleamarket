@@ -76,6 +76,7 @@ class ProfileController extends Controller
         }
 
         $profileData = [
+            'user_id' => $authenticatedUser->id,
             'image_path'  => $imagePathToSave,
             'postal_code' => $request->input('postal_code'),
             'address' => $request->input('address'),

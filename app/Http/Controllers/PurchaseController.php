@@ -233,11 +233,11 @@ class PurchaseController extends Controller
 
         $validated = $request->validated();
 
-        $profile->fill([
+        $profile->update([
             'postal_code' => $validated['postal_code'] ?? null,
             'address' => $validated['address'] ?? null,
             'building' => $validated['building'] ?? null,
-        ])->save();
+        ]);
 
         return redirect()->route('purchase.create', $itemId);
     }

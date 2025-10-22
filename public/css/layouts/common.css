@@ -3,7 +3,7 @@
 }
 
 .header {
-    background-color: black;
+    background-color: #333;
 }
 
 .header__inner {
@@ -18,12 +18,18 @@
 
 .header__left{
     margin: 0;
-    padding: 10px 20px;
+    padding: 8px 12px;
 }
 
 .header__left,
 .header__right {
     flex: 0 0 auto;
+}
+
+.header__logo img {
+    display: block;
+    height: 28px;
+    width: auto;
 }
 
 .header__center {
@@ -38,8 +44,7 @@
     display: flex;
     gap: 8px;
     flex: 1 1 0;
-    max-width: 480px;
-    width: min(480px, 100%);
+    width: 100%;
 }
 
 .header__search-input {
@@ -87,9 +92,9 @@
 }
 
 .header__button--primary {
-    border-color: white;
-    background-color: white;
-    color: black;
+    border-color: #fff;
+    background-color: #fff;
+    color: #333;
 }
 
 .container {
@@ -103,9 +108,12 @@
         padding: 0 16px;
     }
 
+    .header__logo img {
+        height: 40px;
+    }
+
     .header__search {
         gap: 10px;
-        width: min(560px, 100%);
         max-width: 560px;
     }
 
@@ -115,6 +123,6 @@
 
     .header__button {
         padding: 10px 14px;
-        font-size: 15px;
+        font-size: 18px;
     }
 }

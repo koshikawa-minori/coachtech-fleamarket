@@ -25,8 +25,8 @@ class FortifyRegisterRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:20'],
             'email' => ['required', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'password_confirmation' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8'],
+            'password_confirmation' => ['required', 'string', 'same:password'],
         ];
     }
 
@@ -38,7 +38,7 @@ class FortifyRegisterRequest extends FormRequest
             'email.email' => 'メールアドレスはメール形式で入力してください',
             'password.required' => 'パスワードを入力してください',
             'password.min' => 'パスワードは8文字以上で入力してください',
-            'password.confirmed' => 'パスワードと一致しません',
+            'password_confirmation.same' => 'パスワードと一致しません',
         ];
     }
 }

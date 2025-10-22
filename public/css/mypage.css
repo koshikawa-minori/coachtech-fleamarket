@@ -29,7 +29,7 @@
 }
 
 .mypage__items {
-    padding: 0 20px;
+    padding: 20px 40px;
 }
 
 .mypage__header {
@@ -60,12 +60,16 @@
     height: 100px;
     border-radius: 50%;
     background-color: #ddd;
+}
+
+.mypage__image {
     object-fit: cover;
 }
 
 .mypage__username {
     margin: 0;
-    font-size: 20px;
+    padding-left: 5px;
+    font-size: 28px;
     font-weight: 700;
 }
 
@@ -73,12 +77,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-left:auto;
-    padding: 6px 20px;
+    margin-right: 20px;
+    width: 200px;
+    padding: 6px 10px;
     background-color: #fff;
     border: 1px solid #ff5555;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 20px;
     font-weight: 700;
     text-decoration: none;
     color: #ff5555;
@@ -102,8 +107,14 @@
         gap: 12px;
     }
 
+    .mypage__image,
+    .mypage__image--default {
+    width: 120px;
+    height: 120px;
+}
+
     .mypage__username {
-        font-size: 22px;
+        font-size: 40px;
     }
 
     .mypage__profile {

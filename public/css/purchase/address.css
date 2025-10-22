@@ -2,32 +2,32 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 28px;
+    gap: 40px;
     padding: 40px 16px;
 }
 
 .address__title {
-    font-size: 22px;
+    font-size: 30px;
     font-weight: 700;
 }
 
 .address__form {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    width: 380px;
+    gap: 50px;
+    margin-top: 20px;
+    width: 500px;
 }
 
 .address__group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
     width: 100%;
 
 }
 
 .address__label {
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 700;
 }
 
@@ -59,7 +59,7 @@
     border: none;
     border-radius: 6px;
     background-color: #ff5555;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 700;
     color: #fff;
     cursor: pointer;
@@ -68,7 +68,7 @@
 
 @media (min-width: 1400px) {
     .address__form {
-        width: 540px;
+        width: 600px;
     }
 
     .address__button {
@@ -76,6 +76,6 @@
     }
 
     .address__title {
-        font-size: 26px;
+        font-size: 35px;
     }
 }

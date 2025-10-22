@@ -50,6 +50,6 @@ class SellController extends Controller
 
         });
 
-        return redirect()->route('items.show', $createdItem->id);
+        return redirect()->route('items.index');
     }
 }

@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     gap: 28px;
-    padding: 40px 16px;
+    padding: 50px 16px;
 }
 
 .login__title {
@@ -27,7 +27,7 @@
 }
 
 .login__label {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
 }
 
@@ -56,7 +56,7 @@
     margin-top: 16px;
     height: 44px;
     padding: 10px;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 700;
     color: #fff;
     border: none;
