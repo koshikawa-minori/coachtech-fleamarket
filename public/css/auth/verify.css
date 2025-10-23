@@ -20,21 +20,17 @@
 .verify__title {
     text-align: center;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 38px;
 }
 
-.verify__fake-button {
-    width: 200px;
-    padding: 10px 20px;
+.verify__text {
     text-align: center;
-    border: 1px solid #000;
-    border-radius: 6px;
-    background-color: #ddd;
-    font-weight: 700;
-    font-size: 20px;
+    font-size: 22px;
+    line-height: 2;
 }
 
-.button {
+.verify__button {
+    font-size: 20px;
     color: #0d99ff;
     text-align: center;
 }
@@ -45,7 +41,7 @@
         width: 540px;
     }
 
-    .button {
+    .verify__button {
         height: 48px;
     }
 }

@@ -8,19 +8,16 @@
 @section('content')
 <main class="verify">
     <div class="verify__group">
-        <div class="verify__title">
-            <p class="verify__text">
-            登録していただいたメールアドレスに認証メールを送付しました。<br>
-            メール認証を完了してください。
-            </p>
-        </div>
-
-        <div class="verify__fake-button">認証はこちらから</div>
+        <h1 class="verify__title">登録していただいたメールアドレスに<br>認証メールを送付しました</h1>
+        <p class="verify__text">
+        メール内のリンクをクリックしてください<br>
+        認証が完了するとプロフィール設定画面が開きます
+        </p>
 
         <div class="verify__actions">
             <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-                <button type="submit" class="button">認証メールを再送する</button>
+                <button type="submit" class="verify__button">認証メールを再送する</button>
             </form>
         </div>
     </div>

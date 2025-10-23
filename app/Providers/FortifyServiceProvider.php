@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Events\NotificationSending;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\ServiceProvider;
@@ -12,6 +16,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Http\Requests\LoginRequest;
+use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use App\Models\User;
 use App\Actions\Fortify\CreateNewUser;
@@ -19,7 +24,6 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Http\Requests\FortifyLoginRequest;
-use Laravel\Fortify\Contracts\LoginResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -36,6 +40,17 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        //// 登録直後の自動送信ブロック
+        Event::listen(NotificationSending::class, function ($event) {
+            if ($event->notification instanceof VerifyEmail) {
+                if (! session()->pull('__allow_verify_mail_once', false)) {
+                return false;
+                }
+            }
+        });
+        //さらにLaravel標準の自動メール送信を無効化
+        Event::forget(Registered::class);
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
@@ -61,7 +76,7 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
             public function toResponse($request)
             {
-                return redirect()->route('verification.notice');
+                return redirect()->route('register.verify');
             }
         });
 
@@ -72,7 +87,7 @@ class FortifyServiceProvider extends ServiceProvider
                 $user = $request->user();
 
                 if ($user && method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
-                    return redirect()->route('verification.notice');
+                    return redirect()->route('register.verify');
                 }
 
                 return redirect()->intended(config('fortify.home'));

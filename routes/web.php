@@ -10,11 +10,23 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SellController;
 
+
 // 商品一覧画面(トップページ)
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
 //商品詳細画面
 Route::get('/item/{itemId}', [ItemController::class, 'show'])->name('items.show');
+
+//メール認証誘導画面
+Route::view('/register/verify', 'auth.register-verify')->middleware('auth')->name('register.verify');
+
+//メール認証誘導画面のボタン押下でメール送信
+Route::post('/register/verify/send', function (Request $request) {
+    session(['__allow_verify_mail_once' => true]);
+    $request->user()->sendEmailVerificationNotification();
+
+    return redirect()->route('verification.notice');
+})->middleware(['auth', 'throttle:3,1'])->name('register.verify.send');
 
 //メール認証画面
 Route::get('/email/verify', function () {
@@ -38,9 +50,10 @@ Route::post('/email/verification-notification', function (Request $request) {
         return back();
     }
 
+    session(['__allow_verify_mail_once' => true]);
     $request->user()->sendEmailVerificationNotification();
 
-    return back()->with('status', 'verification-link-sent');
+    return back();
 
 })->middleware(['auth', 'throttle:3,1'])->name('verification.send');
 
