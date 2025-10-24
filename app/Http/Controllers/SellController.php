@@ -29,7 +29,7 @@ class SellController extends Controller
 
         $storedPath = $request->file('image')->store('items', 'public');
 
-        $createdItem = DB::transaction(function () use ($validated,$storedPath) {
+        DB::transaction(function () use ($validated,$storedPath) {
             /** @var \App\Models\Item $item */
             $item = Item::create([
                 'seller_user_id' => Auth::id(),

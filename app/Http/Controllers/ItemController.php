@@ -10,7 +10,6 @@ class ItemController extends Controller
 {
     public function index(Request $request)
     {
-
         $isAuthenticated = Auth::check();
         $authenticatedUserId = $isAuthenticated ? Auth::id() : null;
 

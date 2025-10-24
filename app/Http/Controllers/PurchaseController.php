@@ -43,8 +43,7 @@ class PurchaseController extends Controller
         $isAddressReady = $profile && filled($profile->postal_code) && filled($profile->address);
 
         if (!$isAddressReady) {
-            return redirect()
-                ->route('purchase.edit', $itemId);
+            return redirect()->route('purchase.edit', $itemId);
         }
 
         return $this->pay($request, $itemId);
@@ -173,7 +172,7 @@ class PurchaseController extends Controller
         }
 
         if ($item->is_sold) {
-        return redirect()->route('items.index');
+            return redirect()->route('items.index');
         }
 
         Stripe::setApiKey(config('services.stripe.secret'));

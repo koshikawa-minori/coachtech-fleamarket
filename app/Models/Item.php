@@ -14,13 +14,13 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = [
-        'seller_user_id',
         'name',
         'brand_name',
         'price',
         'description',
         'condition',
         'image_path',
+        'seller_user_id',
         'is_sold',
     ];
 

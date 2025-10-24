@@ -8,10 +8,11 @@
 @section('content')
 <main class="register-verify">
     <div class="register-verify__group">
-        <h1 class="register-verify__title">会員登録が完了しました</h1>
+        <h1 class="register-verify__title">会員登録が完了しました<br>
+        次にメール認証をしてください
+        </h1>
 
         <p class="register-verify__text">
-        次にメール認証をしてください<br>
         下のボタンを押すと認証メールが送られます
         </p>
 
