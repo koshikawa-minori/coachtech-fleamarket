@@ -102,12 +102,12 @@
 <!-- 商品状態プルダウン -->
 <script>
 (function () {
-    //変数作り
+    // 変数作り
     const nativeSelectElement = document.getElementById('condition');
     const customSelectContainerElement = document.getElementById('custom-condition-select');
     if (!nativeSelectElement || !customSelectContainerElement) return;
 
-    //ラベル
+    // ラベル
     const labelByValueMap = {
         '1': '良好',
         '2': '目立った傷や汚れなし',
@@ -119,7 +119,7 @@
     const currentLabelText = nativeSelectElement.value
         ? (labelByValueMap[nativeSelectElement.value] || '')
         : '選択してください';
-    //ラベル名挿入
+    // ラベル名挿入
     customSelectContainerElement.innerHTML = [
         '<button type="button" class="custom-select__trigger" aria-haspopup="listbox" aria-expanded="false">',
             '<span class="custom-select__label">', currentLabelText ,'</span>',
@@ -131,7 +131,7 @@
     const toggleButtonElement = customSelectContainerElement.querySelector('.custom-select__trigger');
     const optionsMenuElement = customSelectContainerElement.querySelector('.custom-select__menu');
 
-    //同じ項目を <li> 要素へ
+    // 同じ項目を <li> 要素へ
     Object.entries(labelByValueMap).forEach(([value, text]) => {
         const optionListItemElement = document.createElement('li');
         optionListItemElement.className = 'custom-select__option';
@@ -145,7 +145,7 @@
         optionsMenuElement.appendChild(optionListItemElement);
     });
 
-    //メニュー開閉
+    // メニュー開閉
     function openCustomSelectMenu() {
         customSelectContainerElement.classList.add('is-open');
         toggleButtonElement.setAttribute('aria-expanded', 'true');
@@ -163,7 +163,7 @@
         }
     });
 
-    //外側がクリックされたら閉じる
+    // 外側がクリックされたら閉じる
     document.addEventListener('click', function (event) {
             if (!customSelectContainerElement.contains(event.target)) {
                 closeCustomSelectMenu();
@@ -183,7 +183,7 @@
         const labelSpanElement = toggleButtonElement.querySelector('.custom-select__label');
         labelSpanElement.textContent = labelByValueMap[newSelectedValue] || '';
 
-        //✓更新
+        // ✓更新
         optionsMenuElement.querySelectorAll('.custom-select__option').forEach(function (listItemElement) {
             const isThisSelected = (listItemElement === clickedOptionListItemElement);
             listItemElement.setAttribute('aria-selected', isThisSelected ? 'true' : 'false');
@@ -202,11 +202,11 @@
 <!-- カテゴリー -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    //変数作り
+    // 変数作り
     const chipButtons = document.querySelectorAll('.sell-chip');
     const bucket = document.getElementById('selectedCategoriesBucket');
 
-    //hidden
+    // hidden
     function renderHidden(ids) {
         bucket.innerHTML = '';
         ids.forEach(id => {
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-    //カテゴリー old値
+    // カテゴリー old値
     const selectedIds = new Set(
         Array.from(chipButtons)
         .filter(btn => btn.classList.contains('is-selected'))

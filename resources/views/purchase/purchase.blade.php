@@ -87,31 +87,31 @@
 
 <script>
 (function () {
-    //変数作り
+    // 変数作り
     const nativeSelectElement = document.getElementById('payment_method');
     if (!nativeSelectElement) return;
 
-    //右の支払い方法
+    // 右の支払い方法
     const paymentMethodPreviewElement = document.getElementById('payment_method_preview');
     const labelByValueMap = {
         '{{ \App\Models\Order::PAYMENT_CONVENIENCE_STORE_PAYMENT }}': 'コンビニ支払い',
         '{{ \App\Models\Order::PAYMENT_CREDIT_CARD }}': 'カード支払い'
     };
 
-    //右の支払い方法更新
+    // 右の支払い方法更新
     function updatePaymentMethodPreview() {
         const selectedValue = nativeSelectElement.value;
         if (!paymentMethodPreviewElement) return;
         paymentMethodPreviewElement.textContent = selectedValue ? (labelByValueMap[selectedValue] || '選択してください') : '選択してください';
     }
 
-    //表示するラベル決め
+    // 表示するラベル決め
     const customSelectContainerElement = document.getElementById('custom-payment-select');
     if (customSelectContainerElement) {
         // 初期ラベル
         const currentLabelText = nativeSelectElement.value
         ? (labelByValueMap[nativeSelectElement.value] || '') : '選択してください';
-        //ラベル名挿入
+        // ラベル名挿入
         customSelectContainerElement.innerHTML = [
             '<button type="button" class="custom-select__trigger" aria-haspopup="listbox" aria-expanded="false">',
                 '<span class="custom-select__label">', currentLabelText ,'</span>',
@@ -123,7 +123,7 @@
         const toggleButtonElement = customSelectContainerElement.querySelector('.custom-select__trigger');
         const optionsMenuElement = customSelectContainerElement.querySelector('.custom-select__menu');
 
-        //同じ項目を <li> 要素へ
+        // 同じ項目を <li> 要素へ
         Array.from(nativeSelectElement.options).forEach(function (optionElement) {
             const isPlaceholderOption = (optionElement.value === '');
             if (isPlaceholderOption || optionElement.disabled) return;
@@ -132,7 +132,7 @@
             optionListItemElement.className = 'custom-select__option';
             optionListItemElement.setAttribute('role', 'option');
             optionListItemElement.dataset.value = optionElement.value;
-            //今選ばれてる項目に✓
+            // 今選ばれてる項目に✓
             const isSelected = nativeSelectElement.value === optionElement.value;
             optionListItemElement.setAttribute('aria-selected', isSelected ? 'true' : 'false');
             // ✓マーク＋表示テキスト
@@ -143,7 +143,7 @@
             optionsMenuElement.appendChild(optionListItemElement);
         });
 
-        //メニュー開閉
+        // メニュー開閉
         function openCustomSelectMenu() {
             customSelectContainerElement.classList.add('is-open');
             toggleButtonElement.setAttribute('aria-expanded', 'true');
@@ -160,7 +160,7 @@
             }
         });
 
-        //外側がクリックされたら閉じる
+        // 外側がクリックされたら閉じる
         document.addEventListener('click', function (event) {
             if (!customSelectContainerElement.contains(event.target)) {
                 closeCustomSelectMenu();
@@ -179,7 +179,7 @@
             const labelSpanElement = toggleButtonElement.querySelector('.custom-select__label');
             labelSpanElement.textContent = labelByValueMap[newSelectedValue] || '';
 
-            //✓更新
+            // ✓更新
             optionsMenuElement.querySelectorAll('.custom-select__option').forEach(function (listItemElement) {
                 const isThisSelected = (listItemElement === clickedOptionListItemElement);
                 listItemElement.setAttribute('aria-selected', isThisSelected ? 'true' : 'false');

@@ -14,13 +14,13 @@ use App\Http\Controllers\SellController;
 // 商品一覧画面(トップページ)
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
-//商品詳細画面
+// 商品詳細画面
 Route::get('/item/{itemId}', [ItemController::class, 'show'])->name('items.show');
 
-//メール認証誘導画面
+// メール認証誘導画面
 Route::view('/register/verify', 'auth.register-verify')->middleware('auth')->name('register.verify');
 
-//メール認証誘導画面のボタン押下でメール送信
+// メール認証誘導画面のボタン押下でメール送信
 Route::post('/register/verify/send', function (Request $request) {
     session(['__allow_verify_mail_once' => true]);
     $request->user()->sendEmailVerificationNotification();
@@ -28,14 +28,14 @@ Route::post('/register/verify/send', function (Request $request) {
     return redirect()->route('verification.notice');
 })->middleware(['auth', 'throttle:3,1'])->name('register.verify.send');
 
-//メール認証画面
+// メール認証画面
 Route::get('/email/verify', function () {
 
     return view('auth.verify');
 
 })->middleware('auth')->name('verification.notice');
 
-//メール認証画面からプロフィール編集画面へ
+// メール認証画面からプロフィール編集画面へ
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
 
     $request->fulfill();
@@ -44,7 +44,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 })->middleware(['auth', 'signed', 'throttle:3,1'])->name('verification.verify');
 
-//メール認証再送
+// メール認証再送
 Route::post('/email/verification-notification', function (Request $request) {
     if ($request->user()->hasVerifiedEmail()) {
         return back();
@@ -66,25 +66,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // プロフィール編集画面(mypage/profile.blade.php)
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 
-    //プロフィール更新
+    // プロフィール更新
     Route::post('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    //コメント投稿
+    // コメント投稿
     Route::post('/item/{itemId}/comments', [CommentController::class, 'store'])->name('comments.store');
 
-    //いいね機能
+    // いいね機能
     Route::post('/item/{itemId}/like', [LikeController::class, 'store'])->name('likes.store');
     Route::delete('/item/{itemId}/like', [LikeController::class, 'destroy'])->name('likes.destroy');
 
-    //購入画面
+    // 購入画面
     Route::get('/purchase/{itemId}', [PurchaseController::class, 'create'])->name('purchase.create');
     Route::post('/purchase/{itemId}',  [PurchaseController::class, 'store'])->name('purchase.store');
 
-    //Stripe決済処理
+    // Stripe決済処理
     Route::post('/purchase/{itemId}/pay', [PurchaseController::class, 'pay'])->name('purchase.pay');
     Route::get('/purchase/{itemId}/paid', [PurchaseController::class, 'paid'])->name('purchase.paid');
 
-    //住所変更
+    // 住所変更
     Route::get('/purchase/address/{itemId}', [PurchaseController::class, 'edit'])->name('purchase.edit');
     Route::post('/purchase/address/{itemId}', [PurchaseController::class, 'update'])->name('purchase.update');
 

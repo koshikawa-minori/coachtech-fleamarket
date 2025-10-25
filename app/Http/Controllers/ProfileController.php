@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-    //プロフィール画面表示
+    // プロフィール画面表示
     public function show()
     {
         $user = Auth::user();
@@ -27,7 +27,7 @@ class ProfileController extends Controller
 
     }
 
-    //プロフィール編集画面表示
+    // プロフィール編集画面表示
     public function edit()
     {
         $user = Auth::user();
@@ -37,22 +37,22 @@ class ProfileController extends Controller
 
     }
 
-    //更新処理等
+    // 更新処理等
     public function update(ProfileRequest $request)
     {
-        //認証ユーザー取得
+        // 認証ユーザー取得
         /** @var User $authenticatedUser */
         $authenticatedUser = Auth::user();
 
         $isFirst = !$authenticatedUser->profile()->exists();
 
-        //users.nameを更新
+        // users.nameを更新
         $authenticatedUser->update([
             'name' => $request->input('name'),
         ]);
 
 
-        //画像アップロード
+        // 画像アップロード
         $newImagePath = null;
         if ($request->hasFile('image_path')) {
             $oldPath = optional($authenticatedUser->profile)->image_path;
@@ -63,7 +63,7 @@ class ProfileController extends Controller
             $newImagePath = $request->file('image_path')->store('profile_images', 'public');
         }
 
-        //プロフィール更新と作成
+        // プロフィール更新と作成
         $currentProfile = $authenticatedUser->profile;
         $imagePathToSave = null;
 

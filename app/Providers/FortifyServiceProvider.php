@@ -40,7 +40,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //// 登録直後の自動送信ブロック
+        // 登録直後の自動送信ブロック
         Event::listen(NotificationSending::class, function ($event) {
             if ($event->notification instanceof VerifyEmail) {
                 if (! session()->pull('__allow_verify_mail_once', false)) {
@@ -48,7 +48,7 @@ class FortifyServiceProvider extends ServiceProvider
                 }
             }
         });
-        //さらにLaravel標準の自動メール送信を無効化
+        // Laravel標準の自動メール送信を無効化
         Event::forget(Registered::class);
 
         Fortify::createUsersUsing(CreateNewUser::class);
@@ -62,17 +62,17 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($throttleKey);
         });
 
-        //ログイン画面
+        // ログイン画面
         Fortify::loginView(function () {
             return view('auth.login');
         });
 
-        //会員登録画面
+        // 会員登録画面
         Fortify::registerView(function () {
             return view('auth.register');
         });
 
-        //会員登録後メール認証へ
+        // 会員登録後メール認証へ
         $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
             public function toResponse($request)
             {
@@ -80,7 +80,7 @@ class FortifyServiceProvider extends ServiceProvider
             }
         });
 
-        //ログイン時未認証ならメール認証へ
+        // ログイン時未認証ならメール認証へ
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
             public function toResponse($request)
             {
@@ -94,7 +94,7 @@ class FortifyServiceProvider extends ServiceProvider
             }
         });
 
-        //ログアウト後は /login へ
+        // ログアウト後は /login へ
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
             public function toResponse($request)
             {
@@ -107,7 +107,7 @@ class FortifyServiceProvider extends ServiceProvider
             FortifyLoginRequest::class
         );
 
-        //ログイン認証
+        // ログイン認証
         Fortify::authenticateUsing(function ($request) {
             $user = User::where('email', $request->email)->first();
 

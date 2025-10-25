@@ -16,7 +16,7 @@ class ItemController extends Controller
         $keyword = (string)$request->query('keyword', '');
         $tab = $request->query('tab', $isAuthenticated ? 'mylist' : 'recommend');
 
-        //タブ切り替え
+        // タブ切り替え
         if ($tab === 'mylist') {
             if (!$isAuthenticated) {
                 $items = collect();

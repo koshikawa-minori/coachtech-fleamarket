@@ -19,7 +19,7 @@ class PurchaseController extends Controller
 
         $item = Item::with('seller:id,name')->findOrFail($itemId);
 
-        //購入済なら戻す
+        // 購入済なら戻す
         if ($item->is_sold) {
             return redirect()->route('items.index');
         }
@@ -28,7 +28,7 @@ class PurchaseController extends Controller
         $authenticatedUser = Auth::user();
         $profile = $authenticatedUser->profile;
 
-        //支払い
+        // 支払い
         $selectedPayment = old('payment_method');
         $paymentLabel = Order::paymentLabel($selectedPayment, '選択してください');
 
@@ -65,7 +65,7 @@ class PurchaseController extends Controller
 
         $isCard = ((int)$validated['payment_method'] === Order::PAYMENT_CREDIT_CARD);
 
-        //コンビニ支払い
+        // コンビニ支払い
         if (!$isCard) {
             try {
                 $userId = Auth::id();
@@ -126,7 +126,7 @@ class PurchaseController extends Controller
             return redirect()->away($session->url);
 
         }
-        //カード支払い
+        // カード支払い
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $successUrl = route('purchase.paid', ['itemId' => $item->id]) . '?session_id={CHECKOUT_SESSION_ID}';

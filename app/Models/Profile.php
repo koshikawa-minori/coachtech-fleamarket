@@ -16,7 +16,7 @@ class Profile extends Model
         'building',
     ];
 
-    //画像はstorageへ
+    // 画像はstorageへ
     public function getImageUrlAttribute(): ?string{
         if (!filled($this->image_path)) {
             return null;

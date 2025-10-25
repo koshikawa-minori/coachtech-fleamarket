@@ -30,7 +30,7 @@ class Item extends Model
         'condition' => 'integer',
     ];
 
-    //画像はstorageへ
+    // 画像はstorageへ
     public function getImageUrlAttribute(): ?string{
         if (!filled($this->image_path)) {
             return null;
@@ -54,25 +54,25 @@ class Item extends Model
         };
     }
 
-    //出品者
+    // 出品者
     public function seller()
     {
         return $this->belongsTo(User::class, 'seller_user_id');
     }
 
-    //いいね機能
+    // いいね機能
     public function likes()
     {
         return $this->belongsToMany(User::class, 'likes')->withTimestamps();
     }
 
-    //コメント
+    // コメント
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    //カテゴリ
+    // カテゴリ
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_items')->withTimestamps();
