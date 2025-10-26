@@ -68,7 +68,7 @@ class LoginTest extends TestCase
         $this->followRedirects($response)->assertSee('ログイン情報が登録されていません');
     }
 
-    //正しい情報が入力された場合、ログイン処理が実行される
+    // 正しい情報が入力された場合、ログイン処理が実行される
     public function test_all_matched()
     {
         $user = User::factory()->create([
@@ -99,7 +99,7 @@ class LoginTest extends TestCase
 
     }
 
-    //ログアウトができる
+    // ログアウトができる
     public function test_logout()
     {
         /** @var \App\Models\User $user */
