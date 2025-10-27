@@ -63,7 +63,7 @@ class Item extends Model
     // いいね機能
     public function likes()
     {
-        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
+        return $this->belongsToMany(User::class, 'likes', 'item_id', 'user_id')->withTimestamps();
     }
 
     // コメント
