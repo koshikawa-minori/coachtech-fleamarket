@@ -3,9 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 use App\Models\Item;
 use App\Models\User;
@@ -21,9 +18,33 @@ class ItemTest extends TestCase
     // 全商品を取得できる
     public function test_item_list()
     {
+        $itemA = Item::factory()->create([
+            'name' => 'メイクセット',
+            'price' => 2500,
+            'brand_name' => null,
+            'description' => '便利なメイクアップセット',
+            'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Waitress+with+Coffee+Grinder.jpg',
+            'condition' => 1,
+            'is_sold' => false,
+        ]);
+
+        $itemB = Item::factory()->create([
+            'name' => 'コーヒーミル',
+            'price' => 4000,
+            'brand_name' => 'Starbacks',
+            'description' => '手動のコーヒーミル',
+            'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Waitress+with+Coffee+Grinder.jpg',
+            'condition' => 1,
+            'is_sold' => false,
+        ]);
+
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)->assertViewHas('items');
+
+        $response->assertSeeText($itemA->name);
+        $response->assertSeeText($itemB->name);
+
     }
 
     // 購入済み商品は「Sold」と表示される
@@ -40,14 +61,13 @@ class ItemTest extends TestCase
         ]);
 
         $response = $this->get('/');
-
         $response->assertStatus(200);
 
         $response->assertSee('Sold');
     }
 
     // 自分が出品した商品は表示されない
-    public function test_hide_items()
+    public function test_my_items_are_not_displayed()
     {
         /** @var \App\Models\User $authenticatedUser */
         $authenticatedUser = User::factory()->create(['email_verified_at' => now()]);
@@ -155,7 +175,7 @@ class ItemTest extends TestCase
             'condition' => 1,
             'is_sold' => false,
         ]);
-        $unsoldItem ->categories()->attach($category->id);
+        $unsoldItem->categories()->attach($category->id);
 
         $authenticatedUser->likes()->attach($soldItem->id);
         $authenticatedUser->likes()->attach($unsoldItem->id);
@@ -166,7 +186,7 @@ class ItemTest extends TestCase
         $response->assertSeeText($soldItem->name);
         $response->assertSeeText($unsoldItem->name);
 
-        $this->assertEquals(1, substr_count($response->getContent(), 'sold'));
+        $this->assertEquals(1, substr_count($response->getContent(), 'Sold'));
     }
 
     // 未認証の場合は何も表示されない
