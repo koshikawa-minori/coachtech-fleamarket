@@ -29,12 +29,12 @@ class ItemTest extends TestCase
         ]);
 
         $itemB = Item::factory()->create([
-            'name' => 'コーヒーミル',
-            'price' => 4000,
-            'brand_name' => 'Starbacks',
-            'description' => '手動のコーヒーミル',
-            'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Waitress+with+Coffee+Grinder.jpg',
-            'condition' => 1,
+            'name' => 'ショルダーバッグ',
+            'price' => 3500,
+            'brand_name' => null,
+            'description' => 'おしゃれなショルダーバッグ',
+            'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Purse+fashion+pocket.jpg',
+            'condition' => 3,
             'is_sold' => false,
         ]);
 
@@ -72,7 +72,7 @@ class ItemTest extends TestCase
         /** @var \App\Models\User $authenticatedUser */
         $authenticatedUser = User::factory()->create(['email_verified_at' => now()]);
 
-        $category = Category::create(['name' => 'テストカテゴリ']);
+        $category = Category::create(['name' => 'レディース']);
 
         $myItem = Item::factory()->create([
             'name' => 'メイクセット',
@@ -102,9 +102,9 @@ class ItemTest extends TestCase
         $authenticatedUser = User::factory()->create(['email_verified_at' => now()]);
 
          /** @var \App\Models\User $otherSeller */
-        $otherSellerA = User::factory()->create(['email_verified_at' => now()]);
+        $otherSeller = User::factory()->create(['email_verified_at' => now()]);
 
-        $category = Category::create(['name' => 'テストカテゴリ']);
+        $category = Category::create(['name' => 'レディース']);
 
         $otherItemA = Item::factory()->create([
             'name' => 'メイクセット',
@@ -112,32 +112,31 @@ class ItemTest extends TestCase
             'brand_name' => null,
             'description' => '便利なメイクアップセット',
             'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/%E5%A4%96%E5%87%BA%E3%83%A1%E3%82%A4%E3%82%AF%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%82%BB%E3%83%83%E3%83%88.jpg',
-            'seller_user_id' => $otherSellerA->id,
+            'seller_user_id' => $otherSeller->id,
             'condition' => 2,
             'is_sold' => false,
         ]);
         $otherItemA->categories()->attach($category->id);
 
         $otherItemB = Item::factory()->create([
-            'name' => 'コーヒーミル',
-            'price' => 4000,
-            'brand_name' => 'Starbacks',
-            'description' => '手動のコーヒーミル',
-            'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Waitress+with+Coffee+Grinder.jpg',
-            'seller_user_id' => $otherSellerA->id,
-            'condition' => 1,
+            'name' => 'ショルダーバッグ',
+            'price' => 3500,
+            'brand_name' => null,
+            'description' => 'おしゃれなショルダーバッグ',
+            'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Purse+fashion+pocket.jpg',
+            'seller_user_id' => $otherSeller->id,
+            'condition' => 3,
             'is_sold' => false,
         ]);
         $otherItemB->categories()->attach($category->id);
 
         $authenticatedUser->likes()->attach($otherItemA->id);
 
-
         $response = $this->actingAs($authenticatedUser)->get('/?tab=mylist');
 
         $response->assertStatus(200);
         $response->assertSeeText('メイクセット');
-        $response->assertDontSeeText('コーヒーミル');
+        $response->assertDontSeeText('ショルダーバッグ');
 
     }
 
@@ -149,9 +148,9 @@ class ItemTest extends TestCase
         $authenticatedUser = User::factory()->create(['email_verified_at' => now()]);
 
          /** @var \App\Models\User $otherSeller */
-        $otherSellerA = User::factory()->create(['email_verified_at' => now()]);
+        $otherSeller = User::factory()->create(['email_verified_at' => now()]);
 
-        $category = Category::create(['name' => 'テストカテゴリ']);
+        $category = Category::create(['name' => 'レディース']);
 
         $soldItem = Item::factory()->create([
             'name' => 'メイクセット',
@@ -159,20 +158,20 @@ class ItemTest extends TestCase
             'brand_name' => null,
             'description' => '便利なメイクアップセット',
             'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/%E5%A4%96%E5%87%BA%E3%83%A1%E3%82%A4%E3%82%AF%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%82%BB%E3%83%83%E3%83%88.jpg',
-            'seller_user_id' => $otherSellerA->id,
+            'seller_user_id' => $otherSeller->id,
             'condition' => 2,
             'is_sold' => true,
         ]);
         $soldItem->categories()->attach($category->id);
 
         $unsoldItem  = Item::factory()->create([
-            'name' => 'コーヒーミル',
-            'price' => 4000,
-            'brand_name' => 'Starbacks',
-            'description' => '手動のコーヒーミル',
-            'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Waitress+with+Coffee+Grinder.jpg',
-            'seller_user_id' => $otherSellerA->id,
-            'condition' => 1,
+            'name' => 'ショルダーバッグ',
+            'price' => 3500,
+            'brand_name' => null,
+            'description' => 'おしゃれなショルダーバッグ',
+            'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Purse+fashion+pocket.jpg',
+            'seller_user_id' => $otherSeller->id,
+            'condition' => 3,
             'is_sold' => false,
         ]);
         $unsoldItem->categories()->attach($category->id);

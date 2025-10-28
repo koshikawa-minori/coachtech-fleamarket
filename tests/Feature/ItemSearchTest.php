@@ -19,7 +19,7 @@ class ItemSearchTest extends TestCase
     // 「商品名」で部分一致検索ができる
     public function test_it_can_search_items()
     {
-        $category = Category::create(['name' => 'テストカテゴリ']);
+        $category = Category::create(['name' => 'キッチン']);
 
         $item  = Item::factory()->create([
             'name' => 'コーヒーミル',
@@ -45,7 +45,7 @@ class ItemSearchTest extends TestCase
         /** @var \App\Models\User $authenticatedUser */
         $authenticatedUser = User::factory()->create(['email_verified_at' => now()]);
 
-        $category = Category::create(['name' => 'テストカテゴリ']);
+        $category = Category::create(['name' => 'キッチン']);
 
         $item  = Item::factory()->create([
             'name' => 'コーヒーミル',
