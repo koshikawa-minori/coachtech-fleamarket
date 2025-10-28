@@ -58,3 +58,19 @@ php artisan storage:link  #画像表示のために必要
 - 認証が未完了のままログインした場合も認証誘導画面へ遷移
 - 認証メールの再送機能あり（1分間に3回まで）
 
+## テストコード
+
+**PHPUnit**を用いたテストケースを作成しています
+
+### テスト実行方法
+以下のどちらかのコマンドで
+すべてのFeatureテストを実行できます
+
+#### Laravel の Artisan コマンドを利用
+```bash
+php artisan test
+```
+#### PHPUnit コマンドを利用
+```bash
+./vendor/bin/phpunit
+```
