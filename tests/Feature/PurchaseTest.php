@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\Item;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Category;
 
 class PurchaseTest extends TestCase
@@ -204,7 +205,6 @@ class PurchaseTest extends TestCase
     }
 
     // 小計画面で変更が反映される
-    // 「購入する」ボタンを押下すると購入が完了する
     public function test_subtotal_reflects_payment()
     {
         /** @var \App\Models\User $buyerUser */
@@ -230,7 +230,14 @@ class PurchaseTest extends TestCase
         $category = Category::create(['name' => 'コスメ']);
         $item->categories()->attach($category->id);
 
+        $response = $this->get("/purchase/{$item->id}");
+        $response->assertStatus(200);
 
+        $response->assertSee('コンビニ支払い');
+        $response->assertSee('カード支払い');
+
+        $response = $this->get("/purchase/{$item->id}?payment_method=" . Order::PAYMENT_CONVENIENCE_STORE_PAYMENT);
+        $response->assertSee('コンビニ支払い');
     }
 
 }
