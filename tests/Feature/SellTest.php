@@ -3,19 +3,21 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Item;
 use App\Models\Category;
 
-class ProfileTest extends TestCase
+class SellTest extends TestCase
 {
     /**
      * A basic feature test example.
      */
     use RefreshDatabase;
 
+    // 商品出品画面にて必要な情報が保存できる
     // 必要な情報が取得できる
     public function test_profile_page_shows_user_info()
     {
@@ -109,5 +111,4 @@ class ProfileTest extends TestCase
         $response->assertSee('value="東京都渋谷区千駄ヶ谷1-2-3"', false);
 
     }
-
 }
