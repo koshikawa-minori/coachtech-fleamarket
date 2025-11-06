@@ -15,9 +15,9 @@ docker-compose exec php bash
 composer install
 cp .env.example .env  #環境変数を変更
 ```
-#### DB 接続情報（docker-compose.yml の設定と一致させる）
+- DB 接続情報（docker-compose.yml の設定と一致させる）
 
-#### キャッシュ設定（デフォルト database だとエラーになるため file に変更する）
+- キャッシュ設定（デフォルト database だとエラーになるため file に変更する）
 
 ```bash
 php artisan key:generate
@@ -56,9 +56,8 @@ php artisan storage:link  #画像表示のために必要
 - 「カード支払い」を選択して「購入する」ボタンを押下すると、
   Stripeの決済画面へ遷移し、決済が可能です。
   決済完了後、購入済み商品は一覧に「Sold」として表示されます。
-- 「コンビニ支払い」を選択した場合は、
-  「購入する」ボタンを押下すると、購入処理を完了します。
-  ※この処理はコーチ確認済みです。
+- 「コンビニ支払い」を選択した場合は「購入する」ボタンを押下すると、購入処理を完了します。
+※この処理はコーチ確認済みです。
 
 ## メール認証機能（応用）
 
