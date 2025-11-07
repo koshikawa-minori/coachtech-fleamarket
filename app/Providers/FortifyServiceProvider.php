@@ -4,11 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\Events\NotificationSending;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\ServiceProvider;
@@ -41,18 +36,6 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // 登録直後の自動送信ブロック
-        Event::listen(NotificationSending::class, function ($event) {
-            if ($event->notification instanceof VerifyEmail) {
-                if (! session()->pull('__allow_verify_mail_once', false)) {
-                return false;
-                }
-            }
-        });
-        // Laravel標準の自動メール送信を無効化
-        Event::forget(Registered::class);
-        Event::forget(SendEmailVerificationNotification::class);
-
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
