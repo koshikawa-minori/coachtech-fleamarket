@@ -80,6 +80,40 @@ php artisan storage:link  #画像表示のために必要
 
 **PHPUnit**を用いたテストケースを作成しています。
 
+### 1.テスト用データベース作成
+```bash
+docker-compose exec mysql bash
+mysql -u root -p
+# パスワード入力後に以下を実行
+CREATE DATABASE test_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+exit
+exit
+```
+
+### 2..env.testing を作成（プロジェクト直下）
+```env
+APP_ENV=testing
+APP_KEY=
+
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=test_db
+DB_USERNAME=root
+DB_PASSWORD=root
+
+CACHE_DRIVER=array
+SESSION_DRIVER=array
+QUEUE_CONNECTION=sync
+MAIL_MAILER=log
+```
+### 3.テスト用マイグレーション実行
+```bash
+docker-compose exec php bash
+php artisan migrate --env=testing
+exit
+```
+
 ### テスト実行方法
 以下のどちらかのコマンドで
 すべてのFeatureテストを実行できます。
