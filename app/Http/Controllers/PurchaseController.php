@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeCheckout;
 
-
 class PurchaseController extends Controller
 {
     public function create(int $itemId)
@@ -216,6 +215,7 @@ class PurchaseController extends Controller
 
     }
 
+
     public function edit(int $itemId)
     {
         $authenticatedUser = Auth::user();
@@ -242,4 +242,3 @@ class PurchaseController extends Controller
     }
 
 }
-

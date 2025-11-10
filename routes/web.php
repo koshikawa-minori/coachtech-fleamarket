@@ -10,7 +10,6 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SellController;
 
-
 // 商品一覧画面(トップページ)
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
@@ -46,7 +45,6 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back();
 
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
 
 // 認証必須ページ
 Route::middleware(['auth', 'verified'])->group(function () {

@@ -51,7 +51,6 @@ class ProfileController extends Controller
             'name' => $request->input('name'),
         ]);
 
-
         // 画像アップロード
         $newImagePath = null;
         if ($request->hasFile('image_path')) {
@@ -95,4 +94,3 @@ class ProfileController extends Controller
         }
     }
 }
-

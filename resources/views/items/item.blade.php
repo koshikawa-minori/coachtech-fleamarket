@@ -83,7 +83,6 @@
             <a class="button" href="{{ route('login') }}">購入手続きへ</a>
         @endauth
 
-
         <h2 class="item-show__title">商品説明</h2>
         <div class="item-show__description">
             {!! nl2br(e($item->description)) !!}
