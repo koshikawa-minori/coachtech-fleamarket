@@ -17,8 +17,8 @@ class EmailVerificationTest extends TestCase
      */
     use RefreshDatabase;
 
-    // 会員登録後、認証メールが送信される+メール認証誘導画面へ遷移
-    public function test_verification_email_is_sent_redirects_to_verification_page_after_register()
+    // 会員登録後、認証メールが送信される
+    public function test_verification_email_is_sent_after_registration()
     {
         Notification::fake();
 
@@ -32,12 +32,16 @@ class EmailVerificationTest extends TestCase
         $response = $this->post('/register', $formData);
         $response->assertRedirect(route('register.verify'));
 
-        $registeredUser = User::where('email', 'test@example.com')->first();
+        $this->assertDatabaseHas('users', [
+            'email' => 'test@example.com',
+        ]);
+
+        $registeredUser = User::where('email', 'test@example.com')->firstOrFail();
         Notification::assertSentTo($registeredUser, VerifyEmail::class);
 
     }
 
-    // メール認証誘導画面で「認証はこちらから」ボタンを押下するとメール認証サイトに遷移する
+    // メール認証誘導画面で「認証はこちらから」ボタンを押下するとメール認証画面に遷移する
     public function test_click_navigates_to_verification()
     {
         Notification::fake();
@@ -52,11 +56,9 @@ class EmailVerificationTest extends TestCase
         $response = $this->post('/register', $formData);
         $response->assertRedirect(route('register.verify'));
 
-        $registeredUser = User::where('email', 'test@example.com')->first();
-        Notification::assertSentTo($registeredUser, VerifyEmail::class);
+        $registeredUser = User::where('email', 'test@example.com')->firstOrFail();
 
         $response = $this->actingAs($registeredUser)->get(route('verification.notice'));
-
         $response->assertStatus(200);
         $response->assertViewIs('auth.verify');
 
@@ -76,11 +78,16 @@ class EmailVerificationTest extends TestCase
 
         $this->post('/register', $formData);
 
-        $registeredUser = User::where('email', 'test@example.com')->first();
+        $registeredUser = User::where('email', 'test@example.com')->firstOrFail();
 
-        $verifyUrl = URL::temporarySignedRoute('verification.verify',now()->addMinutes(60),
-            ['id' => $registeredUser->id,
-            'hash' => sha1($registeredUser->email)]);
+        $verifyUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            [
+                'id' => $registeredUser->id,
+                'hash' => sha1($registeredUser->email)
+            ]
+        );
 
         $response = $this->actingAs($registeredUser)->get($verifyUrl);
 

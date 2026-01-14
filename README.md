@@ -127,6 +127,40 @@ php artisan test
 ./vendor/bin/phpunit
 ```
 
+## テストコード
+
+- **PHPUnit** を用いた Feature テストを実装しています。
+- テスト実行時は、**Docker 上の MySQL テスト用データベース（test_db）** を使用します。
+- test_db は **MySQL コンテナ起動時に自動作成**されます。
+- テスト用の DB 接続設定および APP_KEY は **phpunit.xml** にて定義しています。
+
+### テスト実行前の準備
+
+```bash
+# DB を含めて初期化（初回 or 作り直し時）
+docker-compose down -v
+docker-compose up -d --build
+
+# 開発用DBのマイグレーション
+docker-compose exec php php artisan migrate --seed
+```
+
+### テスト実行方法
+以下のどちらかのコマンドで
+すべてのFeatureテストを実行できます。
+
+※ 環境によっては phpunit コマンドの使用を推奨します。
+
+#### Laravel の Artisan コマンドを利用
+```bash
+docker-compose exec php php artisan test
+```
+#### PHPUnit コマンドを利用
+```bash
+docker-compose exec php ./vendor/bin/phpunit
+```
+
+
 ## フロントエンド補足
 
 - JavaScriptは購入画面での動的処理（支払い方法選択時の小計反映など）に限定して使用しています。

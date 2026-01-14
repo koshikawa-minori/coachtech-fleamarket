@@ -25,7 +25,7 @@ class ProfileController extends Controller
 
         return view('mypage', compact('user', 'profile', 'items'));
 
-    }
+    }m
 
     // プロフィール編集画面表示
     public function edit()

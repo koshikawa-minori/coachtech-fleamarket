@@ -33,7 +33,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
     return redirect()->route('profile.edit');
 
-})->middleware(['auth', 'signed', 'throttle:3,1'])->name('verification.verify');
+})->middleware(['auth', 'signed', 'throttle:6,1'])->name('verification.verify');
 
 // メール認証再送
 Route::post('/email/verification-notification', function (Request $request) {
