@@ -49,4 +49,3 @@
     </ul>
 </main>
 @endsection
-

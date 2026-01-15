@@ -41,7 +41,6 @@
     cursor: pointer;
 }
 
-
 @media (min-width: 1400px) {
     .register-verify__group {
         width: 540px;

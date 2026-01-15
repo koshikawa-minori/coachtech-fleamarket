@@ -52,6 +52,7 @@ class ItemController extends Controller
         ]);
     }
 
+
     public function show(string $itemId)
     {
         $item = Item::with(['seller:id,name', 'categories:id,name'])

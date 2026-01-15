@@ -46,7 +46,6 @@
     gap: 24px;
     }
 
-
 .mypage__image-wrapper {
     display: flex;
     align-items: center;
@@ -121,5 +120,3 @@
         gap: 40px;
     }
 }
-
-

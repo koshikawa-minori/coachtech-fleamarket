@@ -25,7 +25,7 @@ class ProfileController extends Controller
 
         return view('mypage', compact('user', 'profile', 'items'));
 
-    }
+    }m
 
     // プロフィール編集画面表示
     public function edit()
@@ -50,7 +50,6 @@ class ProfileController extends Controller
         $authenticatedUser->update([
             'name' => $request->input('name'),
         ]);
-
 
         // 画像アップロード
         $newImagePath = null;
@@ -95,4 +94,3 @@ class ProfileController extends Controller
         }
     }
 }
-

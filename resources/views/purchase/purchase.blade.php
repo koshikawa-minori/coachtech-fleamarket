@@ -84,7 +84,6 @@
     </form>
 </main>
 
-
 <script>
 (function () {
     // 変数作り
@@ -136,10 +135,7 @@
             const isSelected = nativeSelectElement.value === optionElement.value;
             optionListItemElement.setAttribute('aria-selected', isSelected ? 'true' : 'false');
             // ✓マーク＋表示テキスト
-            optionListItemElement.innerHTML =
-                '<span class="custom-select__check">✓</span>' + optionElement.textContent;
-
-
+            optionListItemElement.innerHTML = '<span class="custom-select__check">✓</span>' + optionElement.textContent;
             optionsMenuElement.appendChild(optionListItemElement);
         });
 

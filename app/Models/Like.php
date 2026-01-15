@@ -21,4 +21,3 @@ class Like extends Model
         return $this->belongsTo(Item::class);
     }
 }
-
