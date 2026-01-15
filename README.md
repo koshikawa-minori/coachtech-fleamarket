@@ -78,60 +78,9 @@ php artisan storage:link  #画像表示のために必要
 
 ## テストコード
 
-**PHPUnit**を用いたテストケースを作成しています。
-
-### 1.テスト用データベース作成
-```bash
-docker-compose exec mysql bash
-mysql -u root -p
-# パスワード入力後に以下を実行
-CREATE DATABASE test_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-exit
-exit
-```
-
-### 2..env.testing を作成（プロジェクト直下）
-```env
-APP_ENV=testing
-APP_KEY=
-
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=test_db
-DB_USERNAME=root
-DB_PASSWORD=root
-
-CACHE_DRIVER=array
-SESSION_DRIVER=array
-QUEUE_CONNECTION=sync
-MAIL_MAILER=log
-```
-### 3.テスト用マイグレーション実行
-```bash
-docker-compose exec php bash
-php artisan migrate --env=testing
-exit
-```
-
-### テスト実行方法
-以下のどちらかのコマンドで
-すべてのFeatureテストを実行できます。
-
-#### Laravel の Artisan コマンドを利用
-```bash
-php artisan test
-```
-#### PHPUnit コマンドを利用
-```bash
-./vendor/bin/phpunit
-```
-
-## テストコード
-
 - **PHPUnit** を用いた Feature テストを実装しています。
-- テスト実行時は、**Docker 上の MySQL テスト用データベース（test_db）** を使用します。
-- test_db は **MySQL コンテナ起動時に自動作成**されます。
+- テスト実行時は、**Docker 上の MySQL テスト用データベース（coachtech_fleamarket_test）** を使用します。
+- テスト用データベースは **MySQL コンテナ起動時に自動作成**されます。
 - テスト用の DB 接続設定および APP_KEY は **phpunit.xml** にて定義しています。
 
 ### テスト実行前の準備
@@ -159,7 +108,6 @@ docker-compose exec php php artisan test
 ```bash
 docker-compose exec php ./vendor/bin/phpunit
 ```
-
 
 ## フロントエンド補足
 
