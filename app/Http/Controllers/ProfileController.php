@@ -12,6 +12,7 @@ class ProfileController extends Controller
     // プロフィール画面表示
     public function show()
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $profile = $user->profile;
 
@@ -25,7 +26,7 @@ class ProfileController extends Controller
 
         return view('mypage', compact('user', 'profile', 'items'));
 
-    }m
+    }
 
     // プロフィール編集画面表示
     public function edit()
