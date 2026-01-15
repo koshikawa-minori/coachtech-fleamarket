@@ -2,6 +2,57 @@
 # coachtechフリマ
 提出タグ: submission-2025-11-08-01-07
 
+## 概要
+本アプリケーションは、出品・購入・いいね・コメント・プロフィール管理ができるフリマアプリです。  
+未認証ユーザーは商品閲覧のみ可能で、認証ユーザーは出品・購入・いいね・コメント・プロフィール編集が可能です。
+
+## 使用技術（実行環境）
+- Laravel 12.x
+- PHP 8.2+
+- MySQL 8.0
+- nginx 1.25
+
+## 機能一覧
+
+### 認証機能
+- 会員登録 / ログイン / ログアウト（Fortify）
+- メール認証機能（Mailtrap、応用）
+- メール認証再送機能
+
+### 商品関連
+- 商品一覧表示（おすすめ）
+- マイリスト表示（いいねした商品）
+- 商品検索（商品名の部分一致検索）
+- 商品詳細表示
+- 商品出品（カテゴリ複数選択、画像アップロード）
+- 商品購入
+- 購入済み商品の Sold 表示
+
+### ユーザー操作
+- いいね追加 / 解除
+- コメント投稿（255文字以内）
+- マイページ表示
+  - 出品した商品一覧
+  - 購入した商品一覧
+- プロフィール編集
+  - プロフィール画像
+  - ユーザー名
+  - 郵便番号 / 住所 / 建物名
+
+### 決済・配送
+- 支払い方法選択
+  - コンビニ支払い
+  - カード支払い（Stripe）
+- 配送先住所変更機能
+
+
+## 開発環境URL
+- アプリトップ: http://localhost/
+- phpMyAdmin: http://localhost:8080/
+- 会員登録: http://localhost/register
+- ログイン: http://localhost/login
+- マイページ（要ログイン）: http://localhost/mypage
+
 ## 環境構築手順
 
 ### 1. Docker ビルド
@@ -16,9 +67,9 @@ docker-compose exec php bash
 composer install
 cp .env.example .env  #環境変数を変更
 ```
-- DB 接続情報（docker-compose.yml の設定と一致させる）
+- DB 接続情報はdocker-compose.yml の設定と一致させてください。
 
-- キャッシュ設定（デフォルト database だとエラーになるため file に変更する）
+- キャッシュ設定は.env の CACHE_DRIVER を file に変更してください。
 
 ```bash
 php artisan key:generate
@@ -27,20 +78,8 @@ php artisan db:seed
 php artisan storage:link  #画像表示のために必要
 ```
 
-## 使用技術（実行環境）
-- PHP 8.x
-- Laravel 12.x
-- MySQL 8.0
-- nginx 1.21
-
 ## ER図
 ![ER図](docs/coachtech-fleamarket-ER.png)
-
-## 開発環境URL
-- 開発環境: http://localhost/
-- phpMyAdmin: http://localhost:8080/
-- 会員登録: http://localhost/register
-- ログイン: http://localhost/login
 
 ## テストユーザー情報
 

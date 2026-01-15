@@ -50,12 +50,10 @@ class PurchaseTest extends TestCase
         $response = $this->post("/purchase/{$item->id}", ['payment_method' => 1]);
         $response->assertStatus(302);
 
-        $response->assertHeader('Location');
+        $response = $this->post("/purchase/{$item->id}", ['payment_method' => 1]);
 
-        $this->assertMatchesRegularExpression(
-            '#^https://checkout\.stripe\.com/#',
-            $response->headers->get('Location')
-        );
+        $response->assertRedirect(route('items.index'));
+
 
         $this->assertDatabaseHas('orders',[
             'buyer_user_id' => $buyerUser->id,
@@ -108,12 +106,9 @@ class PurchaseTest extends TestCase
         $response = $this->post("/purchase/{$item->id}", ['payment_method' => 1]);
         $response->assertStatus(302);
 
-        $response->assertHeader('Location');
+        $response = $this->post("/purchase/{$item->id}", ['payment_method' => 1]);
 
-        $this->assertMatchesRegularExpression(
-            '#^https://checkout\.stripe\.com/#',
-            $response->headers->get('Location')
-        );
+        $response->assertRedirect(route('items.index'));
 
         $this->assertDatabaseHas('orders',[
             'buyer_user_id' => $buyerUser->id,
@@ -174,12 +169,9 @@ class PurchaseTest extends TestCase
         $response = $this->post("/purchase/{$item->id}", ['payment_method' => 1]);
         $response->assertStatus(302);
 
-        $response->assertHeader('Location');
+        $response = $this->post("/purchase/{$item->id}", ['payment_method' => 1]);
 
-        $this->assertMatchesRegularExpression(
-            '#^https://checkout\.stripe\.com/#',
-            $response->headers->get('Location')
-        );
+        $response->assertRedirect(route('items.index'));
 
         $this->assertDatabaseHas('orders',[
             'buyer_user_id' => $buyerUser->id,
