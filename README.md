@@ -114,13 +114,17 @@ php artisan storage:link  #画像表示のために必要
 
 - 認証が未完了のままログインした場合も認証誘導画面へ遷移
 - 認証メールの再送機能あり（1分間に6回まで）
+- Mailtrapの無料プランには送信レート制限があるため、送信エラーが発生する場合があります。
+- Mailtrap の送信制限等で確認が難しい場合は、  
+  `.env` を `MAIL_MAILER=log` に切り替えることで  
+  `storage/logs/laravel.log` に出力される認証URLから動作確認できます。
 
 ## テストコード
 
 - **PHPUnit** を用いた Feature テストを実装しています。
 - テスト実行時は、**Docker 上の MySQL テスト用データベース（coachtech_fleamarket_test）** を使用します。
 - テスト用データベースは **MySQL コンテナ起動時に自動作成**されます。
-- テスト用の DB 接続設定および APP_KEY は **phpunit.xml** にて定義しています。
+- テスト用の DB 接続設定は **phpunit.xml** に定義しており、APP_KEY は **.env.testing** を参照してテストを実行します。
 
 ### テスト実行前の準備
 
