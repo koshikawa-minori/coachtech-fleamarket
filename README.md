@@ -81,6 +81,93 @@ php artisan storage:link  #画像表示のために必要
 ## ER図
 ![ER図](docs/coachtech-fleamarket-ER.png)
 
+---
+
+## テーブル仕様（抜粋）
+
+本アプリの主要テーブル構成です。  
+全カラムの網羅ではなく、初見でDBの全体像が把握できる粒度で記載しています。
+
+### users
+- 役割：ユーザー情報
+- 主なカラム：
+  - `id` (PK)
+  - `name`
+  - `email`
+  - `email_verified_at`(メール認証)
+  - `password`
+
+### profiles
+- 役割：プロフィール情報(住所・建物名・画像など)
+- 主なカラム：
+  - `id` (PK)
+  - `user_id` (FK → users.id)
+  - `image_path`（プロフィール画像）
+  - `postal_code`
+  - `address`
+  - `building`
+
+### items
+- 役割：商品情報（出品）
+- 主なカラム：
+  - `id` (PK)
+  - `seller_user_id` (FK → users.id)(出品者)
+  - `name`
+  - `brand_name`
+  - `description`
+  - `price`
+  - `condition`
+  - `image_path`
+  - `is_sold`(売却判定)
+- 補足：
+  - カテゴリは items では保持せず、`category_items` で管理
+
+### comments
+- 役割：商品へのコメント
+- 主なカラム：
+  - `id` (PK)
+  - `user_id` (FK → users.id)
+  - `item_id` (FK → items.id)
+  - `comment`
+
+### orders
+- 役割：購入情報(購入者・配送先・支払い方法)
+- 主なカラム：
+  - `id` (PK)
+  - `buyer_user_id` (FK → users.id)(購入者)
+  - `item_id` (FK → items.id)
+  - `postal_code`
+  - `address`
+  - `building`
+  - `payment_method`
+- 制約：
+  - `item_id` をユニーク(1商品につき1購入)
+
+### categories
+- 役割：カテゴリ
+- 主なカラム：
+  - `id` (PK)
+  - `name`
+
+### category_items
+- 役割：商品とカテゴリの紐付け
+- 主なカラム：
+  - `category_id` (FK → categories.id)
+  - `item_id` (FK → items.id)
+- 制約：
+  - `category_id` + `item_id` をユニーク(重複防止)
+
+### likes
+- 役割：いいね
+- 主なカラム：
+  - `user_id` (FK → users.id)
+  - `item_id` (FK → items.id)
+- 制約：
+  - `user_id` + `item_id` をユニーク(重複防止)
+
+※ 詳細は `database/migrations` を参照してください。
+
+
 ## テストユーザー情報
 
 | ユーザー種別 | メールアドレス | パスワード |
