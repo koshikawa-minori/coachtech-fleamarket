@@ -67,7 +67,7 @@ class Item extends Model
     }
 
     // コメント
-    public function comments(): HasMany
+    public function comments()
     {
         return $this->hasMany(Comment::class);
     }

@@ -9,6 +9,7 @@ class LikeController extends Controller
 {
     public function store($itemId)
     {
+         /** @var \App\Models\User $user */
         $user = Auth::user();
         $item = Item::findOrFail($itemId);
 
@@ -20,6 +21,7 @@ class LikeController extends Controller
 
     public function destroy($itemId)
     {
+         /** @var \App\Models\User $user */
         $user = Auth::user();
         $item = Item::findOrFail($itemId);
 
