@@ -164,7 +164,6 @@ class PurchaseController extends Controller
             return redirect()->away($session->url);
     }
 
-
     public function paid(int $itemId)
     {
         $item = Item::with('seller:id,name')->findOrFail($itemId);
@@ -216,14 +215,17 @@ class PurchaseController extends Controller
         }
 
         return redirect()->route('items.index');
-
     }
-
 
     public function edit(int $itemId)
     {
+        /** @var \App\Models\User $authenticatedUser */
         $authenticatedUser = Auth::user();
         $profile = $authenticatedUser->profile;
+        if (!$profile) {
+            $profile = $authenticatedUser->profile()->create([]);
+        }
+
         $item = Item::findOrFail($itemId);
 
         return view('purchase.address', compact('item', 'profile'));
@@ -231,8 +233,13 @@ class PurchaseController extends Controller
 
     public function update(AddressRequest $request, int $itemId)
     {
+        /** @var \App\Models\User $authenticatedUser */
         $authenticatedUser = Auth::user();
         $profile = $authenticatedUser->profile;
+
+        if (!$profile) {
+            $profile = $authenticatedUser->profile()->create([]);
+        }
 
         $validated = $request->validated();
 

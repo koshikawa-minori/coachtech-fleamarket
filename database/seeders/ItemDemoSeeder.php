@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Item;
 use App\Models\User;
 
@@ -13,14 +14,7 @@ class ItemDemoSeeder extends Seeder
      */
     public function run(): void
     {
-        $seller_user_id = User::query()->value('id');
-        if (!$seller_user_id) {
-            $seller_user_id = User::factory()->create([
-                'name' => 'デモユーザー',
-                'email' => 'demo@example.com',
-                'password' => bcrypt('password'),
-            ])->id;
-        }
+        $sellerUserId = User::where('email', 'seller@example.com')->value('id');
 
         $rows = [
             [
@@ -107,7 +101,7 @@ class ItemDemoSeeder extends Seeder
 
         foreach ($rows as $row) {
             Item::create([
-                'seller_user_id' => $seller_user_id,
+                'seller_user_id' => $sellerUserId,
                 'name' => $row['name'],
                 'brand_name' => $row['brand_name'],
                 'price' => $row['price'],
