@@ -79,9 +79,7 @@ php artisan storage:link  #画像表示のために必要
 ```
 
 ## ER図
-![ER図](docs/coachtech-pro.drawio.png)
-
----
+![ER図](docs/er-pro.png)
 
 ## テーブル仕様（抜粋）
 
@@ -166,6 +164,41 @@ php artisan storage:link  #画像表示のために必要
   - `user_id` + `item_id` をユニーク(重複防止)
 
 ※ 詳細は `database/migrations` を参照してください。
+
+### transactions
+- 役割：取引
+- 主なカラム：
+  - `id` (PK)
+  - `item_id` (FK → items.id)
+  - `buyer_user_id` (FK → users.id)
+  - `seller_user_id` (FK → users.id)
+  - `buyer_read_at`
+  - `seller_read_at`
+  - `situation`
+- 補足：
+  - 未読件数は `*_read_at` 以降のメッセージ件数で判定する
+
+### transaction_messages
+- 役割：取引チャット
+- 主なカラム：
+  - `id` (PK)
+  - `transaction_id` (FK → transactions.id)
+  - `sender_id` (FK → users.id)
+  - `messages`
+  - `image_path`
+
+### evaluations
+- 役割：取引完了後の相互評価
+- 主なカラム：
+  - `id` (PK)
+  - `transaction_id` (FK → transactions.id)
+  - `evaluator_id`
+  - `evaluated_id`
+  - `score`
+- 制約：
+  - UNIQUE KEY: (`transaction_id`, `evaluator_id`)
+
+
 
 ## テストユーザー情報
 
