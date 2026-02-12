@@ -79,7 +79,7 @@ php artisan storage:link  #画像表示のために必要
 ```
 
 ## ER図
-![ER図](docs/coachtech-fleamarket-ER.png)
+![ER図](docs/coachtech-pro.drawio.png)
 
 ---
 
@@ -173,6 +173,7 @@ php artisan storage:link  #画像表示のために必要
 |---|---|---|
 | 一般ユーザー（購入者） | test@example.com | password |
 | デモ出品者 | seller@example.com | password |
+| デモ出品者2 | seller2@example.com | password |
 
 - 本アプリではメール認証を実装しています。
 - 上記ユーザーは、動作確認用として **メール認証済み（email_verified_at 設定済み）** の状態で作成されています。
