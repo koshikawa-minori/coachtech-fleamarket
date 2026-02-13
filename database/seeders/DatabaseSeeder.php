@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorySeeder::class,
             ItemDemoSeeder::class,
+            TransactionSeeder::class,
             //LikeSeeder::class,
         ]);
     }

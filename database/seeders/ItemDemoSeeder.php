@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Item;
 use App\Models\User;
 
@@ -14,7 +13,8 @@ class ItemDemoSeeder extends Seeder
      */
     public function run(): void
     {
-        $sellerUserId = User::where('email', 'seller@example.com')->value('id');
+        $sellerUser = User::where('email', 'seller@example.com')->firstOrFail();
+        $sellerUser2 = User::where('email', 'seller2@example.com')->firstOrFail();
 
         $rows = [
             [
@@ -99,9 +99,12 @@ class ItemDemoSeeder extends Seeder
             ],
         ];
 
-        foreach ($rows as $row) {
+        foreach ($rows as $index => $row) {
+
+            $sellerUserIdToUse = ($index < 5) ? $sellerUser : $sellerUser2;
+
             Item::create([
-                'seller_user_id' => $sellerUserId,
+                'seller_user_id' => $sellerUserIdToUse->id,
                 'name' => $row['name'],
                 'brand_name' => $row['brand_name'],
                 'price' => $row['price'],
@@ -111,5 +114,6 @@ class ItemDemoSeeder extends Seeder
                 'is_sold' => false,
             ]);
         }
+
     }
 }

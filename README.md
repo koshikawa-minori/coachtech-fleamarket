@@ -73,10 +73,20 @@ cp .env.example .env  #環境変数を変更
 
 ```bash
 php artisan key:generate
-php artisan migrate
-php artisan db:seed
+php artisan migrate --seed
 php artisan storage:link  #画像表示のために必要
 ```
+
+### ダミー取引データについて
+以下の取引データを Seeder にて登録しています。
+- HDD（進行中）
+- ノートPC（完了：双方評価済）
+- コーヒーミル（購入者完了）
+
+購入者は test@example.com です。
+
+取引チャットは各取引につき2件登録済みで、
+メッセージの並び順・未読判定の確認が可能です。
 
 ## ER図
 ![ER図](docs/er-pro.png)
