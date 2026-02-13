@@ -28,9 +28,10 @@ class TransactionSeeder extends Seeder
         $item = Item::where('name', 'HDD')->where('seller_user_id', $seller->id)->firstOrFail();
         $item2 = Item::where('name', 'ノートPC')->where('seller_user_id', $seller->id)->firstOrFail();
         $item3 = Item::where('name', 'コーヒーミル')->where('seller_user_id', $seller2->id)->firstOrFail();
+        $item4 = Item::where('name', 'タンブラー')->where('seller_user_id', $seller2->id)->firstOrFail();
 
         // 購入済み処理等
-        Item::whereIn('id', [$item->id, $item2->id, $item3->id ])->update(['is_sold' => true]);
+        Item::whereIn('id', [$item->id, $item2->id, $item3->id, $item4->id])->update(['is_sold' => true]);
 
         $orderBase = [
             'buyer_user_id' => $buyer->id,
@@ -43,6 +44,7 @@ class TransactionSeeder extends Seeder
         Order::create($orderBase + ['item_id' => $item->id]);
         Order::create($orderBase + ['item_id' => $item2->id]);
         Order::create($orderBase + ['item_id' => $item3->id]);
+        Order::create($orderBase + ['item_id' => $item4->id]);
 
         // 取引内容
         $transactionBase = [
@@ -72,6 +74,15 @@ class TransactionSeeder extends Seeder
             'buyer_read_at' => now(),
             'seller_read_at' => null,
             ]);
+
+        $transaction4 = Transaction::create($transactionBase + [
+            'item_id' => $item4->id,
+            'seller_user_id' => $seller2->id,
+            'situation' => 1,
+            'buyer_read_at' => null,
+            'seller_read_at' => null,
+        ]);
+
 
         // 取引チャット
         $buyerMessageBase = [
