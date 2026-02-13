@@ -175,6 +175,8 @@ php artisan storage:link  #画像表示のために必要
   - `buyer_read_at`
   - `seller_read_at`
   - `situation`
+- 制約：
+  - UNIQUE KEY: (item_id) ※1商品1取引を保証
 - 補足：
   - 未読件数は `*_read_at` 以降のメッセージ件数で判定する
 
@@ -184,21 +186,21 @@ php artisan storage:link  #画像表示のために必要
   - `id` (PK)
   - `transaction_id` (FK → transactions.id)
   - `sender_id` (FK → users.id)
-  - `messages`
+  - `message`
   - `image_path`
+- 補足：
+ - テキスト入力時のみ任意で画像添付可
 
 ### evaluations
 - 役割：取引完了後の相互評価
 - 主なカラム：
   - `id` (PK)
   - `transaction_id` (FK → transactions.id)
-  - `evaluator_id`
-  - `evaluated_id`
+  - `evaluator_id` (FK → users.id)
+  - `evaluated_id` (FK → users.id)
   - `score`
 - 制約：
   - UNIQUE KEY: (`transaction_id`, `evaluator_id`)
-
-
 
 ## テストユーザー情報
 
