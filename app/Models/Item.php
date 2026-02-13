@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Comment;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Comment;
+use App\Models\User;
+use App\Models\Category;
+use App\Models\Transaction;
 
 class Item extends Model
 {
@@ -76,6 +78,11 @@ class Item extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_items')->withTimestamps();
+    }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'item_id');
     }
 
 }

@@ -8,6 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Item;
 use App\Models\Profile;
+use App\Models\Order;
+use App\Models\Transaction;
+use App\Models\TransactionMessage;
+use App\Models\Evaluation;
+
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -71,6 +76,32 @@ class User extends Authenticatable implements MustVerifyEmail
     public function likes()
     {
         return $this->belongsToMany(Item::class, 'likes', 'user_id', 'item_id')->withTimestamps();
+    }
+
+    public function buyTransactions()
+    {
+        return $this->hasMany(Transaction::class, 'buyer_user_id');
+
+    }
+
+    public function sellTransactions()
+    {
+        return $this->hasMany(Transaction::class, 'seller_user_id');
+    }
+
+    public function transactionMessages()
+    {
+        return $this->hasMany(TransactionMessage::class, 'sender_id');
+    }
+
+    public function givenEvaluations()
+    {
+        return $this->hasMany(Evaluation::class, 'evaluator_id');
+    }
+
+    public function receivedEvaluations()
+    {
+        return $this->hasMany(Evaluation::class, 'evaluated_id');
     }
 
 }
