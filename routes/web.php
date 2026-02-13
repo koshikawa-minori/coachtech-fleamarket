@@ -9,6 +9,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SellController;
+use App\Http\Controllers\TransactionController;
 
 // 商品一覧画面(トップページ)
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
@@ -79,4 +80,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 出品画面
     Route::get('/sell', [SellController::class,'create'])->name('sell.create');
     Route::post('/sell', [SellController::class, 'store'])->name('sell.store');
+
+    // 取引チャット画面
+    Route::get('/transaction/{transactionId}', [TransactionController::class, 'show'])->name('transaction.show');
+
+
 });

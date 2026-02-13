@@ -18,8 +18,12 @@ class ProfileController extends Controller
 
         $page = request('page', 'sell');
 
+
         if ($page === 'buy') {
             $items = $user->purchasedItems()->get();
+        } elseif ($page === 'transaction') {
+            $items = collect();
+              // ここに取引中一覧ロジック
         } else {
             $items = $user->items()->get();
         }
