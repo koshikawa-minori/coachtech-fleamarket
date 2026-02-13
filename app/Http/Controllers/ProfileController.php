@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Item;
+use App\Models\Transaction;
 use App\Http\Requests\ProfileRequest;
+use App\Models\TransactionMessage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,17 +21,33 @@ class ProfileController extends Controller
 
         $page = request('page', 'sell');
 
-
         if ($page === 'buy') {
+            $transactions = collect();
             $items = $user->purchasedItems()->get();
         } elseif ($page === 'transaction') {
             $items = collect();
-              // ここに取引中一覧ロジック
+            $transactions = Transaction::whereIn('situation', [1,2])
+            ->where(function($query)use($user){
+                $query->where('buyer_user_id', $user->id)
+                ->orWhere('seller_user_id', $user->id);
+            })->with('item', 'transactionMessages')
+            ->withMax('transactionMessages', 'created_at')
+            ->orderByRaw('transaction_messages_max_created_at IS NULL')
+            ->orderByDesc('transaction_messages_max_created_at')
+            ->get();
+            foreach ($transactions as $transaction) {
+                if ($transaction->buyer_user_id === $user->id) {
+                    $readAt = $transaction->buyer_read_at;
+                } else {
+                    $readAt = $transaction->seller_read_at;
+                }
+            }
         } else {
+            $transactions = collect();
             $items = $user->items()->get();
         }
 
-        return view('mypage', compact('user', 'profile', 'items'));
+        return view('mypage', compact('user', 'profile', 'items', 'transactions'));
 
     }
 
