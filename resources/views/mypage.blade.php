@@ -40,19 +40,21 @@
         <ul class="mypage__items items__list">
             @foreach ($transactions as $transaction)
                 <li class="mypage__item item-card">
-                    <div class="item-card__thumb">
-                        @if ($transaction->item->image_url)
-                            <img class="item-card__image" src="{{ $transaction->item->image_url }}" alt="{{ $transaction->item->name }}">
-                        @else
-                            <div class="item-card__image--placeholder">
-                                商品画像
-                            </div>
-                        @endif
-                        @if ( $transaction->unread_count >= 1 )
-                            <span class="transaction-unread__badge">{{ $transaction->unread_count }}</span>
-                        @endif
-                    </div>
-                    <p class="item-card__name">{{ $transaction->item->name }}</p>
+                    <a class="item-card__link" href="{{ route('transaction.show', ['transactionId' => $transaction->id]) }}">
+                        <div class="item-card__thumb">
+                            @if ($transaction->item->image_url)
+                                <img class="item-card__image" src="{{ $transaction->item->image_url }}" alt="{{ $transaction->item->name }}">
+                            @else
+                                <div class="item-card__image--placeholder">
+                                    商品画像
+                                </div>
+                            @endif
+                            @if ( $transaction->unread_count >= 1 )
+                                <span class="transaction-unread__badge">{{ $transaction->unread_count }}</span>
+                            @endif
+                        </div>
+                        <p class="item-card__name">{{ $transaction->item->name }}</p>
+                    </a>
                 </li>
             @endforeach
         </ul>
