@@ -19,7 +19,42 @@
     width: 100vw;
     height: 1px;
     background-color: #818181;
-    transform: translateX(-50%); pointer-events: none;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.item-card__thumb {
+    position: relative;
+}
+
+.transaction-unread__total {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    padding: 0 8px;
+    background-color: #ff5555;
+    border-radius: 9999px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.transaction-unread__badge {
+    display: inline-flex;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    padding: 0 8px;
+    background-color: #ff5555;
+    border-radius: 9999px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
 }
 
 .mypage__header,
@@ -63,6 +98,11 @@
 
 .mypage__image {
     object-fit: cover;
+}
+
+.mypage__user-text {
+    display: flex;
+    flex-direction: column;
 }
 
 .mypage__username {
@@ -110,7 +150,7 @@
     .mypage__image--default {
     width: 120px;
     height: 120px;
-}
+    }
 
     .mypage__username {
         font-size: 40px;
@@ -118,5 +158,12 @@
 
     .mypage__profile {
         gap: 40px;
+    }
+
+    .transaction-unread__badge {
+        top: 10px;
+        left: 10px;
+        height: 30px;
+        padding: 0 10px;
     }
 }

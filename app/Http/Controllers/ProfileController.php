@@ -70,7 +70,7 @@ class ProfileController extends Controller
             $items = $user->items()->get();
         }
 
-        return view('mypage', compact('user', 'profile', 'items', 'transactions', 'totalUnreadCount'));
+        return view('mypage', compact('user', 'profile', 'items', 'page', 'transactions', 'totalUnreadCount'));
 
     }
 

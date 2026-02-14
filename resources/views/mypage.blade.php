@@ -18,7 +18,10 @@
                     <div class="mypage__image--default"></div>
                 @endif
             </div>
-            <p class="mypage__username">{{ $user->name }}</p>
+            <div class="mypage__user-text">
+                <p class="mypage__username">{{ $user->name }}</p>
+                <p>名前下に☆☆</p>
+            </div>
         </div>
         <a class="mypage__edit-button" href="{{ route('profile.edit') }}">プロフィールを編集</a>
     </div>
@@ -26,9 +29,12 @@
     <div class="tabs">
         <a href="{{ route('mypage', ['page' => 'sell']) }}" class="tab {{ request('page', 'sell') === 'sell' ? 'tab--active' : '' }}">出品した商品</a>
         <a href="{{ route('mypage', ['page' => 'buy']) }}" class="tab {{ request('page') === 'buy' ? 'tab--active' : '' }}">購入した商品</a>
-        <a href="{{ route('mypage', ['page' => 'transaction']) }}" class="tab {{ request('page') === 'transaction' ? 'tab--active' : '' }}">取引中の商品</a>
+        <a href="{{ route('mypage', ['page' => 'transaction']) }}" class="tab {{ request('page') === 'transaction' ? 'tab--active' : '' }}">取引中の商品
+        @if ( $totalUnreadCount >= 1 )
+            <span class="transaction-unread__total">{{ $totalUnreadCount }}</span>
+        @endif
+        </a>
     </div>
-
 
     @if ($page === 'transaction')
         <ul class="mypage__items items__list">
@@ -42,13 +48,11 @@
                                 商品画像
                             </div>
                         @endif
-                    </div>
-                    <p class="item-card__name">{{ $transaction->item->name }}</p>
-                    <div>
                         @if ( $transaction->unread_count >= 1 )
-                            <span class="transaction-unread">{{ $transaction->unread_count }}</span>
+                            <span class="transaction-unread__badge">{{ $transaction->unread_count }}</span>
                         @endif
                     </div>
+                    <p class="item-card__name">{{ $transaction->item->name }}</p>
                 </li>
             @endforeach
         </ul>
