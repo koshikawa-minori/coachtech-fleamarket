@@ -30,7 +30,7 @@
         <a href="{{ route('mypage', ['page' => 'sell']) }}" class="tab {{ request('page', 'sell') === 'sell' ? 'tab--active' : '' }}">出品した商品</a>
         <a href="{{ route('mypage', ['page' => 'buy']) }}" class="tab {{ request('page') === 'buy' ? 'tab--active' : '' }}">購入した商品</a>
         <a href="{{ route('mypage', ['page' => 'transaction']) }}" class="tab {{ request('page') === 'transaction' ? 'tab--active' : '' }}">取引中の商品
-        @if ( $totalUnreadCount >= 1 )
+        @if ( $totalUnreadCount > 0)
             <span class="transaction-unread__total">{{ $totalUnreadCount }}</span>
         @endif
         </a>

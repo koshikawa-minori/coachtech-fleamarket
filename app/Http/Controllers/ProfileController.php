@@ -20,12 +20,51 @@ class ProfileController extends Controller
         $profile = $user->profile;
 
         $page = request('page', 'sell');
+
         $totalUnreadCount = 0;
+
+        $unreadByTransaction = [];
+
+        $unreadTransactions = Transaction::whereIn('situation', [1,2])
+            ->where(function ($query) use ($user) {
+                    $query->where('buyer_user_id', $user->id)
+                    ->orWhere('seller_user_id', $user->id);
+            })
+            ->with([
+                'transactionMessages' => function ($query) {
+                    $query->select('id', 'transaction_id', 'sender_id', 'created_at');
+                    },
+                ])
+                ->get();
+
+        foreach ($unreadTransactions as $transaction) {
+            if ($transaction->buyer_user_id === $user->id) {
+                $readAt = $transaction->buyer_read_at;
+            } else {
+                $readAt = $transaction->seller_read_at;
+            }
+
+            $unreadCount = 0;
+
+            foreach ($transaction->transactionMessages as $message) {
+                if ($message->sender_id !== $user->id) {
+                    if ($readAt === null) {
+                        $unreadCount++;
+                    } elseif ($message->created_at > $readAt) {
+                        $unreadCount++;
+                    }
+                }
+            }
+            $unreadByTransaction[$transaction->id] = $unreadCount;
+            $totalUnreadCount += $unreadCount;
+        }
+
+        $transactions = collect();
+        $items = collect();
+
         if ($page === 'buy') {
-            $transactions = collect();
             $items = $user->purchasedItems()->get();
         } elseif ($page === 'transaction') {
-            $items = collect();
             $transactions = Transaction::whereIn('situation', [1,2])
             ->where(function ($query) use ($user) {
                     $query->where('buyer_user_id', $user->id)
@@ -41,30 +80,14 @@ class ProfileController extends Controller
             ->orderByRaw('transaction_messages_max_created_at IS NULL')
             ->orderByDesc('transaction_messages_max_created_at')
             ->get();
-
             foreach ($transactions as $transaction) {
-                if ($transaction->buyer_user_id === $user->id) {
-                    $readAt = $transaction->buyer_read_at;
+                if (isset($unreadByTransaction[$transaction->id])) {
+                    $transaction->unread_count = $unreadByTransaction[$transaction->id];
                 } else {
-                    $readAt = $transaction->seller_read_at;
+                    $transaction->unread_count = 0;
                 }
-
-                $unreadCount = 0;
-                foreach ($transaction->transactionMessages as $message) {
-                    if ($message->sender_id !== $user->id) {
-                        if ($readAt === null) {
-                            $unreadCount++;
-                        } elseif ($message->created_at > $readAt) {
-                            $unreadCount++;
-                        }
-                    }
-                }
-                $transaction->unread_count = $unreadCount;
-                $totalUnreadCount += $unreadCount;
             }
-
         } else {
-            $transactions = collect();
             $items = $user->items()->get();
         }
 

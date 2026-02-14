@@ -11,9 +11,9 @@
     <header class="transaction__header">
         <div class="transaction__profile">
             <div class="transaction__image-wrapper">
-                プロフィール画像入る
+                {{ $transaction->image_url }}
             </div>
-            <p class="transaction__username">「ユーザー」さんとの取引画面</p>
+            <p class="transaction__username">「{{ $partnerUser->name }}」さんとの取引画面</p>
             <button>取引を完了するボタン</button>
         </div>
         <div class="transaction__item">
