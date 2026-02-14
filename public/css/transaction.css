@@ -1,0 +1,146 @@
+.transaction {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding: 40px 16px;
+    position: relative;
+    border-bottom: none;
+    padding: 40px 16px 6px;
+}
+
+.transaction__header,
+.transaction__items {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.transaction__items {
+    padding: 20px 40px;
+}
+
+.transaction__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-left: 100px;
+}
+
+.transaction__profile {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    }
+
+.transaction__image-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.transaction__image,
+.transaction__image--default {
+    display:block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ddd;
+}
+
+.transaction__user-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction__username {
+    margin: 0;
+    padding-left: 5px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.item-show__price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+}
+
+.item-show__currency {
+    font-size: 12px;
+}
+
+.item-show__price-value{
+    font-size: 30px;
+}
+
+.item-show__tax {
+    font-size: 16px;
+}
+
+.item-show__meta {
+    display: flex;
+    margin-left: 30px;
+    gap: 20px;
+}
+
+.finish-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    width: 200px;
+    padding: 6px 10px;
+    background-color: #fff;
+    border: 1px solid #ff5555;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #ff5555;
+    cursor: pointer;
+}
+
+.transaction__submit-button {
+    background: none;
+    border: none;
+    color: #000;
+    cursor: pointer;
+}
+
+.transaction__submit-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+
+@media (min-width: 1400px) {
+    .transaction {
+        margin: 0 auto;
+    }
+
+    .transaction__header {
+        padding-left: 180px;
+        gap: 12px;
+    }
+
+    .transaction__image,
+    .transaction__image--default {
+    width: 120px;
+    height: 120px;
+    }
+
+    .transaction__username {
+        font-size: 40px;
+    }
+
+    .transaction__profile {
+        gap: 40px;
+    }
+
+    .transaction-unread__badge {
+        top: 10px;
+        left: 10px;
+        height: 30px;
+        padding: 0 10px;
+    }
+}

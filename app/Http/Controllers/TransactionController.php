@@ -6,8 +6,6 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use function Symfony\Component\Clock\now;
-
 class TransactionController extends Controller
 {
     public function show($transactionId)
@@ -21,6 +19,15 @@ class TransactionController extends Controller
                 $query->with('sender.profile')->orderBy('created_at');
             },
         ])->findOrFail($transactionId);
+
+        $sidebarTransactions = Transaction::whereIn('situation', [1,2])
+            ->where(function ($query) use ($user) {
+                    $query->where('buyer_user_id', $user->id)
+                    ->orWhere('seller_user_id', $user->id);
+            })
+            ->with([
+                'item',
+            ])->orderByDesc('updated_at')->get();
 
         if ($transaction->buyer_user_id !== $user->id && $transaction->seller_user_id !== $user->id) {
             abort(403);
@@ -40,7 +47,7 @@ class TransactionController extends Controller
             $partnerUser = $transaction->buyer;
         }
 
-        return view('transaction', compact('transaction', 'partnerUser'));
+        return view('transaction', compact('user','transaction', 'partnerUser', 'sidebarTransactions'));
 
     }
 

@@ -83,5 +83,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // 取引チャット画面
     Route::get('/transaction/{transactionId}', [TransactionController::class, 'show'])->name('transaction.show');
+    Route::post('/transaction/{transactionId}/messages', [TransactionController::class, 'store'])->name('transaction.store');
 
 });

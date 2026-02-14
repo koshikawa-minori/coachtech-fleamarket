@@ -48,6 +48,11 @@ class Transaction extends Model
         return $this->hasMany(TransactionMessage::class, 'transaction_id');
     }
 
+    public function lastMessage()
+    {
+        return $this->hasOne(TransactionMessage::class, 'transaction_id')->latestOfMany();
+    }
+
     public function evaluations()
     {
         return $this->hasMany(Evaluation::class, 'transaction_id');
