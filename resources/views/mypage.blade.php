@@ -29,24 +29,49 @@
         <a href="{{ route('mypage', ['page' => 'transaction']) }}" class="tab {{ request('page') === 'transaction' ? 'tab--active' : '' }}">取引中の商品</a>
     </div>
 
-    <ul class="mypage__items items__list">
-        @foreach ($items as $item)
-            <li class="mypage__item item-card">
-                <div class="item-card__thumb">
-                    @if($item->is_sold)
-                        <span class="item-card__sold">Sold</span>
-                    @endif
-                    @if ($item->image_url)
-                        <img class="item-card__image" src="{{ $item->image_url }}" alt="{{ $item->name }}">
-                    @else
-                        <div class="item-card__image--placeholder">
-                            商品画像
-                        </div>
-                    @endif
-                </div>
-                <p class="item-card__name">{{ $item->name }}</p>
-            </li>
-        @endforeach
-    </ul>
+
+    @if ($page === 'transaction')
+        <ul class="mypage__items items__list">
+            @foreach ($transactions as $transaction)
+                <li class="mypage__item item-card">
+                    <div class="item-card__thumb">
+                        @if ($transaction->item->image_url)
+                            <img class="item-card__image" src="{{ $transaction->item->image_url }}" alt="{{ $transaction->item->name }}">
+                        @else
+                            <div class="item-card__image--placeholder">
+                                商品画像
+                            </div>
+                        @endif
+                    </div>
+                    <p class="item-card__name">{{ $transaction->item->name }}</p>
+                    <div>
+                        @if ( $transaction->unread_count >= 1 )
+                            <span class="transaction-unread">{{ $transaction->unread_count }}</span>
+                        @endif
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    @else
+        <ul class="mypage__items items__list">
+            @foreach ($items as $item)
+                <li class="mypage__item item-card">
+                    <div class="item-card__thumb">
+                        @if($item->is_sold)
+                            <span class="item-card__sold">Sold</span>
+                        @endif
+                        @if ($item->image_url)
+                            <img class="item-card__image" src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                        @else
+                            <div class="item-card__image--placeholder">
+                                商品画像
+                            </div>
+                        @endif
+                    </div>
+                    <p class="item-card__name">{{ $item->name }}</p>
+                </li>
+            @endforeach
+        </ul>
+    @endif
 </main>
 @endsection

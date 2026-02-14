@@ -10,6 +10,8 @@ use App\Models\TransactionMessage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+use function Laravel\Prompts\select;
+
 class ProfileController extends Controller
 {
     // プロフィール画面表示
@@ -20,34 +22,55 @@ class ProfileController extends Controller
         $profile = $user->profile;
 
         $page = request('page', 'sell');
-
+        $totalUnreadCount = 0;
         if ($page === 'buy') {
             $transactions = collect();
             $items = $user->purchasedItems()->get();
         } elseif ($page === 'transaction') {
             $items = collect();
             $transactions = Transaction::whereIn('situation', [1,2])
-            ->where(function($query)use($user){
-                $query->where('buyer_user_id', $user->id)
-                ->orWhere('seller_user_id', $user->id);
-            })->with('item', 'transactionMessages')
+            ->where(function ($query) use ($user) {
+                    $query->where('buyer_user_id', $user->id)
+                    ->orWhere('seller_user_id', $user->id);
+            })
+            ->with([
+                'item',
+                'transactionMessages' => function ($query) {
+                    $query->select('id', 'transaction_id', 'sender_id', 'created_at');
+                    },
+                ])
             ->withMax('transactionMessages', 'created_at')
             ->orderByRaw('transaction_messages_max_created_at IS NULL')
             ->orderByDesc('transaction_messages_max_created_at')
             ->get();
+
             foreach ($transactions as $transaction) {
                 if ($transaction->buyer_user_id === $user->id) {
                     $readAt = $transaction->buyer_read_at;
                 } else {
                     $readAt = $transaction->seller_read_at;
                 }
+
+                $unreadCount = 0;
+                foreach ($transaction->transactionMessages as $message) {
+                    if ($message->sender_id !== $user->id) {
+                        if ($readAt === null) {
+                            $unreadCount++;
+                        } elseif ($message->created_at > $readAt) {
+                            $unreadCount++;
+                        }
+                    }
+                }
+                $transaction->unread_count = $unreadCount;
+                $totalUnreadCount += $unreadCount;
             }
+
         } else {
             $transactions = collect();
             $items = $user->items()->get();
         }
 
-        return view('mypage', compact('user', 'profile', 'items', 'transactions'));
+        return view('mypage', compact('user', 'profile', 'items', 'transactions', 'totalUnreadCount'));
 
     }
 
