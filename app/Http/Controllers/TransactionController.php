@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\TransactionMessage;
+use App\Http\Requests\TransactionMessageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -53,8 +56,34 @@ class TransactionController extends Controller
 
     }
 
-    public function store(Request $request, $transactionId)
+    public function store(TransactionMessageRequest $request, $transactionId)
     {
+        $user = Auth::user();
+        $storedPath = null;
+        $transaction = Transaction::findOrFail($transactionId);
+
+        if ($transaction->buyer_user_id !== $user->id && $transaction->seller_user_id !== $user->id) {
+            abort(403);
+        }
+
+        $validated = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $storedPath = $request->file('image')->store('items', 'public');
+        }
+
+        DB::transaction(function () use ($validated, $storedPath, $transaction) {
+            $message = TransactionMessage::create([
+                'transaction_id' => $transaction->id,
+                'sender_id' => Auth::id(),
+                'message' => $validated['message'],
+                'image_path' => $storedPath,
+            ]);
+
+            return $message;
+        });
+
+        return redirect()->route('transaction.show', ['transactionId' => $transactionId]);
 
     }
 

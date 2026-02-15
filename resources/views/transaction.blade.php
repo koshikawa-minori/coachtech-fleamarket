@@ -93,10 +93,18 @@
             @endforeach
             <form class="transaction__composer" action="{{ route('transaction.store', ['transactionId' => $transaction->id]) }}" method="post" enctype="multipart/form-data" novalidate>
             @csrf
-                <textarea class="transaction-textarea" name="message" rows="1" placeholder="取引メッセージを記入してください"></textarea>
+                <div class="transaction-textarea-wrapper">
+                    <textarea class="transaction-textarea" name="message" rows="1" placeholder="取引メッセージを記入してください">{{ old('message') }}</textarea>
+                    @error('message')
+                        <p class="transaction__error">{{ $message }}</p>
+                    @enderror
+                </div>
                 <div class="transaction-image__drop">
                     <input class="transaction-image__input" name="image" type="file" id="image" accept=".jpeg,.png">
                     <label class="transaction-image__button" for="image">画像を追加</label>
+                    @error('image')
+                        <p class="transaction__error">{{ $message }}</p>
+                    @enderror
                 </div>
                 <button class="transaction__submit-button" type="submit">
                     <svg width="80" height="61" viewBox="0 0 80 61" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
