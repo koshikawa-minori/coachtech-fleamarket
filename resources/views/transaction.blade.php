@@ -102,6 +102,7 @@
                         <p class="transaction__error">{{ $message }}</p>
                     @enderror
                 </div>
+
                 <div class="transaction__composer-row">
                     <div class="transaction-textarea-wrapper">
                         <input type="hidden" name="current_transaction_id" value="{{ $transaction->id }}">

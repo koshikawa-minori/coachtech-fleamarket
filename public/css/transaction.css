@@ -6,7 +6,7 @@
 
 .transaction {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
     border-bottom: none;
 }
 
@@ -202,17 +202,18 @@
 .transaction__composer {
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }
 
 .transaction__error-wrapper {
     display: flex;
     flex-direction: column;
+    margin-left: 35px;
 }
 
 .transaction__error {
-    margin-top: 2px;
+    margin: 0;
     color: #ff5555;
+    font-size: 16px;
 }
 
 .transaction__composer-row {
@@ -302,6 +303,10 @@
 
     .transaction__item-tax {
         font-size: 16px;
+    }
+
+    .transaction__error {
+        font-size: 18px;
     }
 
     .transaction__message-name {
