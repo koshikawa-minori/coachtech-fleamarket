@@ -201,6 +201,22 @@
 
 .transaction__composer {
     display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.transaction__error-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction__error {
+    margin-top: 2px;
+    color: #ff5555;
+}
+
+.transaction__composer-row {
+    display: flex;
     align-items: center;
     gap: 10px;
 }
@@ -221,11 +237,6 @@
     color: #7b7b7b;
     resize: none;
     outline: none;
-}
-
-.transaction__error {
-    margin-top: 2px;
-    color: #ff5555;
 }
 
 .transaction-image__drop {

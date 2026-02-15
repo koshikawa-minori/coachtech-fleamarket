@@ -52,7 +52,9 @@ class TransactionController extends Controller
             $partnerUser = $transaction->buyer;
         }
 
-        return view('transaction', compact('user','transaction', 'partnerUser', 'sidebarTransactions'));
+        $draftMessage = session("transaction_drafts.$transactionId");
+
+        return view('transaction', compact('user','transaction', 'partnerUser', 'sidebarTransactions', 'draftMessage'));
 
     }
 
@@ -83,6 +85,8 @@ class TransactionController extends Controller
             return $message;
         });
 
+        session()->forget("transaction_drafts.$transactionId");
+
         return redirect()->route('transaction.show', ['transactionId' => $transactionId]);
 
     }
@@ -105,5 +109,28 @@ class TransactionController extends Controller
     public function storeReview(Request $request, $transactionId)
     {
 
+    }
+
+    public function draft(Request $request)
+    {
+        $user = Auth::user();
+        $currentTransactionId = $request->input('current_transaction_id');
+
+        $transaction = Transaction::findOrFail($currentTransactionId);
+        if ($transaction->buyer_user_id !== $user->id && $transaction->seller_user_id !== $user->id) {
+            abort(403);
+        }
+
+        $message = $request->input('message');
+        $trimmedMessage = trim($message);
+        if ($trimmedMessage === '')  {
+            session()->forget("transaction_drafts.$currentTransactionId");
+        }else{
+            session(["transaction_drafts.$currentTransactionId" => $trimmedMessage]);
+        }
+
+        $destinationTransactionId = $request->input('destination_transaction_id');
+
+        return redirect()->route('transaction.show', ['transactionId' => $destinationTransactionId]);
     }
 }
