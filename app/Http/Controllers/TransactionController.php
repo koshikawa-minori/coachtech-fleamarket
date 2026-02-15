@@ -20,18 +20,20 @@ class TransactionController extends Controller
             },
         ])->findOrFail($transactionId);
 
+        if ($transaction->buyer_user_id !== $user->id && $transaction->seller_user_id !== $user->id) {
+            abort(403);
+        }
+
         $sidebarTransactions = Transaction::whereIn('situation', [1,2])
             ->where(function ($query) use ($user) {
                     $query->where('buyer_user_id', $user->id)
                     ->orWhere('seller_user_id', $user->id);
             })
-            ->with([
-                'item',
-            ])->orderByDesc('updated_at')->get();
-
-        if ($transaction->buyer_user_id !== $user->id && $transaction->seller_user_id !== $user->id) {
-            abort(403);
-        }
+            ->with(['item'])
+            ->withMax('transactionMessages', 'created_at')
+            ->orderByRaw('transaction_messages_max_created_at IS NULL')
+            ->orderByDesc('transaction_messages_max_created_at')
+            ->orderByDesc('id')->get();
 
         if ($user->id === $transaction->buyer_user_id) {
             $transaction->buyer_read_at = now();
