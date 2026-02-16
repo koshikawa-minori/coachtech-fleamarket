@@ -18,6 +18,11 @@ class TransactionMessage extends Model
         'image_path',
     ];
 
+    protected $casts = [
+        'transaction_id' => 'integer',
+        'sender_id' => 'integer',
+    ];
+
     public function transaction()
     {
         return $this->belongsTo(Transaction::class, 'transaction_id');

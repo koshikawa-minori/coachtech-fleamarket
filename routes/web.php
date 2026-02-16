@@ -83,7 +83,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // 取引チャット画面
     Route::get('/transaction/{transactionId}', [TransactionController::class, 'show'])->name('transaction.show');
+
+    // チャット
     Route::post('/transaction/{transactionId}/messages', [TransactionController::class, 'store'])->name('transaction.store');
+    Route::get('/transaction/messages/{messageId}', [TransactionController::class, 'edit'])->name('transaction.edit');
+    Route::patch('/transaction/messages/{messageId}', [TransactionController::class, 'update'])->name('transaction.update');
+    Route::delete('/transaction/messages/{messageId}', [TransactionController::class, 'destroy'])->name('transaction.destroy');
     Route::post('/transaction/draft', [TransactionController::class, 'draft'])->name('transaction.draft');
 
 });

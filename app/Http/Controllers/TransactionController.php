@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Models\TransactionMessage;
 use App\Http\Requests\TransactionMessageRequest;
+use App\Http\Requests\UpdateTransactionMessageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
-    public function show($transactionId)
+    public function show(Request $request, $transactionId)
     {
         $user = Auth::user();
         $transaction = Transaction::with([
@@ -52,9 +53,13 @@ class TransactionController extends Controller
             $partnerUser = $transaction->buyer;
         }
 
+        $latestTransactionMessageId = $transaction->transactionMessages->max('id');
+
         $draftMessage = session("transaction_drafts.$transactionId");
 
-        return view('transaction', compact('user','transaction', 'partnerUser', 'sidebarTransactions', 'draftMessage'));
+        $editMessageId = $request->query('edit_message_id');
+
+        return view('transaction', compact('user','transaction', 'partnerUser', 'sidebarTransactions', 'draftMessage', 'editMessageId', 'latestTransactionMessageId'));
 
     }
 
@@ -71,18 +76,16 @@ class TransactionController extends Controller
         $validated = $request->validated();
 
         if ($request->hasFile('image')) {
-            $storedPath = $request->file('image')->store('items', 'public');
+            $storedPath = $request->file('image')->store('chat_images', 'public');
         }
 
         DB::transaction(function () use ($validated, $storedPath, $transaction) {
-            $message = TransactionMessage::create([
+            TransactionMessage::create([
                 'transaction_id' => $transaction->id,
                 'sender_id' => Auth::id(),
                 'message' => $validated['message'],
                 'image_path' => $storedPath,
             ]);
-
-            return $message;
         });
 
         session()->forget("transaction_drafts.$transactionId");
@@ -91,22 +94,77 @@ class TransactionController extends Controller
 
     }
 
-    public function update(Request $request, $messageId)
+    public function edit($messageId)
     {
+        $user = Auth::user();
+        $message = TransactionMessage::findOrFail($messageId);
+        $transactionId = $message->transaction_id;
+
+        if ($message->sender_id !== $user->id) {
+            abort(403);
+        }
+
+        $latestTransactionMessageId = TransactionMessage::where('transaction_id', $transactionId)->max('id');
+
+        if ($message->id !== $latestTransactionMessageId) {
+            abort(403);
+        }
+
+        return redirect()->route('transaction.show', [
+            'transactionId' => $transactionId,
+            'edit_message_id' => $messageId,
+        ]);
+    }
+
+
+    public function update(UpdateTransactionMessageRequest  $request, $messageId)
+    {
+        $user = Auth::user();
+        $message = TransactionMessage::findOrFail($messageId);
+        $transactionId = $message->transaction_id;
+
+        if ($message->sender_id !== $user->id) {
+            abort(403);
+        }
+
+        $latestTransactionMessageId = TransactionMessage::where('transaction_id', $transactionId)->max('id');
+
+        if ($message->id !== $latestTransactionMessageId) {
+            abort(403);
+        }
+
+        $validated = $request->validated();
+
+        $message->update([
+            'message' => $validated['edit_message'],
+        ]);
+
+        return redirect()->route('transaction.show', ['transactionId' => $transactionId]);
 
     }
 
     public function destroy($messageId)
     {
+        $user = Auth::user();
+        $message = TransactionMessage::findOrFail($messageId);
+        $transactionId = $message->transaction_id;
 
+        if ($message->sender_id !== $user->id) {
+            abort(403);
+        }
+
+        $latestTransactionMessageId = TransactionMessage::where('transaction_id', $transactionId)->max('id');
+
+        if ($message->id !== $latestTransactionMessageId) {
+            abort(403);
+        }
+
+        $message->delete();
+
+        return redirect()->route('transaction.show', ['transactionId' => $transactionId]);
     }
 
     public function markAsRead($transactionId)
-    {
-
-    }
-
-    public function storeReview(Request $request, $transactionId)
     {
 
     }
@@ -132,5 +190,10 @@ class TransactionController extends Controller
         $destinationTransactionId = $request->input('destination_transaction_id');
 
         return redirect()->route('transaction.show', ['transactionId' => $destinationTransactionId]);
+    }
+
+    public function storeReview(Request $request, $transactionId)
+    {
+
     }
 }

@@ -59,35 +59,63 @@
                     <div class="transaction__message transaction__message--self">
                         <div class="transaction__message-header">
                             <div class="transaction__message-name">{{ $user->name }}</div>
-                            <div class="transaction__message-image">
+
+                            <div class="transaction__message--profile">
                                 @if($user->profile?->image_url)
-                                    <img class="transaction__message-image-file" src="{{ $user->profile->image_url }}" alt="プロフィール画像">
+                                    <img class="transaction__message--profile-image" src="{{ $user->profile->image_url }}" alt="プロフィール画像">
                                 @else
-                                    <div class="transaction__message-image--default"></div>
+                                    <div class="transaction__message--profile-default"></div>
                                 @endif
                             </div>
                         </div>
-                        <div class="transaction__message-text">
-                            {{ $transactionMessage->message }}
-                        </div>
-                        <div class="transaction__message-text--button">
-                                <a href="#">編集</a>
-                                <a href="#">削除</a>
-                        </div>
+
+                        @if ((int)$editMessageId === $transactionMessage->id && $transactionMessage->id === $latestTransactionMessageId)
+                            <form class="transaction__edit-form" action="{{ route('transaction.update',  ['messageId' => $transactionMessage->id, 'edit_message_id' => $transactionMessage->id]) }}" method="post">
+                            @csrf
+                            @method('PATCH')
+                                @error('edit_message', 'edit')
+                                    <p class="transaction__error">{{ $message }}</p>
+                                @enderror
+                                <textarea class="transaction__edit-form__textarea" rows="1" name="edit_message">{{ old('edit_message', $transactionMessage->message) }}</textarea>
+                                <button class="transaction__edit-form__button" type="submit">更新</button>
+                            </form>
+                        @else
+                            <div class="transaction__message-text">{{ $transactionMessage->message }}</div>
+
+                            @if ($transactionMessage->image_path !== null)
+                                <img class="transaction__message-image" src="{{ asset('storage/' . $transactionMessage->image_path) }}">
+                            @endif
+
+                            @if ($transactionMessage->id === $latestTransactionMessageId && $transactionMessage->sender_id === $user->id)
+                                <div class="transaction__message-action">
+                                    <a class="transaction__message-action-link" href="{{ route('transaction.edit', ['messageId' => $transactionMessage->id]) }}">編集</a>
+
+                                    <form class="transaction__message-delete-form" action="{{ route('transaction.destroy', ['messageId' => $transactionMessage->id]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                        <button class="transaction__message-delete-form__button" type="submit">削除</button>
+                                    </form>
+                                </div>
+                            @endif
+                        @endif
                     </div>
                 @else
                     <div class="transaction__message transaction__message--other">
                         <div class="transaction__message-header">
-                            <div class="transaction__message-image">
+                            <div class="transaction__message--profile">
                                 @if($partnerUser->profile?->image_url)
-                                    <img class="transaction__message-image-file" src="{{ $partnerUser->profile->image_url }}" alt="プロフィール画像">
+                                    <img class="transaction__message--profile-image" src="{{ $partnerUser->profile->image_url }}" alt="プロフィール画像">
                                 @else
-                                    <div class="transaction__message-image--default"></div>
+                                    <div class="transaction__message--profile-default"></div>
                                 @endif
                             </div>
                             <div class="transaction__message-name">{{ $partnerUser->name }}</div>
                         </div>
+
                         <div class="transaction__message-text">{{ $transactionMessage->message }}</div>
+                        @if ($transactionMessage->image_path !== null)
+                                <img class="transaction__message-image" src="{{ asset('storage/' . $transactionMessage->image_path) }}" alt="画像が表示されません">
+                        @endif
                     </div>
                 @endif
             @endforeach
