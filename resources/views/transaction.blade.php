@@ -29,8 +29,31 @@
                     @endif
                 </div>
                 <h1 class="transaction__username">「{{ $partnerUser->name }}」さんとの取引画面</h1>
-                @if($user->id === $transaction->buyer_user_id)
-                    <button class="finish-button">取引を完了する</button>
+                @if($canBuyerReview)
+                    <a class="finish-button" href="#review-modal">取引を完了する</a>
+                    <div class="modal-area" id="review-modal">
+                        <form action="{{ route('transaction.storeReview', ['transactionId' => $transaction->id]) }}" method="post">
+                        @csrf
+                            <a class="modal-back" href="{{ route('transaction.show', ['transactionId' => $transaction->id]) }}"></a>
+                            <div class="modal-wrapper">
+                                <div class="modal-contents">
+                                <h1>取引が完了しました。</h1>
+                                <p>今回の取引相手はどうでしたか？</p>
+
+                                <select name="score" required>
+                                    <option value="1">★☆☆☆☆</option>
+                                    <option value="2">★★☆☆☆</option>
+                                    <option value="3">★★★☆☆</option>
+                                    <option value="4">★★★★☆</option>
+                                    <option value="5">★★★★★</option>
+                                </select>
+                                </div>
+                                <div class="close-modal">
+                                    <button class="close-modal__button" type="submit">送信する</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 @endif
             </div>
             <div class="transaction__item">

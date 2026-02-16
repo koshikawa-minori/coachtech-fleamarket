@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\TransactionMessage;
+use App\Models\Evaluation;
 use App\Http\Requests\TransactionMessageRequest;
 use App\Http\Requests\UpdateTransactionMessageRequest;
 use Illuminate\Http\Request;
@@ -58,6 +59,21 @@ class TransactionController extends Controller
         $draftMessage = session("transaction_drafts.$transactionId");
 
         $editMessageId = $request->query('edit_message_id');
+
+        $isBuyer = $user->id === $transaction->buyer_user_id;
+        $isSeller = $user->id === $transaction->seller_user_id;
+
+        $hasUserReviewed = Evaluation::where('transaction_id', $transaction->id)
+            ->where('evaluator_id', $user->id)
+            ->exists();
+
+        $canBuyerReview = $isBuyer
+            && $transaction->situation === 1
+            && !$hasUserReviewed;
+
+        $canSellerReview = $isSeller
+            && $transaction->situation === 2
+            && !$hasUserReviewed;
 
         return view('transaction', compact('user','transaction', 'partnerUser', 'sidebarTransactions', 'draftMessage', 'editMessageId', 'latestTransactionMessageId'));
 
@@ -162,11 +178,6 @@ class TransactionController extends Controller
         $message->delete();
 
         return redirect()->route('transaction.show', ['transactionId' => $transactionId]);
-    }
-
-    public function markAsRead($transactionId)
-    {
-
     }
 
     public function draft(Request $request)

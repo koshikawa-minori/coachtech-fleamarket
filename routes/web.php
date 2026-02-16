@@ -91,4 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/transaction/messages/{messageId}', [TransactionController::class, 'destroy'])->name('transaction.destroy');
     Route::post('/transaction/draft', [TransactionController::class, 'draft'])->name('transaction.draft');
 
+    //　評価モーダルウィンドウ
+    Route::post('/transaction/{transactionId}/review', [TransactionController::class, 'storeReview'])->name('transaction.storeReview');
+
 });
