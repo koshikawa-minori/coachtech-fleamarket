@@ -95,7 +95,7 @@
     background-color: #ff8282;
     border: 1px solid #ff8282;
     border-radius: 10px;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 700;
     color: #fff;
     text-decoration: none;
@@ -329,36 +329,90 @@
 }
 
 .modal-back {
+    display:block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
     width: 100%;
     height: 100%;
-    background-color: rgba(30,30,30,0.9);
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
 .modal-wrapper {
+    display: flex;
+    flex-direction: column;
     position: absolute;
+    z-index: 1001;
     top: 50%;
     left: 50%;
-    transform:translate(-50%,-50%);
-    width: 70%;
+    width: 50%;
     max-width: 500px;
     padding: 10px 30px;
+    gap: 10px;
     background-color: #FDFCE6;
+    border: 1px solid #000;
+    border-radius: 8px;
+    transform:translate(-50%,-50%);
+}
+
+.modal-title {
+    padding: 0 30px 10px 30px;
+    margin: 0 -30px;
+    padding-bottom: 10px;
+    font-size: 28px;
+    font-weight: 400;
+    border-bottom: solid 1px #000;
+}
+
+.modal-content__title{
+    font-size: 16px;
+    color: #868686;
+}
+
+.star-score {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    padding: 0 30px 10px 30px;
+    margin: 0 -30px;
+    padding-bottom: 10px;
+    border-bottom: solid 1px #000;
+    gap: 10px;
+}
+
+.star-score input {
+    display: none;
+}
+
+.star-score label {
+    font-size: 70px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.1s;
+}
+
+.star-score input:checked ~ label {
+    color: #FFF048;
+}
+
+.star-score label:hover,
+.star-score label:hover ~ label {
+    color: #FFF048;
 }
 
 .close-modal {
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
+    align-self: flex-end;
     cursor: pointer;
 }
 
 .close-modal__button {
     align-self: flex-end;
-    padding: 5px 10px;
+    padding: 5px 15px;
     border: solid 2px #ff8282;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 700;
+    border-radius: 4px;
+    font-size: 20px;
     background-color: #ff8282;
     color: #fff;
     cursor: pointer;
@@ -440,5 +494,17 @@
     .transaction__submit-button svg {
         width: 60px;
         height: 60px;
+    }
+
+    .modal-title{
+        font-size: 32px;
+    }
+
+    .star-score label{
+        font-size: 80px;
+    }
+
+    .close-modal__button {
+        font-size: 20px;
     }
 }

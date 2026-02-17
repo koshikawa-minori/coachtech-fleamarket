@@ -136,7 +136,7 @@ class TransactionSeeder extends Seeder
             ]
         );
 
-        //　取引３(コーヒーミル)
+        // 取引３(コーヒーミル)
         $transaction3BaseTime = $now->copy();
         TransactionMessage::create(
             $buyerMessageBase + [

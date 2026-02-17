@@ -31,25 +31,28 @@
                 <h1 class="transaction__username">「{{ $partnerUser->name }}」さんとの取引画面</h1>
                 @if($canBuyerReview)
                     <a class="finish-button" href="#review-modal">取引を完了する</a>
+                @endif
+                @if($canBuyerReview || $canSellerReview)
                     <div class="modal-area" id="review-modal">
                         <form action="{{ route('transaction.storeReview', ['transactionId' => $transaction->id]) }}" method="post">
                         @csrf
                             <a class="modal-back" href="{{ route('transaction.show', ['transactionId' => $transaction->id]) }}"></a>
                             <div class="modal-wrapper">
+                                <h1 class="modal-title">取引が完了しました。</h1>
                                 <div class="modal-contents">
-                                <h1>取引が完了しました。</h1>
-                                <p>今回の取引相手はどうでしたか？</p>
-                                @error('score')
-                                    <p class="transaction__error">{{ $message }}</p>
-                                @enderror
-                                <select name="score" required>
-                                    <option value="">選択してください</option>
-                                    <option value="1">★☆☆☆☆</option>
-                                    <option value="2">★★☆☆☆</option>
-                                    <option value="3">★★★☆☆</option>
-                                    <option value="4">★★★★☆</option>
-                                    <option value="5">★★★★★</option>
-                                </select>
+                                    <p class="modal-content__title">今回の取引相手はどうでしたか？</p>
+
+                                    <div class="modal-content__score">
+                                        @error('score')
+                                            <p class="transaction__error">{{ $message }}</p>
+                                        @enderror
+                                        <div class="star-score">
+                                            @for($score = 5; $score >= 1; $score--)
+                                                <input type="radio" id="star{{ $score }}" name="score" value="{{ $score }}"  required>
+                                                <label for="star{{ $score }}">★</label>
+                                            @endfor
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="close-modal">
                                     <button class="close-modal__button" type="submit">送信する</button>

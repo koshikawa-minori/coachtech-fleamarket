@@ -75,7 +75,14 @@ class TransactionController extends Controller
             && $transaction->situation === 2
             && !$hasUserReviewed;
 
-        return view('transaction', compact('user','transaction', 'partnerUser', 'sidebarTransactions', 'draftMessage', 'editMessageId', 'latestTransactionMessageId', 'canBuyerReview'));
+
+        $modalQuery = $request->query('modal');
+
+        if ($canSellerReview && $modalQuery === null) {
+            return redirect()->route('transaction.show', ['transactionId' => $transactionId, 'modal' => 'review'])->withFragment('review-modal');
+        }
+
+        return view('transaction', compact('user','transaction', 'partnerUser', 'sidebarTransactions', 'draftMessage', 'editMessageId', 'latestTransactionMessageId', 'canBuyerReview', 'canSellerReview', 'modalQuery'));
 
     }
 
