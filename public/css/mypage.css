@@ -103,13 +103,32 @@
 .mypage__user-text {
     display: flex;
     flex-direction: column;
+    padding-left: 10px;
 }
 
 .mypage__username {
     margin: 0;
-    padding-left: 5px;
     font-size: 28px;
     font-weight: 700;
+}
+
+.star-score {
+    display: flex;
+    margin-top: 10px;
+    gap:10px;
+}
+
+.star-score__star {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.star-score__star--filled {
+    color: #FFF048;
+}
+
+.star-score__star--empty {
+    color: #ddd;
 }
 
 .mypage__edit-button {
@@ -146,6 +165,10 @@
         gap: 12px;
     }
 
+    .mypage__profile {
+        gap: 40px;
+    }
+
     .mypage__image,
     .mypage__image--default {
     width: 120px;
@@ -156,8 +179,8 @@
         font-size: 40px;
     }
 
-    .mypage__profile {
-        gap: 40px;
+    .star-score__star {
+        font-size: 35px;
     }
 
     .transaction-unread__badge {

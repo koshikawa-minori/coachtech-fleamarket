@@ -20,7 +20,17 @@
             </div>
             <div class="mypage__user-text">
                 <p class="mypage__username">{{ $user->name }}</p>
-                <p>名前下に☆☆</p>
+                @if ($evaluationAverage !== null)
+                    <div class="star-score">
+                        @for($starScore = 1; $starScore <= 5; $starScore++)
+                            @if ($starScore <= $evaluationAverage)
+                                <span class="star-score__star star-score__star--filled">★</span>
+                            @else
+                                <span class="star-score__star star-score__star--empty">★</span>
+                            @endif
+                        @endfor
+                    </div>
+                @endif
             </div>
         </div>
         <a class="mypage__edit-button" href="{{ route('profile.edit') }}">プロフィールを編集</a>

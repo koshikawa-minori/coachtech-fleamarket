@@ -62,6 +62,7 @@
                     </div>
                 @endif
             </div>
+
             <div class="transaction__item">
                 <div class="transaction__item-card">
                     @if ($transaction->item->image_url)

@@ -38,6 +38,15 @@ class UserSeeder extends Seeder
             ]
         );
 
+        $emptyUser = User::updateOrCreate(
+            ['email' => 'empty@example.com'],
+            [
+                'name' => '未紐づけユーザー',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
+        );
+
         Profile::updateOrCreate(
             ['user_id' => $buyer->id],
             [
@@ -54,6 +63,13 @@ class UserSeeder extends Seeder
 
         Profile::updateOrCreate(
             ['user_id' => $seller2->id],
+            [
+                'image_path' => null,
+            ],
+        );
+
+        Profile::updateOrCreate(
+            ['user_id' => $emptyUser->id],
             [
                 'image_path' => null,
             ],

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Transaction;
 use App\Http\Requests\ProfileRequest;
+use App\Models\Evaluation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -91,7 +92,15 @@ class ProfileController extends Controller
             $items = $user->items()->get();
         }
 
-        return view('mypage', compact('user', 'profile', 'items', 'page', 'transactions', 'totalUnreadCount'));
+        $evaluationAverageRaw = Evaluation::where('evaluated_id', $user->id)->avg('score');
+
+        $evaluationAverage = null;
+
+        if ($evaluationAverageRaw !== null) {
+            $evaluationAverage = (int) round ($evaluationAverageRaw);
+        }
+
+        return view('mypage', compact('user', 'profile', 'items', 'page', 'transactions', 'totalUnreadCount', 'evaluationAverage'));
 
     }
 
