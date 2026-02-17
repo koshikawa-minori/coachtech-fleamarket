@@ -75,7 +75,7 @@ class TransactionController extends Controller
             && $transaction->situation === 2
             && !$hasUserReviewed;
 
-        return view('transaction', compact('user','transaction', 'partnerUser', 'sidebarTransactions', 'draftMessage', 'editMessageId', 'latestTransactionMessageId'));
+        return view('transaction', compact('user','transaction', 'partnerUser', 'sidebarTransactions', 'draftMessage', 'editMessageId', 'latestTransactionMessageId', 'canBuyerReview'));
 
     }
 
@@ -205,6 +205,51 @@ class TransactionController extends Controller
 
     public function storeReview(Request $request, $transactionId)
     {
+        $user = Auth::user();
+        $transaction = Transaction::findOrFail($transactionId);
 
+        if ($transaction->buyer_user_id === $user->id) {
+            if ($transaction->situation !== 1) {
+                abort(403);
+            }
+            $evaluatorUserId = $user->id;
+            $evaluatedUserId = $transaction->seller_user_id;
+            $nextSituation = 2;
+
+        } elseif ($transaction->seller_user_id === $user->id) {
+            if ($transaction->situation !== 2) {
+                abort(403);
+            }
+            $evaluatorUserId = $user->id;
+            $evaluatedUserId = $transaction->buyer_user_id;
+            $nextSituation = 3;
+        } else {
+            abort(403);
+        }
+
+        $hasUserReviewed = Evaluation::where('transaction_id', $transaction->id)
+            ->where('evaluator_id', $user->id)
+            ->exists();
+
+        if  ($hasUserReviewed) {
+            return redirect()->route('items.index', ['tab' => 'mylist']);
+        }
+
+        $validated = $request->validate([
+            'score' => ['required', 'integer', 'between:1,5']
+        ]);
+
+        DB::transaction(function () use ($validated, $transaction, $evaluatorUserId,$evaluatedUserId,$nextSituation) {
+            Evaluation::create([
+                'transaction_id' => $transaction->id,
+                'evaluator_id' => $evaluatorUserId,
+                'evaluated_id' => $evaluatedUserId,
+                'score' => $validated['score'],
+            ]);
+
+            $transaction->update(['situation' => $nextSituation]);
+        });
+
+        return redirect()->route('items.index', ['tab' => 'mylist']);
     }
 }

@@ -39,8 +39,11 @@
                                 <div class="modal-contents">
                                 <h1>取引が完了しました。</h1>
                                 <p>今回の取引相手はどうでしたか？</p>
-
+                                @error('score')
+                                    <p class="transaction__error">{{ $message }}</p>
+                                @enderror
                                 <select name="score" required>
+                                    <option value="">選択してください</option>
                                     <option value="1">★☆☆☆☆</option>
                                     <option value="2">★★☆☆☆</option>
                                     <option value="3">★★★☆☆</option>
