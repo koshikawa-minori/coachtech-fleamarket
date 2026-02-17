@@ -11,7 +11,7 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $buyer = User::updateOrCreate(
+        $generalUser = User::updateOrCreate(
             ['email' => 'test@example.com'],
             [
                 'name' => '一般ユーザー',
@@ -20,10 +20,19 @@ class UserSeeder extends Seeder
             ]
         );
 
+        $buyer = User::updateOrCreate(
+            ['email' => 'buyer@example.com'],
+            [
+                'name' => '購入者',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
+        );
+
         $seller = User::updateOrCreate(
             ['email' => 'seller@example.com'],
             [
-                'name' => 'デモ出品者',
+                'name' => '出品者',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]
@@ -32,19 +41,17 @@ class UserSeeder extends Seeder
         $seller2 = User::updateOrCreate(
             ['email' => 'seller2@example.com'],
             [
-                'name' => 'デモ出品者2',
+                'name' => '出品者2',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]
         );
 
-        $emptyUser = User::updateOrCreate(
-            ['email' => 'empty@example.com'],
+        Profile::updateOrCreate(
+            ['user_id' => $generalUser->id],
             [
-                'name' => '未紐づけユーザー',
-                'password' => Hash::make('password'),
-                'email_verified_at' => now(),
-            ]
+                'image_path' => null,
+            ],
         );
 
         Profile::updateOrCreate(
@@ -63,13 +70,6 @@ class UserSeeder extends Seeder
 
         Profile::updateOrCreate(
             ['user_id' => $seller2->id],
-            [
-                'image_path' => null,
-            ],
-        );
-
-        Profile::updateOrCreate(
-            ['user_id' => $emptyUser->id],
             [
                 'image_path' => null,
             ],

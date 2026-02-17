@@ -22,7 +22,7 @@ class TransactionSeeder extends Seeder
         // ユーザー３名
         $seller = User::where('email', 'seller@example.com')->firstOrFail();
         $seller2 = User::where('email', 'seller2@example.com')->firstOrFail();
-        $buyer = User::where('email', 'test@example.com')->firstOrFail();
+        $buyer = User::where('email', 'buyer@example.com')->firstOrFail();
 
         // 取引対象商品
         $item = Item::where('name', 'HDD')->where('seller_user_id', $seller->id)->firstOrFail();
@@ -53,12 +53,14 @@ class TransactionSeeder extends Seeder
             'seller_read_at' => null,
         ];
 
+        // HDD
         $transaction = Transaction::create($transactionBase + [
             'item_id' => $item->id,
             'seller_user_id' => $seller->id,
             'situation' => 1,
             ]);
 
+        // ノートPC
         $transaction2 = Transaction::create($transactionBase + [
             'item_id' => $item2->id,
             'seller_user_id' => $seller->id,
@@ -67,6 +69,7 @@ class TransactionSeeder extends Seeder
             'seller_read_at' => now(),
             ]);
 
+        // コーヒーミル
         $transaction3 = Transaction::create($transactionBase + [
             'item_id' => $item3->id,
             'seller_user_id' => $seller2->id,
@@ -75,6 +78,7 @@ class TransactionSeeder extends Seeder
             'seller_read_at' => null,
             ]);
 
+        // タンブラー
         $transaction4 = Transaction::create($transactionBase + [
             'item_id' => $item4->id,
             'seller_user_id' => $seller2->id,
