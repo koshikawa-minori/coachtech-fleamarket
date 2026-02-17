@@ -70,7 +70,7 @@ class TransactionSeeder extends Seeder
         $transaction3 = Transaction::create($transactionBase + [
             'item_id' => $item3->id,
             'seller_user_id' => $seller2->id,
-            'situation' => 2,
+            'situation' => 1,
             'buyer_read_at' => now(),
             'seller_read_at' => null,
             ]);
