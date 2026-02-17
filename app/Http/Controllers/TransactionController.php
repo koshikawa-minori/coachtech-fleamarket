@@ -10,6 +10,9 @@ use App\Http\Requests\UpdateTransactionMessageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Mail\TransactionCompletedMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class TransactionController extends Controller
 {
@@ -256,6 +259,13 @@ class TransactionController extends Controller
 
             $transaction->update(['situation' => $nextSituation]);
         });
+
+        if ($nextSituation === 2) {
+            $transaction->loadMissing(['item', 'seller']);
+
+            Mail::to($transaction->seller->email)
+                ->send(new TransactionCompletedMail($transaction));
+        }
 
         return redirect()->route('items.index', ['tab' => 'mylist']);
     }
