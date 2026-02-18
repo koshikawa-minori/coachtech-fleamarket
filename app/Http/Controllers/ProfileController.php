@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Transaction;
 use App\Http\Requests\ProfileRequest;
 use App\Models\Evaluation;
+use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
-use function Laravel\Prompts\select;
 
 class ProfileController extends Controller
 {
@@ -75,8 +73,8 @@ class ProfileController extends Controller
                 'item',
                 'transactionMessages' => function ($query) {
                     $query->select('id', 'transaction_id', 'sender_id', 'created_at');
-                    },
-                ])
+                },
+            ])
             ->withMax('transactionMessages', 'created_at')
             ->orderByRaw('transaction_messages_max_created_at IS NULL')
             ->orderByDesc('transaction_messages_max_created_at')
@@ -101,7 +99,6 @@ class ProfileController extends Controller
         }
 
         return view('mypage', compact('user', 'profile', 'items', 'page', 'transactions', 'totalUnreadCount', 'evaluationAverage'));
-
     }
 
     // プロフィール編集画面表示
@@ -111,7 +108,6 @@ class ProfileController extends Controller
         $profile = $user->profile;
 
         return view('profile', compact('user', 'profile'));
-
     }
 
     // 更新処理等

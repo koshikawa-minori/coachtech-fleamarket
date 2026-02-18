@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaction;
-use App\Models\TransactionMessage;
-use App\Models\Evaluation;
 use App\Http\Requests\TransactionMessageRequest;
 use App\Http\Requests\UpdateTransactionMessageRequest;
+use App\Mail\TransactionCompletedMail;
+use App\Models\Evaluation;
+use App\Models\Transaction;
+use App\Models\TransactionMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Mail\TransactionCompletedMail;
 use Illuminate\Support\Facades\Mail;
-
 
 class TransactionController extends Controller
 {
@@ -86,7 +85,6 @@ class TransactionController extends Controller
         }
 
         return view('transaction', compact('user','transaction', 'partnerUser', 'sidebarTransactions', 'draftMessage', 'editMessageId', 'latestTransactionMessageId', 'canBuyerReview', 'canSellerReview', 'modalQuery'));
-
     }
 
     public function store(TransactionMessageRequest $request, $transactionId)
@@ -117,7 +115,6 @@ class TransactionController extends Controller
         session()->forget("transaction_drafts.$transactionId");
 
         return redirect()->route('transaction.show', ['transactionId' => $transactionId]);
-
     }
 
     public function edit($messageId)
@@ -166,7 +163,6 @@ class TransactionController extends Controller
         ]);
 
         return redirect()->route('transaction.show', ['transactionId' => $transactionId]);
-
     }
 
     public function destroy($messageId)
