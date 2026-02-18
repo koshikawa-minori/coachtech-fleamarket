@@ -1,6 +1,6 @@
 
 # coachtechフリマ
-提出タグ: submission-20260217-2
+提出タグ: 
 
 ## 概要
 本アプリケーションは、出品・購入・いいね・コメント・プロフィール管理ができるフリマアプリです。  
@@ -18,7 +18,7 @@
 
 ### 認証機能
 - 会員登録 / ログイン / ログアウト（Fortify）
-- メール認証機能（Mailtrap、応用）
+- メール認証機能
 - メール認証再送機能
 
 ### 商品関連
@@ -77,9 +77,10 @@ docker-compose exec php bash
 composer install
 cp .env.example .env  #環境変数を変更
 ```
+
 - DB 接続情報はdocker-compose.yml の設定と一致させてください。
 
-- キャッシュ設定は.env の CACHE_DRIVER を file に変更してください。
+- キャッシュ設定は.env の CACHE_STORE を file に変更してください。
 
 ```bash
 php artisan key:generate
@@ -94,7 +95,7 @@ php artisan storage:link  #画像表示のために必要
 - コーヒーミル（購入者完了・取引チャット有）
 - ノートPC（完了：双方評価済）
 
-購入者は test@example.com です。
+購入者は buyer@example.com です。
 
 取引チャットはメッセージの並び順・未読判定の確認が可能です。
 
@@ -237,6 +238,7 @@ php artisan storage:link  #画像表示のために必要
 
 - 本アプリではメール認証を実装しています。
 - 上記ユーザーは、動作確認用として **メール認証済み（email_verified_at 設定済み）** の状態で作成されています。
+- 一般ユーザーは、未紐づけユーザーです。
 
 ## Stripe決済機能
 
@@ -253,9 +255,11 @@ php artisan storage:link  #画像表示のために必要
 
 ### Mailtrap設定（環境変数）
 
-`.env` に以下を設定してください。
-- MAIL_USERNAME
-- MAIL_PASSWORD
+- Mailtrap を使う場合は .env の MAIL_* を設定してください。（.env.example 参照）
+- Mailtrapの無料プランには送信レート制限があるため、送信エラーが発生する場合があります。
+- Mailtrap の送信制限等で確認が難しい場合は、  
+  `.env` を `MAIL_MAILER=log` に切り替えることで  
+  `storage/logs/laravel.log` に出力される認証URLから動作確認できます。
 
 ### メール認証手順
 
@@ -267,14 +271,10 @@ php artisan storage:link  #画像表示のために必要
 
 - 認証が未完了のままログインした場合も認証誘導画面へ遷移
 - 認証メールの再送機能あり（1分間に6回まで）
-- Mailtrapの無料プランには送信レート制限があるため、送信エラーが発生する場合があります。
-- Mailtrap の送信制限等で確認が難しい場合は、  
-  `.env` を `MAIL_MAILER=log` に切り替えることで  
-  `storage/logs/laravel.log` に出力される認証URLから動作確認できます。
 
 ### 通知メール確認手順
 
-1. test@example.com（購入者）でログイン
+1. buyer@example.com（購入者）でログイン
 2. 取引完了ボタンを押下
 3. 出品者宛に通知メールが送信されることを確認
 
