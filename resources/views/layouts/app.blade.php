@@ -19,7 +19,7 @@
                 </a>
             </div>
 
-            @unless (request()->routeIs('login', 'register'))
+            @unless (request()->routeIs('login', 'register', 'transaction.show'))
                 <div class="header__center">
                     <form class="header__search" action="{{ route('items.index') }}" method="GET">
                     <input class="header__search-input" type="text" name="keyword" value="{{ old('keyword', request('keyword', '')) }}" placeholder="なにをお探しですか？">

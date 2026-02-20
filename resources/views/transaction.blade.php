@@ -168,7 +168,7 @@
                     </div>
 
                     <div class="transaction-image__drop">
-                        <input class="transaction-image__input" name="image" type="file" id="image" accept=".jpeg,.png">
+                        <input class="transaction-image__input" name="image" type="file" id="image">
                         <label class="transaction-image__button" for="image">画像を追加</label>
                     </div>
 
